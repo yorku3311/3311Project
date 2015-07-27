@@ -1,5 +1,8 @@
-add_division
 add_multiplication
+add_multiplication
+add_multiplication
+add_integer_constant(6)
+add_integer_constant(5)
 add_integer_constant(2)
-add_boolean_constant(true)
-trueziess
+add_integer_constant(2)
+evaluate

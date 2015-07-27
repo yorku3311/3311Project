@@ -9,5 +9,9 @@ deferred class
 
 inherit
 	EXPRESSION
+feature -- Test
+evaluate : STRING
+deferred
+end
 
 end

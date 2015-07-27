@@ -12,6 +12,10 @@ feature -- Queries
 output : STRING
 	deferred
 	end
+evaluate :STRING
+	deferred
+	end
+
 
 
 

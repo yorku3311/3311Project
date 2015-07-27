@@ -15,5 +15,10 @@ feature -- Query
 		Result := "true"
 	end
 
+	evaluate :STRING
+	do
+		Result := output
+	end
+
 
 end

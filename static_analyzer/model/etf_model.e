@@ -62,6 +62,15 @@ feature{NONE} -- Auxillary Commands
 		myexpression.add (binary_op)
 		update_structure
 	end
+feature -- Queries
+	evaluate
+	do
+		report.make_empty
+		report.append ("%N")
+		report.append (myexpression.evaluate)
+		report.append ("%N")
+		report.append (status_ok)
+	end
 
 
 

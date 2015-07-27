@@ -40,7 +40,22 @@ output : STRING
 evaluate : STRING
 	do
 		-- Evaluate the given expression.
-		Result:= ""
+		create Result.make_empty
+		expression_list.go_i_th (0)
+		from
+			expression_list.forth
+		until
+			expression_list.after
+		loop
+			if attached {COMPOSITE_EXPRESSION}expression_list.item as c then
+				Result.append(c.evaluate)
+			else
+				Result.append (expression_list.item.output)
+			end
+
+			expression_list.forth
+		end
+
 	end
 feature -- Commands
 	add (expression : EXPRESSION)

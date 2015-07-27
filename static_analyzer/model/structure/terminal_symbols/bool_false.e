@@ -14,6 +14,10 @@ feature -- Query
 	do
 		Result := "false"
 	end
+	evaluate :STRING
+	do
+		Result := output
+	end
 
 
 end

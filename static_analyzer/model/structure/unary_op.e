@@ -10,7 +10,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation
+		add_operation, evaluate
 	end
 create
 	make
@@ -25,5 +25,9 @@ feature -- Commands
 			expression_list.extend (create {RPAREN})
 
 		end
+	evaluate :STRING
+	do
+		Result := ""
+	end
 
 end

@@ -9,6 +9,9 @@ class
 
 inherit
 	COMPOSITE_EXPRESSION
+	redefine
+		evaluate
+	end
 create
 	make
 feature -- Commands
@@ -20,6 +23,10 @@ feature -- Commands
 			expression_list.put_i_th(create {BOOL_FALSE},1)
 		end
 
+	end
+	evaluate :STRING
+	do
+		Result := ""
 	end
 
 

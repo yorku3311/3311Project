@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation
+		add_operation, evaluate
 	end
 create
 	make
@@ -17,6 +17,11 @@ feature -- Commands
 	add_operation (expression : EXPRESSION)
 	do
 
+	end
+
+	evaluate :STRING
+	do
+		Result := ""
 	end
 
 end

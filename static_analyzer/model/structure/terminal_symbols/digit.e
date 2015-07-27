@@ -24,5 +24,10 @@ feature -- Query
 		Result := s
 	end
 
+	evaluate :STRING
+	do
+		Result := output
+	end
+
 
 end

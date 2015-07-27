@@ -29,6 +29,10 @@ feature -- Queries
 	do
 		Result := symbol
 	end
+	evaluate :STRING
+	do
+		Result := output
+	end
 
 
 end

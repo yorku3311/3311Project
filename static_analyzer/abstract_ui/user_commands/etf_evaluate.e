@@ -6,16 +6,16 @@ note
 
 class
 	ETF_EVALUATE
-inherit 
+inherit
 	ETF_EVALUATE_INTERFACE
 		redefine evaluate end
 create
 	make
-feature -- command 
+feature -- command
 	evaluate
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.evaluate
 			etf_cmd_container.on_change.notify ([Current])
     	end
 
