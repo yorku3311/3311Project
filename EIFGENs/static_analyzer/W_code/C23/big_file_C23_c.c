@@ -1,0 +1,8 @@
+#include "kl1588.c"
+#include "kl1585d.c"
+#include "kl1586.c"
+#include "kl1586d.c"
+#include "kl1588d.c"
+#include "kl1585.c"
+#include "kl1587.c"
+#include "kl1587d.c"
