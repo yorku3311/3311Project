@@ -18,6 +18,7 @@ feature -- Constructors
 	make
 	do
 		create symbol.make_from_string("nil")
+		is_current := false
 	end
 	make_first
 	do

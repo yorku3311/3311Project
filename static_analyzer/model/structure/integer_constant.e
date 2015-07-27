@@ -16,7 +16,7 @@ create
 	make
 
 feature -- Command
-	add_integer_constant (i : INTEGER)
+	set_integer_constant (i : INTEGER)
 	do
 		expression_list.put_i_th(create {DIGIT}.make_digit(i),1)
 	end

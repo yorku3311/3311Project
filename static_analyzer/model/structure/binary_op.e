@@ -32,8 +32,7 @@ feature -- Command
 	local
 		i : INTEGER
 	do
-		expression_list.go_i_th (3)
-		if attached {TIMES}expression_list.item as c then
+		if attached {TIMES}expression_list.at(3) as c then
 			i := expression_list.at (2).evaluate.to_integer*expression_list.at (4).evaluate.to_integer
 		end
 

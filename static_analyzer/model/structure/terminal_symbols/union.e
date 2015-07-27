@@ -15,10 +15,6 @@ feature -- Query
 		Result := "\/"
 	end
 
-	evaluate :STRING
-	do
-		Result := output
-	end
 
 
 end

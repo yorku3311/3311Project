@@ -15,7 +15,7 @@ inherit
 create
 	make
 feature -- Commands
-	add_boolean_constant (b : BOOLEAN)
+	set_boolean_constant (b : BOOLEAN)
 	do
 		if b then
 			expression_list.put_i_th(create {BOOL_TRUE},1)

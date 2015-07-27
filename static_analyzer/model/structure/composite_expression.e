@@ -93,7 +93,6 @@ feature -- Commands
 	loop
 			if attached {NULL_EXPRESSION}expression_list.item as c then
 				expression_list.put_i_th (create {NULL_EXPRESSION}.make_first,expression_list.index)
-				--expression_list.go_i_th (expression_list.count)
 				Result := true
 			elseif attached {COMPOSITE_EXPRESSION}expression_list.item as b then
 				Result :=b.set_first_null

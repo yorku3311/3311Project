@@ -16,10 +16,4 @@ evaluate :STRING
 	deferred
 	end
 
-
-
-
-feature -- Constructor
-
-
 end

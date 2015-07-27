@@ -7,16 +7,12 @@ note
 class
 	BOOL_FALSE
 inherit
-	EXPRESSION
+	TERMINAL_SYMBOL
 
 feature -- Query
 	output: STRING
 	do
 		Result := "false"
-	end
-	evaluate :STRING
-	do
-		Result := output
 	end
 
 

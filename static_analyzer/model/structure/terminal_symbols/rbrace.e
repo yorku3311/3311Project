@@ -7,7 +7,7 @@ note
 class
 	RBRACE
 inherit
-	EXPRESSION
+	TERMINAL_SYMBOL
 
 feature -- Query
 	output: STRING
@@ -15,10 +15,7 @@ feature -- Query
 		Result := "}"
 	end
 
-	evaluate :STRING
-	do
-		Result := output
-	end
+
 
 
 end

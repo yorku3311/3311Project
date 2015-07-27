@@ -54,25 +54,6 @@ feature -- Update
 		report.append (status_ok)
 	end
 
-feature{NONE} -- Auxillary Commands
-	add_binary_operation (e : EXPRESSION)
-	do
-		create binary_op.make
-		binary_op.add_operation (e)
-		myexpression.add (binary_op)
-		update_structure
-	end
-feature -- Queries
-	evaluate
-	do
-		report.make_empty
-		report.append ("%N")
-		report.append (myexpression.evaluate)
-		report.append ("%N")
-		report.append (status_ok)
-	end
-
-
 
 feature -- binary operations
 	add_multiplication
@@ -86,25 +67,26 @@ feature -- binary operations
 	do
 		add_binary_operation(create {DIVIDE})
 	end
-feature -- Terminal Symbols
+feature -- Terminal Symbols Addition Command
 	add_integer_constant (i : INTEGER)
 		-- add an integer constant
 	do
 		create integer_constant.make
-		integer_constant.add_integer_constant(i)
+		integer_constant.set_integer_constant(i)
 		myexpression.add (integer_constant)
 		update_structure
 		-- type_integer := true
 	end
 
 	add_boolean_constant (b : BOOLEAN)
-		-- add an integer constant
+		-- add boolean constant
 	do
 		create boolean_constant.make
-		boolean_constant.add_boolean_constant(b)
+		boolean_constant.set_boolean_constant(b)
 		myexpression.add (boolean_constant)
 		update_structure
 	end
+
 	default_update
 			-- Perform update to the model state.
 		do
@@ -116,7 +98,7 @@ feature -- Terminal Symbols
 			make
 		end
 
-feature -- queries
+feature -- Queries
 	out : STRING
 		do
 			create Result.make_from_string ("  ")
@@ -125,6 +107,25 @@ feature -- queries
 			Result.append (")")
 			Result.append (report)
 		end
+	evaluate
+	do
+		report.make_empty
+		report.append ("%N")
+		report.append (myexpression.evaluate)
+		report.append ("%N")
+		report.append (status_ok)
+	end
+
+
+feature{NONE} -- Auxillary Commands
+	add_binary_operation (e : EXPRESSION)
+	do
+		create binary_op.make
+		binary_op.add_operation (e)
+		myexpression.add (binary_op)
+		update_structure
+	end
+
 
 end
 

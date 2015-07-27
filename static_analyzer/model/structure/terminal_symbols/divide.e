@@ -7,18 +7,14 @@ note
 class
 	DIVIDE
 inherit
-	EXPRESSION
+	TERMINAL_SYMBOL
 
 feature -- Query
 	output: STRING
 	do
-		Result := "/"
+		Result := " / "
 	end
 
-	evaluate :STRING
-	do
-		Result := output
-	end
 
 
 end

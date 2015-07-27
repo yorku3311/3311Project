@@ -7,17 +7,14 @@ note
 class
 	INTERSECT
 inherit
-	EXPRESSION
+	TERMINAL_SYMBOL
 
 feature -- Query
 	output: STRING
 	do
 		Result := "/\"
 	end
-	evaluate :STRING
-	do
-		Result := output
-	end
+
 
 
 end

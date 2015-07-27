@@ -7,7 +7,7 @@ note
 class
 	DIGIT
 inherit
-	EXPRESSION
+	TERMINAL_SYMBOL
 create
 	make_digit
 feature -- Constructor
@@ -24,10 +24,6 @@ feature -- Query
 		Result := s
 	end
 
-	evaluate :STRING
-	do
-		Result := output
-	end
 
 
 end

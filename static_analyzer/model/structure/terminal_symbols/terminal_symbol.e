@@ -9,9 +9,10 @@ deferred class
 
 inherit
 	EXPRESSION
-feature -- Test
-evaluate : STRING
-deferred
-end
+feature -- Query
+	evaluate : STRING
+	do
+		Result := output
+	end
 
 end
