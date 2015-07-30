@@ -13,6 +13,7 @@ create
 feature -- Attributes
 	symbol : STRING
 	is_current : BOOLEAN
+		-- is this the current item we are changing?
 
 feature -- Constructors
 	make

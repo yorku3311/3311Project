@@ -50,6 +50,7 @@ evaluate : STRING
 			if attached {COMPOSITE_EXPRESSION}expression_list.item as c then
 				Result.append(c.evaluate)
 			else
+				-- The only thing remaining is some form of a temrinal symbol. consider explictly specifying this.
 				Result.append (expression_list.item.output)
 			end
 
@@ -83,7 +84,9 @@ feature -- Commands
 		end
 	end
 	set_first_null :BOOLEAN
-		--sets the next null item found to '?'
+		--sets the next null item found to '?'. Returns false if no '?' found
+		-- this would be useful for checking if th expression is complete.
+		-- also needed for the recursive calls.
 	do
 		expression_list.go_i_th (0)
 	from
@@ -101,8 +104,9 @@ feature -- Commands
 
 		end
 	end
-
+feature -- Special Commands
 	add_operation(expression : EXPRESSION)
+	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
 	do
 	end
 

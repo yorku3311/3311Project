@@ -67,6 +67,7 @@ feature -- binary operations
 	do
 		add_binary_operation(create {DIVIDE})
 	end
+
 feature -- Terminal Symbols Addition Command
 	add_integer_constant (i : INTEGER)
 		-- add an integer constant
@@ -92,6 +93,7 @@ feature -- Terminal Symbols Addition Command
 		do
 
 		end
+		
 	reset
 			-- Reset model state.
 		do
