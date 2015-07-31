@@ -16,7 +16,7 @@
 		<library name="gobo_parse" location="$ISE_LIBRARY\library\gobo\gobo_parse-safe.ecf"/>
 		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure-safe.ecf"/>
 		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility-safe.ecf"/>
-		<library name="mathmodels" location="\home\omarabid\EECS3311\ETF\mathmodels\library\mathmodels.ecf"/>
+		<library name="mathmodels" location="$MATHMODELS\library\mathmodels.ecf"/>
 		<library name="process" location="$ISE_LIBRARY\library\process\process-safe.ecf"/>
 		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf"/>
 		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
