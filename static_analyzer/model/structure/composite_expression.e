@@ -47,13 +47,7 @@ evaluate : STRING
 		until
 			expression_list.after
 		loop
-			if attached {COMPOSITE_EXPRESSION}expression_list.item as c then
-				Result.append(c.evaluate)
-			else
-				-- The only thing remaining is some form of a temrinal symbol. consider explictly specifying this.
-				Result.append (expression_list.item.output)
-			end
-
+			Result.append (expression_list.item.evaluate)
 			expression_list.forth
 		end
 
