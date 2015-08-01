@@ -31,6 +31,8 @@ feature {NONE} -- Initialization
 
 feature -- Attributes
 	report : STRING
+
+feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION
 	binary_op : BINARY_OP
 	integer_constant : INTEGER_CONSTANT
@@ -55,7 +57,13 @@ feature -- Update
 	end
 
 
-feature -- binary operations
+--  -- Events of users starting/finishing entering set enumerations
+--  start_set_enumeration
+--  end_set_enumeration
+
+feature -- Binary operations
+	-- BINARY ARITHMATIC
+		-- TO DO: addition, division
 	add_multiplication
 		-- add binary operation 'multiplication'
 	do
@@ -67,6 +75,27 @@ feature -- binary operations
 	do
 		add_binary_operation(create {DIVIDE})
 	end
+
+    -- binary logical operations
+    	-- TO DO : conjunction, disjunction, implication
+
+
+    -- binary relational operations
+    	-- TO DO: equality, greater than, less than
+
+    -- binary set operations
+    	-- TO DO : union, intersect, difference
+feature -- Unary operations
+	--arithmatic
+		-- TO DO : negative
+
+	--logical
+		-- TO DO: Negation
+
+	--composite
+		-- TO DO : sum, generalized and, generalized or
+feature -- Enumeration operations
+	-- TO DO : start set enumeration, end set enumeration
 
 feature -- Terminal Symbols Addition Command
 	add_integer_constant (i : INTEGER)
@@ -93,7 +122,7 @@ feature -- Terminal Symbols Addition Command
 		do
 
 		end
-		
+
 	reset
 			-- Reset model state.
 		do
@@ -120,13 +149,19 @@ feature -- Queries
 
 
 feature{NONE} -- Auxillary Commands
+	-- add binary operation
 	add_binary_operation (e : EXPRESSION)
 	do
+		-- create a new binary operation and add it to the list of operations.
 		create binary_op.make
 		binary_op.add_operation (e)
 		myexpression.add (binary_op)
 		update_structure
 	end
+
+
+
+
 
 
 end
