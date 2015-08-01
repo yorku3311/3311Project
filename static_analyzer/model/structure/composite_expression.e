@@ -71,7 +71,7 @@ feature -- Commands
 				end
 				-- update the next 'NULL_EXPRESSION'
 			elseif attached {COMPOSITE_EXPRESSION}expression_list.item as b then
-				b.add(expression)
+				add(expression)
 			end
 			expression_list.forth
 

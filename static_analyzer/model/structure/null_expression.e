@@ -8,12 +8,27 @@ class
 	NULL_EXPRESSION
 inherit
 	EXPRESSION
+	redefine
+		output,evaluate
+	end
 create
-	make, make_first
+	make,make_first
 feature -- Attributes
 	symbol : STRING
 	is_current : BOOLEAN
 		-- is this the current item we are changing?
+
+
+feature -- Add operation override
+add_expression (expression : EXPRESSION):BOOLEAN
+		--extend to the first 'NULL_EXPRESSION' that is found
+	local
+		is_set : BOOLEAN
+	do
+		-- Replace the current null expression
+
+		is_set := true
+	end
 
 feature -- Constructors
 	make
