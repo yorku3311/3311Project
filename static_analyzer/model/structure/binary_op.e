@@ -10,7 +10,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate
+		add_operation, evaluate,accept
 	end
 create
 	make
@@ -37,6 +37,14 @@ feature -- Command
 		end
 
 		Result := i.out
+	end
+
+feature -- Test visitor pattern
+	accept (visitor : VISIT_EXPRESSION) :STRING
+
+	do
+		--Result.make_empty
+		Result:= visitor.visit (Current)
 	end
 
 end

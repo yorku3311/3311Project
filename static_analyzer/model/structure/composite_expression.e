@@ -50,8 +50,8 @@ evaluate : STRING
 			Result.append (expression_list.item.evaluate)
 			expression_list.forth
 		end
-
 	end
+	
 feature -- Commands
 	add (expression : EXPRESSION)
 		--extend to the first 'NULL_EXPRESSION' that is found
@@ -76,6 +76,7 @@ feature -- Commands
 			expression_list.forth
 
 		end
+		is_set := set_first_null
 	end
 	set_first_null :BOOLEAN
 		--sets the next null item found to '?'. Returns false if no '?' found
@@ -102,6 +103,30 @@ feature -- Special Commands
 	add_operation(expression : EXPRESSION)
 	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
 	do
+	end
+
+feature --testing the visitor pattern
+	-- this is dynamically binded it should go to either printing, evaluation,
+	-- or type check
+	accept (visit :VISIT_EXPRESSION) : STRING
+	local
+		n : NULL_EXPRESSION
+	do
+		create n.make_first
+		create Result.make_empty
+	from
+		expression_list.go_i_th (1)
+	until
+		expression_list.after
+	loop
+		if attached {COMPOSITE_EXPRESSION}expression_list.item as a then
+			--a.accept (visit)
+			Result.append(a.accept (visit))
+		elseif attached {NULL_EXPRESSION}expression_list.item as a then
+			Result.append (n.output)
+		end
+		expression_list.forth
+	end
 	end
 
 end

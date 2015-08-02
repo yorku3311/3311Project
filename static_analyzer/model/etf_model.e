@@ -20,17 +20,22 @@ feature {NONE} -- Initialization
 	make
 			-- Initialization for `Current'.
 		do
+			--Strings, message specifies the current state.
 			create report.make_empty
+			create message.make_empty
+
 			create myexpression.make
 			create integer_constant.make
 			create binary_op.make
 			create boolean_constant.make
 			create unary_op.make
 			create set_enum.make
+
 		end
 
 feature -- Attributes
 	report : STRING
+	message :STRING
 
 feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION
@@ -44,23 +49,25 @@ feature{NONE} -- Internal Attributes
 feature -- Error Reporting
 	status_ok : STRING
 		attribute Result := "OK" end
-feature -- Update
-	update_structure
+
+
+feature -- basic operations
+	pretty_print
 	do
-		-- This here should be internal
-		first_set := myexpression.set_first_null
 		report.make_empty
-		report.append ("%N")
-		report.append (myexpression.output)
-		report.append ("%N")
-		report.append (status_ok)
+		report.append (myexpression.accept (create {VISIT_PRINT}))
 	end
 
-
---  -- Events of users starting/finishing entering set enumerations
---  start_set_enumeration
---  end_set_enumeration
-
+	evaluate
+	do
+		message.make_empty
+		message.append (myexpression.accept (create {VISIT_EVALUATE}))
+	end
+	type_check
+	do
+		report.make_empty
+		report.append (myexpression.accept (create {VISIT_TYPE_CHECK}))
+	end
 feature -- Binary operations
 	-- BINARY ARITHMATIC
 		-- TO DO: addition, division
@@ -68,6 +75,7 @@ feature -- Binary operations
 		-- add binary operation 'multiplication'
 	do
 		add_binary_operation(create {TIMES})
+		message := status_ok
 	end
 
 	add_division
@@ -104,7 +112,7 @@ feature -- Terminal Symbols Addition Command
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
 		myexpression.add (integer_constant)
-		update_structure
+
 		-- type_integer := true
 	end
 
@@ -114,7 +122,6 @@ feature -- Terminal Symbols Addition Command
 		create boolean_constant.make
 		boolean_constant.set_boolean_constant(b)
 		myexpression.add (boolean_constant)
-		update_structure
 	end
 
 	default_update
@@ -133,20 +140,14 @@ feature -- Queries
 	out : STRING
 		do
 			create Result.make_from_string ("  ")
-			Result.append ("System State: default model state ")
-			Result.append ("(")
-			Result.append (")")
+			Result.append ("Expression currently specified: ")
+			pretty_print
 			Result.append (report)
+			Result.append ("%N")
+			Result.append ("  ")
+			Result.append ("Report: ")
+			Result.append (message)
 		end
-	evaluate
-	do
-		report.make_empty
-		report.append ("%N")
-		report.append (myexpression.evaluate)
-		report.append ("%N")
-		report.append (status_ok)
-	end
-
 
 feature{NONE} -- Auxillary Commands
 	-- add binary operation
@@ -156,7 +157,6 @@ feature{NONE} -- Auxillary Commands
 		create binary_op.make
 		binary_op.add_operation (e)
 		myexpression.add (binary_op)
-		update_structure
 	end
 
 
