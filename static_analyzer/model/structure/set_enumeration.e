@@ -64,9 +64,30 @@ feature -- Commands
 
 	end
 	end_enumeration
+	local
+		n : NULL_EXPRESSION
 	do
-		expression_state := end_expression
-		add_operation (create {NULL_EXPRESSION}.make)
+		create n.make_first
+		-- check to see if there are other enumerations present atm
+		if expression_list.at (expression_list.count-1).output ~ n.output then
+			expression_state := end_expression
+		else
+			expression_list.go_i_th (0)
+			from
+				expression_list.forth
+			until
+				expression_list.after
+			loop
+				if attached {COMPOSITE_EXPRESSION} expression_list.item as comp_exp then
+					comp_exp.end_enumeration
+				end
+				expression_list.forth
+			end
+			expression_state := middle_expression
+		end
+
+		    add_operation (create {NULL_EXPRESSION}.make)
+
 	end
 
 feature -- Evaluation Commands
