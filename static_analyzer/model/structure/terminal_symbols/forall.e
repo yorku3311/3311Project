@@ -7,7 +7,7 @@ note
 class
 	FORALL
 inherit
-	EXPRESSION
+	TERMINAL_SYMBOL
 
 feature -- Query
 	output: STRING
