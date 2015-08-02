@@ -1,4 +1,3 @@
-add_multiplication
-add_integer_constant(6231)
-add_integer_constant(934)
-evaluate
+start_set_enumeration
+add_integer_constant(2)
+end_set_enumeration

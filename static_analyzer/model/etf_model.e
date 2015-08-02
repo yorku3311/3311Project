@@ -104,6 +104,19 @@ feature -- Unary operations
 		-- TO DO : sum, generalized and, generalized or
 feature -- Enumeration operations
 	-- TO DO : start set enumeration, end set enumeration
+	start_set_enumeration
+	do
+		create set_enum.make
+		-- this will need to be updated
+		set_enum.set_expression_state (1)
+		set_enum.add_operation (create {NULL_EXPRESSION}.make_first)
+		myexpression.add (set_enum)
+
+	end
+	end_set_enumeration
+	do
+		myexpression.end_enumeration
+	end
 
 feature -- Terminal Symbols Addition Command
 	add_integer_constant (i : INTEGER)

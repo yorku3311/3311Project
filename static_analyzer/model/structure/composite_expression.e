@@ -51,7 +51,7 @@ evaluate : STRING
 			expression_list.forth
 		end
 	end
-	
+
 feature -- Commands
 	add (expression : EXPRESSION)
 		--extend to the first 'NULL_EXPRESSION' that is found
@@ -103,6 +103,20 @@ feature -- Special Commands
 	add_operation(expression : EXPRESSION)
 	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
 	do
+	end
+	end_enumeration
+	do
+		expression_list.go_i_th (0)
+		from
+			expression_list.forth
+		until
+			expression_list.after
+		loop
+			if attached {COMPOSITE_EXPRESSION} expression_list.item as comp_exp then
+				comp_exp.end_enumeration
+			end
+			expression_list.forth
+		end
 	end
 
 feature --testing the visitor pattern

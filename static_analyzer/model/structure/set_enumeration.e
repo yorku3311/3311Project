@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate,accept,make
+		add_operation, evaluate,accept,make,add,end_enumeration
 	end
 create
 	make
@@ -33,7 +33,7 @@ feature -- Constructor redefinition
 	do
 		expression_state := i
 	end
-feature -- Internal Feautures
+feature{NONE} -- Internal Feautures
 	set_current_index (i : INTEGER)
 	do
 		current_expression_index := i
@@ -46,17 +46,30 @@ feature -- Commands
 			expression_list.put_i_th (create {LBRACE},1)
 			expression_list.extend(create {NULL_EXPRESSION}.make_first)
 			expression_list.extend (create {RBRACE}) -- this should be overwritten
+			expression_state := middle_expression
 		when middle_expression then
 			expression_list.put_i_th (create {COMMA},current_expression_index)
 			expression_list.extend (create {NULL_EXPRESSION}.make_first)
 			expression_list.extend (create {RBRACE})
 			set_current_index(expression_list.count)
 		when end_expression then
-			-- I do not think anything needs to be done here
+			-- Delete the last middle expression
+			expression_list.go_i_th (expression_list.count-2)
+			expression_list.remove
+			expression_list.remove
+			expression_list.remove
+			expression_list.extend (create {RBRACE})
 		end
 
 
 	end
+	end_enumeration
+	do
+		expression_state := end_expression
+		add_operation (create {NULL_EXPRESSION}.make)
+	end
+
+feature -- Evaluation Commands
 
 	evaluate :STRING
 	do
@@ -77,6 +90,37 @@ feature -- Commands
 	do
 		Result := ""
 	end
+
+feature -- Override add operation
+	add (expression : EXPRESSION)
+		--extend to the first 'NULL_EXPRESSION' that is found
+	local
+		is_set :BOOLEAN
+	do
+		expression_list.go_i_th (0)
+	from
+		expression_list.forth
+	until
+		is_set or expression_list.after
+	loop
+			if attached {NULL_EXPRESSION}expression_list.item as c then
+				if c.is_current then
+					expression_list.put_i_th (expression,expression_list.index)
+					is_set := true
+				end
+				-- update the next 'NULL_EXPRESSION'
+			elseif attached {COMPOSITE_EXPRESSION}expression_list.item as b then
+				b.add(expression)
+			end
+			expression_list.forth
+
+		end
+		is_set := set_first_null
+		if not is_set then
+			add_operation (create {NULL_EXPRESSION}.make)
+		end
+	end
+
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION) :STRING
 

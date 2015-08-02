@@ -6,16 +6,16 @@ note
 
 class
 	ETF_END_SET_ENUMERATION
-inherit 
+inherit
 	ETF_END_SET_ENUMERATION_INTERFACE
 		redefine end_set_enumeration end
 create
 	make
-feature -- command 
+feature -- command
 	end_set_enumeration
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.end_set_enumeration
 			etf_cmd_container.on_change.notify ([Current])
     	end
 
