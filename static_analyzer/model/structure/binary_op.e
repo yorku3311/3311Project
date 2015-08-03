@@ -10,11 +10,19 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate,accept
+		add_operation, evaluate,accept,make
 	end
 create
 	make
+feature -- Constructors
+	make
+	do
+		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
+		expression_list.extend (create {NULL_EXPRESSION}.make_first)
+		create times
+	end
 feature -- Attributes
+	times : TIMES
 
 
 feature -- Command
@@ -30,11 +38,17 @@ feature -- Command
 		end
 	evaluate :STRING
 	local
-		i : INTEGER
+		i :INTEGER
 	do
 		if attached {TIMES}expression_list.at(3) as c then
 			i := expression_list.at (2).evaluate.to_integer*expression_list.at (4).evaluate.to_integer
+		elseif attached {DIVIDE}expression_list.at(3) as c then
+		--	i := expression_list.at (2).evaluate.to_integer/expression_list.at (4).evaluate.to_integer
 		end
+		if expression_list.at (3).output ~ times.output then
+
+		end
+
 
 		Result := i.out
 	end
