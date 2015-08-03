@@ -15,8 +15,8 @@ feature -- command
 	add_division
     	do
 			-- perform some update on the model state
+			-- error reporting
 			model.add_division
-
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

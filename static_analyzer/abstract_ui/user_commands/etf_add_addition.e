@@ -6,12 +6,12 @@ note
 
 class
 	ETF_ADD_ADDITION
-inherit 
+inherit
 	ETF_ADD_ADDITION_INTERFACE
 		redefine add_addition end
 create
 	make
-feature -- command 
+feature -- command
 	add_addition
     	do
 			-- perform some update on the model state
