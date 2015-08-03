@@ -50,6 +50,19 @@ feature -- Error Reporting
 	status_ok : STRING
 		attribute Result := "OK" end
 
+	initialized: STRING
+		attribute Result := "Expression is initialized" end
+
+	incomplete_exp: STRING
+		attribute Result := "Error (Expression is not fully specified)." end
+
+	completed_exp: STRING
+		attribute Result := "Error (Expression is already fully specified)." end
+
+
+	divisor_zero: STRING
+	attribute Result := "Divisor is zero" end
+
 
 feature -- basic operations
 	pretty_print
@@ -82,6 +95,8 @@ feature -- Binary operations
 		-- add binary operation 'division'
 	do
 		add_binary_operation(create {DIVIDE})
+		message := status_ok
+
 	end
 
     -- binary logical operations

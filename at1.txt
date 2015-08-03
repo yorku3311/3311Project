@@ -1,4 +1,4 @@
-start_set_enumeration
+add_multiplication
 add_integer_constant(1)
 start_set_enumeration
 add_integer_constant(2)
