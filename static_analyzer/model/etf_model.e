@@ -115,7 +115,7 @@ feature -- Enumeration operations
 	end
 	end_set_enumeration
 	do
-		myexpression.end_enumeration
+		myexpression.end_set_enumeration
 	end
 
 feature -- Terminal Symbols Addition Command

@@ -26,14 +26,9 @@ output : STRING
 	do
 		-- Go thru the arrayed list and print everything out
 		create Result.make_empty
-		expression_list.go_i_th (0)
-		from
-			expression_list.forth
-		until
-			expression_list.after
+		across expression_list as cursor
 		loop
-			Result.append(expression_list.item.output)
-			expression_list.forth
+			Result.append (cursor.item.output)
 		end
 	end
 
@@ -41,14 +36,9 @@ evaluate : STRING
 	do
 		-- Evaluate the given expression.
 		create Result.make_empty
-		expression_list.go_i_th (0)
-		from
-			expression_list.forth
-		until
-			expression_list.after
+		across expression_list as cursor
 		loop
-			Result.append (expression_list.item.evaluate)
-			expression_list.forth
+			Result.append (cursor.item.evaluate)
 		end
 	end
 
@@ -104,18 +94,13 @@ feature -- Special Commands
 	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
 	do
 	end
-	end_enumeration
+	end_set_enumeration
 	do
-		expression_list.go_i_th (0)
-		from
-			expression_list.forth
-		until
-			expression_list.after
+		across expression_list as cursor
 		loop
-			if attached {COMPOSITE_EXPRESSION} expression_list.item as comp_exp then
-				comp_exp.end_enumeration
+			if attached {COMPOSITE_EXPRESSION} cursor.item as comp_exp then
+				comp_exp.end_set_enumeration
 			end
-			expression_list.forth
 		end
 	end
 
@@ -128,20 +113,18 @@ feature --testing the visitor pattern
 	do
 		create n.make_first
 		create Result.make_empty
-	from
-		expression_list.go_i_th (1)
-	until
-		expression_list.after
-	loop
-		if attached {COMPOSITE_EXPRESSION}expression_list.item as a then
-			--a.accept (visit)
-			Result.append(a.accept (visit))
-		elseif attached {NULL_EXPRESSION}expression_list.item as a then
-			Result.append (n.output)
+		across expression_list as cursor
+		loop
+			if attached {COMPOSITE_EXPRESSION}cursor.item as a then
+				--a.accept (visit)
+				Result.append(a.accept (visit))
+			elseif attached {NULL_EXPRESSION}cursor.item as a then
+				Result.append (n.output)
+			end
+
 		end
-		expression_list.forth
 	end
-	end
+
 
 end
 

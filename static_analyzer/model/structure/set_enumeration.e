@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate,accept,make,add,end_enumeration
+		add_operation, evaluate,accept,make,add,end_set_enumeration
 	end
 create
 	make
@@ -17,6 +17,8 @@ feature -- Expression State
 	begin_expression : INTEGER = 1
 	middle_expression : INTEGER = 2
 	end_expression : INTEGER = 3
+	is_current_expression : BOOLEAN
+	is_current_expression_closed : BOOLEAN
 	expression_state :INTEGER
 	current_expression_index : INTEGER
 feature -- Constructor redefinition
@@ -27,6 +29,7 @@ feature -- Constructor redefinition
 		expression_state := begin_expression
 		current_expression_index := 3
 	end
+feature -- Modify the state of the enumeration
 	set_expression_state(i :INTEGER)
 	require
 		begin_expression <= i and i <= end_expression
@@ -47,6 +50,7 @@ feature -- Commands
 			expression_list.extend(create {NULL_EXPRESSION}.make_first)
 			expression_list.extend (create {RBRACE}) -- this should be overwritten
 			expression_state := middle_expression
+			is_current_expression := TRUE
 		when middle_expression then
 			expression_list.put_i_th (create {COMMA},current_expression_index)
 			expression_list.extend (create {NULL_EXPRESSION}.make_first)
@@ -59,36 +63,62 @@ feature -- Commands
 			expression_list.remove
 			expression_list.remove
 			expression_list.extend (create {RBRACE})
+			is_current_expression := FALSE
 		end
 
 
 	end
-	end_enumeration
+
+	end_set_enumeration
 	local
-		n : NULL_EXPRESSION
+		b : BOOLEAN
 	do
-		create n.make_first
-		-- check to see if there are other enumerations present atm
-		if expression_list.at (expression_list.count-1).output ~ n.output then
+		if is_current_expression then
 			expression_state := end_expression
+			is_current_expression := false
+			add_operation (create {NULL_EXPRESSION}.make_first)
+			is_current_expression_closed := true
 		else
-			expression_list.go_i_th (0)
-			from
-				expression_list.forth
-			until
-				expression_list.after
+			across expression_list as c
 			loop
-				if attached {COMPOSITE_EXPRESSION} expression_list.item as comp_exp then
-					comp_exp.end_enumeration
+				if attached {COMPOSITE_EXPRESSION} c.item as comp_exp then
+					comp_exp.end_set_enumeration
 				end
-				expression_list.forth
 			end
-			expression_state := middle_expression
-		end
+			b := set_new_current_expression
+			end
+	end
+	set_new_current_expression:BOOLEAN
+		-- sets the new current expression
+	do
+		across expression_list as cursor
+	    loop
+	    	if attached {SET_ENUMERATION}cursor.item as a then
+				Result := a.set_new_current_expression
+			end
+	    end
+	    if not is_current_expression_closed then
+	    	if not Result then
+				is_current_expression := true
+				expression_state := middle_expression
+				add_operation(create {NULL_EXPRESSION}.make_first)
+		    else
+				is_current_expression := false
+				expression_state := middle_expression
+	    	end
 
-		    add_operation (create {NULL_EXPRESSION}.make)
+	    end
+
+
 
 	end
+	-- sample for end_set_enumeration
+	-- if second last expression in list is '?' then we are in current
+	-- set the expression state for this to end expression
+	-- originally this should have been the current expression. now set to false
+	-- use add_operation to put close brackets
+	-- set the next one in line to be the current expression
+	-- update with add_operation
 
 feature -- Evaluation Commands
 
@@ -118,7 +148,11 @@ feature -- Override add operation
 	local
 		is_set :BOOLEAN
 	do
+		-- set the current expression to false if adding an enumeration
 		expression_list.go_i_th (0)
+		if attached {SET_ENUMERATION}expression as set_enum then
+			is_current_expression := false
+		end
 	from
 		expression_list.forth
 	until
@@ -137,8 +171,8 @@ feature -- Override add operation
 
 		end
 		is_set := set_first_null
-		if not is_set then
-			add_operation (create {NULL_EXPRESSION}.make)
+		if not is_set and not is_current_expression_closed then
+			add_operation (create {NULL_EXPRESSION}.make_first)
 		end
 	end
 

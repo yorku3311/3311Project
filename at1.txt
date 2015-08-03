@@ -1,7 +1,7 @@
 start_set_enumeration
-add_integer_constant(2)
+add_integer_constant(1)
 start_set_enumeration
-add_integer_constant(3)
+add_integer_constant(2)
 end_set_enumeration
 add_integer_constant(3)
 end_set_enumeration
