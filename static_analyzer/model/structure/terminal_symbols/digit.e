@@ -15,7 +15,7 @@ feature -- Constructor
 	do
 		s := i.out
 	end
-feature -- Attributes
+feature{NONE} -- Internal Attributes
 	s : STRING
 
 feature -- Query

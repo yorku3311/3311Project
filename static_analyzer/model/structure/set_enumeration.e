@@ -36,13 +36,10 @@ feature -- Modify the state of the enumeration
 	do
 		expression_state := i
 	end
-feature{NONE} -- Internal Feautures
-	set_current_index (i : INTEGER)
-	do
-		current_expression_index := i
-	end
+
 feature -- Commands
 	add_operation (expression : EXPRESSION)
+		-- expands the set depending on the expression_state specified
 	do
 		inspect expression_state
 		when begin_expression then
@@ -70,6 +67,7 @@ feature -- Commands
 	end
 
 	end_set_enumeration
+		-- overrides the original 'Composite Expression' method
 	local
 		b : BOOLEAN
 	do
@@ -89,7 +87,8 @@ feature -- Commands
 			end
 	end
 	set_new_current_expression:BOOLEAN
-		-- sets the new current expression
+		-- sets the new current expression. this is if there is an enumeration set within
+		-- an enumeration set. such as { {?} }. it tells which one should it close (the inner one)
 	do
 		across expression_list as cursor
 	    loop
@@ -112,34 +111,12 @@ feature -- Commands
 
 
 	end
-	-- sample for end_set_enumeration
-	-- if second last expression in list is '?' then we are in current
-	-- set the expression state for this to end expression
-	-- originally this should have been the current expression. now set to false
-	-- use add_operation to put close brackets
-	-- set the next one in line to be the current expression
-	-- update with add_operation
 
 feature -- Evaluation Commands
 
 	evaluate :STRING
 	do
-		Result := ""
-	end
-
-	evaluate_sum : STRING
-	do
-		Result := ""
-	end
-
-	evaluate_conjunction :STRING
-	do
-		Result := ""
-	end
-
-	evaluate_disjunction : STRING
-	do
-		Result := ""
+		Result := output
 	end
 
 feature -- Override add operation
@@ -176,6 +153,12 @@ feature -- Override add operation
 		end
 	end
 
+feature{NONE} -- Internal Feautures
+	set_current_index (i : INTEGER)
+		-- used to figure out where the next expression should be inserted
+	do
+		current_expression_index := i
+	end
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION) :STRING
 

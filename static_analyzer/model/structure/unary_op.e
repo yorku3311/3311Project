@@ -10,10 +10,23 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate,accept
+		add_operation, evaluate,accept,make
 	end
 create
 	make
+feature -- Constructor
+	make
+	do
+		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
+		expression_list.extend (create {NULL_EXPRESSION}.make_first)
+		create negative create negation create sum create for_all create exists
+	end
+feature{NONE} -- Internal attributes
+	negative : NEGATIVE
+	negation : NEGATION
+	sum      : SUM
+	for_all  : FORALL
+	exists   : EXISTS
 
 feature -- Commands
 	add_operation(operator : EXPRESSION)
@@ -25,55 +38,82 @@ feature -- Commands
 			expression_list.extend (create {RPAREN})
 
 		end
+feature -- Evaluate Queries
 	evaluate :STRING
 	local
 		i : INTEGER
+		exp_type : STRING
+		expression : EXPRESSION
 	do
 		-- should return the operator and the corresponding expression output
-
+		create exp_type.make_from_string (expression_list.at(2).evaluate)
+		expression := expression_list.at(3)
 		Result:= ""
 		-- Negative
 			-- Take the corresponding 'expression' and make it the
 			-- negative of what it was
-			if attached {NEGATIVE}expression_list.at (2) as n then
-				i := expression_list.at (3).evaluate.to_integer*-1
-				Result.append (i.out)
-			end
+			if exp_type ~ negative.output then
+				Result.append (evaluate_negative(expression))
 		-- Sum	
 			-- of set of integer expressions
-			if attached {SUM}expression_list.at (2) as sum then
-                --Then this one should be of type SET_ENUMERATION
-                if attached {SET_ENUMERATION}expression_list.at (3) as set_enum then
-                	Result.append(set_enum.evaluate_sum)
-                end
-			end
+			elseif exp_type ~ sum.output then
+                --Then this one should be of type SET_ENUMERATION or a constant
+				Result.append (evaluate_sum(expression))
 		-- For all
 			-- Conjunction (over set of boolean)
-			if attached {FORALL}expression_list.at (2) as sum then
-                --Then this one should be of type SET_ENUMERATION
-                if attached {SET_ENUMERATION}expression_list.at (3) as set_enum then
-                	Result.append(set_enum.evaluate_conjunction)
-                end
-			end
+			elseif exp_type ~ for_all.output then
+                --Then this one should be of type SET_ENUMERATION or a constant
+				Result.append (evaluate_conjunction(expression))
+
 		-- Exists
 			-- Disjunction (over set of boolean)
-			if attached {EXISTS}expression_list.at (2) as sum then
-                --Then this one should be of type SET_ENUMERATION
-                if attached {SET_ENUMERATION}expression_list.at (3) as set_enum then
-                	Result.append(set_enum.evaluate_disjunction)
-                end
-			end
+			elseif exp_type ~ exists.output then
+                --Then this one should be of type SET_ENUMERATION or a constant
+				Result.append (evaluate_disjunction(expression))
 		-- Negation
 			-- over logical expression
-			if attached {NEGATION}expression_list.at (2) as sum then
-                --Then this one should be of type SET_ENUMERATION
-                if attached {BOOLEAN_CONSTANT}expression_list.at (3) as bool_const then
-                	bool_const.set_boolean_constant (not bool_const.evaluate.to_boolean)
-                	Result.append(bool_const.evaluate)
-                end
+			elseif exp_type ~ negation.output then
+                --Then this one should be of type SET_ENUMERATION or a constant
+				Result.append (evaluate_negation(expression))
 			end
 
 	end
+feature{NONE} -- Internal Evaluate Queries
+
+	evaluate_sum(expression:EXPRESSION) : STRING
+	local
+		i : INTEGER
+	do
+		-- TO DO: we can use the same procedure as was done in 'BINARY_OP'
+		-- Take the given input expression. If i is attached as a composite expression
+		-- use across expression.to_integer_array as cursor
+		-- and then sum up all the items like i := i + cursor.item.out.to_integer
+		-- if it is not, then it is simply an integer, in that case we can just do
+		-- expression.evaluate
+		Result := ""
+	end
+
+	evaluate_conjunction(e:EXPRESSION) :STRING
+	do
+		Result := ""
+	end
+
+	evaluate_disjunction(e:EXPRESSION) : STRING
+	do
+		Result := ""
+	end
+
+	evaluate_negative(e:EXPRESSION) : STRING
+	do
+		Result := ""
+	end
+
+	evaluate_negation(e:EXPRESSION) : STRING
+	do
+		Result := ""
+	end
+
+
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION) :STRING
 
