@@ -94,7 +94,7 @@ feature -- Binary operations
 	add_division
 		-- add binary operation 'division'
 	do
-		add_binary_operation(create {DIVIDE})
+		add_binary_operation(create {DIVIDES})
 		message := status_ok
 
 	end
