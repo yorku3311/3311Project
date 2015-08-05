@@ -123,6 +123,12 @@ feature -- Evaluate Queries
 		elseif operator_type ~ op_or.output then
 			b := exp_1_bool or exp_2_bool
 		elseif operator_type ~ op_equals.output then
+			-- TO DO: this could also be checkin if two sets are equal
+			--       example {True, False, True} = {True, True, False} is true
+			--       regardless of the order they are in.
+			--       Same goes with {1,2,3} = {3,1,2} is true regardless of order
+			--       Check if it is arithmatic or logical_boolean or logical_arithmatic
+			--       Then most likely call the corresponding helper method.
 			b := exp_1_bool = exp_2_bool
 		elseif operator_type ~ op_implies.output then
 			b := exp_1_bool implies exp_2_bool
@@ -162,7 +168,7 @@ feature -- Evaluate Queries
 			Result := output_expression.evaluate
 		end
 	end
-
+	-- TO DO: Evalute Union should also work for both arithmatic and logical expressions
 	evaluate_union (exp_1 : ARRAYED_LIST[DIGIT]; exp_2 : ARRAYED_LIST[DIGIT]): ARRAYED_LIST[DIGIT]
 	local
 		digit_not_present_in_array : BOOLEAN
@@ -184,7 +190,7 @@ feature -- Evaluate Queries
 		end
 
 	end
-
+	-- TO DO : Evaluate Intersect should also work for both arithmatic and Logical Expressions
 	evaluate_intersect (exp_1 : ARRAYED_LIST[DIGIT]; exp_2 : ARRAYED_LIST[DIGIT]): ARRAYED_LIST[DIGIT]
 	local
 		digit_not_present_in_array : BOOLEAN
@@ -205,7 +211,7 @@ feature -- Evaluate Queries
 		end
 
 	end
-
+	-- TO DO: Evalute Difference should also work for both arithmatic and logical expressions
 	evaluate_difference (exp_1 : ARRAYED_LIST[DIGIT]; exp_2 : ARRAYED_LIST[DIGIT]): ARRAYED_LIST[DIGIT]
 	local
 		index_to_remove : ARRAYED_LIST[INTEGER]
