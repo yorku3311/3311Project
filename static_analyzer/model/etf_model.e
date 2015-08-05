@@ -84,6 +84,15 @@ feature -- basic operations
 feature -- Binary operations
 	-- BINARY ARITHMATIC
 		-- TO DO: addition, division
+	add_addition
+	do
+		add_binary_operation(create {PLUS})
+	end
+
+	add_subtraction
+	do
+		add_binary_operation(create {MINUS})
+	end
 	add_multiplication
 		-- add binary operation 'multiplication'
 	do
@@ -100,23 +109,86 @@ feature -- Binary operations
 	end
 
     -- binary logical operations
-    	-- TO DO : conjunction, disjunction, implication
 
+    add_conjunction
+    do
+    	add_binary_operation(create {OPERAND_AND})
 
-    -- binary relational operations
-    	-- TO DO: equality, greater than, less than
+    end
 
-    -- binary set operations
-    	-- TO DO : union, intersect, difference
+    add_disjunction
+    do
+    	add_binary_operation(create {OPERAND_OR})
+    end
+
+    add_implication
+    do
+    	    	add_binary_operation(create {OPERATOR_IMPLIES})
+    end
+
+-- binary relational
+
+    add_equality
+    do
+    	add_binary_operation(create {OPERATOR_EQUAL})
+    end
+
+    add_greater_than
+    do
+    	 add_binary_operation(create {OPERATOR_GT})
+    end
+
+    add_less_than
+    do
+    	add_binary_operation(create {OPERATOR_LT})
+    end
+
+-- binary set op
+    add_union
+    do
+    	    	add_binary_operation(create {UNION})
+    end
+
+    add_intersect
+    do
+    	    	add_binary_operation(create {INTERSECT})
+    end
+
+    add_difference
+    do
+    	    	add_binary_operation(create {DIFFERENCE})
+    end
 feature -- Unary operations
 	--arithmatic
-		-- TO DO : negative
+
+	add_negative
+	do
+		add_unary_operation(create {NEGATIVE})
+	end
 
 	--logical
-		-- TO DO: Negation
+
+	add_negation
+	do
+		add_unary_operation(create {NEGATION})
+	end
 
 	--composite
-		-- TO DO : sum, generalized and, generalized or
+
+	
+	add_sum
+	do
+		add_unary_operation(create {SUM})
+	end
+
+	add_generalized_and
+	do
+		add_unary_operation(create {FORALL})
+	end
+	add_generalized_or
+	do
+		add_unary_operation(create {EXISTS})
+	end
 feature -- Enumeration operations
 	-- TO DO : start set enumeration, end set enumeration
 	start_set_enumeration
