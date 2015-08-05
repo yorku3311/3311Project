@@ -6,6 +6,8 @@ note
 
 deferred class
 	VISIT_EXPRESSION
+feature -- Attributes
+	value :STRING
 
 feature
 	visit_boolean_constant(e: BOOLEAN_CONSTANT)
