@@ -50,17 +50,17 @@ feature -- Error Reporting
 	status_ok : STRING
 		attribute Result := "OK" end
 
-	initialized: STRING
+	status_initialized: STRING
 		attribute Result := "Expression is initialized" end
 
-	incomplete_exp: STRING
+	status_incomplete_exp: STRING
 		attribute Result := "Error (Expression is not fully specified)." end
 
-	completed_exp: STRING
+	status_completed_exp: STRING
 		attribute Result := "Error (Expression is already fully specified)." end
 
 
-	divisor_zero: STRING
+	status_divisor_zero: STRING
 	attribute Result := "Divisor is zero" end
 
 
@@ -188,7 +188,12 @@ feature{NONE} -- Auxillary Commands
 	end
 
 
-
+add_unary_operation(e: EXPRESSION)
+do
+	create unary_op.make
+	unary_op.add_operation(e)
+	myexpression.add (unary_op)
+end
 
 
 
