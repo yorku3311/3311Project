@@ -88,10 +88,4 @@ feature
 	deferred
 	end
 
-	
-feature -- Test class
-	visit(expression :EXPRESSION):STRING
-	deferred
-	end
-
 end
