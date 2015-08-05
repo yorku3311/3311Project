@@ -1,4 +1,4 @@
-VISITnote
+note
 	description: "Summary description for {VISIT_EVALUATE}."
 	author: ""
 	date: "$Date$"
