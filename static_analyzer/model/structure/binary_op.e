@@ -10,7 +10,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate,accept,make
+		add_operation, evaluate,accept,make,add
 	end
 create
 	make
@@ -22,6 +22,7 @@ feature -- Constructors
 		create times create divide create plus create minus create op_and
 		create op_or create op_equals create op_implies create op_lt create op_gt
 		create op_union create op_intersect create op_difference
+		create {NULL_EXPRESSION}left.make create {NULL_EXPRESSION}right.make
 	end
 feature{NONE} -- Attributes
 	times : TIMES
@@ -37,13 +38,44 @@ feature{NONE} -- Attributes
 	op_union : UNION
 	op_intersect : INTERSECT
 	op_difference : DIFFERENCE
+feature -- External Attributes Accessible
+	left : EXPRESSION
+	right : EXPRESSION
 feature -- Expression type
 	expression_type : INTEGER
 	arithmatic : INTEGER = 1
 	logical_boolean : INTEGER = 2
 	logical_arithmatic : INTEGER = 3
 	binary_set_operation : INTEGER = 4
-feature{NONE} -- Internal Commands
+
+feature -- Commands
+	add (expression : EXPRESSION)
+		--extend to the first 'NULL_EXPRESSION' that is found
+	local
+		is_set :BOOLEAN
+	do
+		expression_list.go_i_th (0)
+	from
+		expression_list.forth
+	until
+		is_set or expression_list.after
+	loop
+			if attached {NULL_EXPRESSION}expression_list.item as c then
+				if c.is_current then
+					expression_list.put_i_th (expression,expression_list.index)
+					is_set := true
+				end
+				-- update the next 'NULL_EXPRESSION'
+			elseif attached {COMPOSITE_EXPRESSION}expression_list.item as b then
+				b.add(expression)
+			end
+			expression_list.forth
+
+		end
+		is_set := set_first_null
+		left := expression_list.at (2)
+		right := expression_list.at (4)
+	end
 
 
 feature -- Commands to set the status of this expression type
