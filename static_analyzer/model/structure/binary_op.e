@@ -23,6 +23,7 @@ feature -- Constructors
 		create op_or create op_equals create op_implies create op_lt create op_gt
 		create op_union create op_intersect create op_difference
 		create {NULL_EXPRESSION}left.make create {NULL_EXPRESSION}right.make
+		create {NULL_EXPRESSION}operator.make
 	end
 feature{NONE} -- Attributes
 	times : TIMES
@@ -41,6 +42,7 @@ feature{NONE} -- Attributes
 feature -- External Attributes Accessible
 	left : EXPRESSION
 	right : EXPRESSION
+	operator : EXPRESSION
 feature -- Expression type
 	expression_type : INTEGER
 	arithmatic : INTEGER = 1
@@ -94,6 +96,7 @@ feature -- Command
 			expression_list.extend(operator)
 			expression_list.extend(create {NULL_EXPRESSION}.make)
 			expression_list.extend (create {RPAREN})
+			Current.operator := operator
 		end
 
 feature -- Evaluate Queries
@@ -271,11 +274,39 @@ feature -- Evaluate Queries
 	end
 
 feature -- Test visitor pattern
-	accept (visitor : VISIT_EXPRESSION) :STRING
+	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		--Result.make_empty
-		Result:= visitor.visit (Current)
+		if operator.output ~ times.output then
+			visitor.visit_multiplication (Current)
+		elseif operator.output ~ divide.output then
+			visitor.visit_division (Current)
+		elseif operator.output ~ plus.output then
+			visitor.visit_addition (Current)
+		elseif operator.output ~ minus.output then
+			visitor.visit_subtraction (Current)
+		elseif operator.output ~ op_and.output then
+			visitor.visit_generalized_and (Current)
+		elseif operator.output ~ op_or.output then
+			visitor.visit_generalized_or (Current)
+
+		elseif operator.output ~ op_equals.output then
+			visitor.visit_equality (Current)
+		elseif operator.output ~ op_implies.output then
+			visitor.visit_implication (Current)
+		elseif operator.output ~ lt.output then
+			visitor.visit_less_than (Current)
+		elseif operator.output ~ gt.output then
+			visitor.visit_greater_than (Current)
+		elseif operator.output ~ op_union.output then
+			visitor.visit_conjunction (Current)
+		elseif operator.output ~ op_intersect.output then
+			visitor.visit_disjunction (Current)
+		elseif operator.output ~ op_difference.output then
+			visitor.visit_difference (Current)
+		end
+
 	end
 
 end
+
