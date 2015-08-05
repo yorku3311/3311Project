@@ -6,16 +6,16 @@ note
 
 class
 	ETF_ADD_SUBTRACTION
-inherit 
+inherit
 	ETF_ADD_SUBTRACTION_INTERFACE
 		redefine add_subtraction end
 create
 	make
-feature -- command 
+feature -- command
 	add_subtraction
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.add_subtraction
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

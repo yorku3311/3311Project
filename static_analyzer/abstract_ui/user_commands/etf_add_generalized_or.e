@@ -6,16 +6,16 @@ note
 
 class
 	ETF_ADD_GENERALIZED_OR
-inherit 
+inherit
 	ETF_ADD_GENERALIZED_OR_INTERFACE
 		redefine add_generalized_or end
 create
 	make
-feature -- command 
+feature -- command
 	add_generalized_or
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.add_generalized_or
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

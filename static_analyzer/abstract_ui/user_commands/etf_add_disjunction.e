@@ -6,16 +6,16 @@ note
 
 class
 	ETF_ADD_DISJUNCTION
-inherit 
+inherit
 	ETF_ADD_DISJUNCTION_INTERFACE
 		redefine add_disjunction end
 create
 	make
-feature -- command 
+feature -- command
 	add_disjunction
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.add_disjunction
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

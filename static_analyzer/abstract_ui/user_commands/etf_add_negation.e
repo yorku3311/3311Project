@@ -6,16 +6,16 @@ note
 
 class
 	ETF_ADD_NEGATION
-inherit 
+inherit
 	ETF_ADD_NEGATION_INTERFACE
 		redefine add_negation end
 create
 	make
-feature -- command 
+feature -- command
 	add_negation
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.add_negation
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

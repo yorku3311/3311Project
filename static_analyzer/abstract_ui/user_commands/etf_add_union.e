@@ -6,16 +6,16 @@ note
 
 class
 	ETF_ADD_UNION
-inherit 
+inherit
 	ETF_ADD_UNION_INTERFACE
 		redefine add_union end
 create
 	make
-feature -- command 
+feature -- command
 	add_union
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.add_union
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

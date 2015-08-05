@@ -6,16 +6,16 @@ note
 
 class
 	ETF_ADD_SUM
-inherit 
+inherit
 	ETF_ADD_SUM_INTERFACE
 		redefine add_sum end
 create
 	make
-feature -- command 
+feature -- command
 	add_sum
     	do
 			-- perform some update on the model state
-			model.default_update
+			model.add_sum
 			etf_cmd_container.on_change.notify ([Current])
     	end
 
