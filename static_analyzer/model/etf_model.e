@@ -51,17 +51,12 @@ feature{NONE} -- Internal Attributes
 feature -- Error Reporting
 	status_ok : STRING
 		attribute Result := "OK" end
-
 	status_initialized: STRING
 		attribute Result := "Expression is initialized" end
-
 	status_incomplete_exp: STRING
 		attribute Result := "Error (Expression is not fully specified)." end
-
 	status_completed_exp: STRING
 		attribute Result := "Error (Expression is already fully specified)." end
-
-
 	status_divisor_zero: STRING
 	    attribute Result := "Divisor is zero" end
 
@@ -89,7 +84,6 @@ feature -- basic operations
 	end
 feature -- Binary operations
 	-- BINARY ARITHMATIC
-		-- TO DO: addition, division
 	add_addition
 	do
 		add_binary_operation(create {PLUS})

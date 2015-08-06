@@ -58,10 +58,12 @@ feature -- Give the evaluated expression
 -- then returns the integer value
 	visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
+		value := e.output
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
+		value := e.output
 	end
 
 	visit_conjunction(e: BINARY_OP)
