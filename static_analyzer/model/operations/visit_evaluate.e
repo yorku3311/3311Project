@@ -290,7 +290,7 @@ feature -- Give the evaluated expression
 	end
 
 
-	visit_difference(e: BINARY_OP)
+	visit_union(e: BINARY_OP)
 	local
 		visit_evaluate_left : VISIT_EVALUATE
 		visit_evaluate_right : VISIT_EVALUATE
@@ -316,16 +316,57 @@ feature -- Give the evaluated expression
 
 
 	visit_negative(e: UNARY_OP)
+	local
+		i : INTEGER
+		visit_evaluate : VISIT_EVALUATE
 	do
+		create visit_evaluate.make
+		e.child.accept (visit_evaluate)
+
+		across visit_evaluate.set_enum_list as cursor
+		loop
+			i := -1*cursor.item.to_integer
+			set_enum_list.extend (i.out)
+		end
 	end
 
 
 
-	visit_union(e: BINARY_OP)
+	visit_difference(e: BINARY_OP)
+	local
+		visit_evaluate_left : VISIT_EVALUATE
+		visit_evaluate_right : VISIT_EVALUATE
+		set_list : ARRAYED_LIST[STRING]
+		index_to_add : ARRAYED_LIST[INTEGER]
 	do
+		create visit_evaluate_left.make
+		create visit_evaluate_right.make
+		create set_list.make (0)
+		create index_to_add.make(0)
+
+		e.left.accept (visit_evaluate_left)
+		e.right.accept (visit_evaluate_right)
+		-- Set the initial list to the first list
+		set_list := visit_evaluate_left.set_enum_list
+
+		across visit_evaluate_left.set_enum_list as other_list loop
+			across visit_evaluate_right.set_enum_list as my_list
+			loop
+				if not(my_list.item ~ other_list.item) then
+					index_to_add.extend (my_list.cursor_index)
+				end
+			end
+		end
+		-- put this in the output lit
+		across index_to_add as out_list
+		loop
+			set_enum_list.extend (visit_evaluate_left.set_enum_list.at (out_list.item))
+		end
 	end
 
 	visit_set_enumeration (e : SET_ENUMERATION)
+	local
+
 	do
 
 	end
