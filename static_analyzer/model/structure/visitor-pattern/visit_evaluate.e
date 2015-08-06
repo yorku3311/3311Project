@@ -28,17 +28,14 @@ feature{NONE} -- Internal Attributes
 feature -- Give the evaluated expression
 	visit_addition(e: BINARY_OP)
 	local
-		left_child : EXPRESSION
-		right_child: EXPRESSION
-		eval : VISIT_EVALUATE
 		i : INTEGER
 	do
 
 		create eval
 		left_child := e.left.accept(eval)
-		i := eval.value
+		i := visit_evaluate.value
 		right_child := e.right.accept(eval)
-		i := i + eval.value
+		i := i + visit_evaluate.value
 		value := i.out
 	end
 
