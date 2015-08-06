@@ -123,7 +123,7 @@ feature -- Binary operations
 
     add_implication
     do
-    	    	add_binary_operation(create {OPERATOR_IMPLIES})
+       add_binary_operation(create {OPERATOR_IMPLIES})
     end
 
 -- binary relational
@@ -146,17 +146,17 @@ feature -- Binary operations
 -- binary set op
     add_union
     do
-    	    	add_binary_operation(create {UNION})
+    	add_binary_operation(create {UNION})
     end
 
     add_intersection
     do
-    	    	add_binary_operation(create {INTERSECT})
+    	add_binary_operation(create {INTERSECT})
     end
 
     add_difference
     do
-    	    	add_binary_operation(create {DIFFERENCE})
+    	add_binary_operation(create {DIFFERENCE})
     end
 feature -- Unary operations
 	--arithmatic
