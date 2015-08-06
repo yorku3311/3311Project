@@ -135,7 +135,8 @@ feature -- Give the evaluated expression
 			symbol : TERMINAL_SYMBOL
 	do
 		create eval.make
-		create {LPAREN}symbol
+		create {LBRACE}symbol
+		value.make_empty
 		value.append (symbol.output)
 		from
 			e.start
@@ -154,7 +155,7 @@ feature -- Give the evaluated expression
 		e.forth
 
 		end
-		create {RPAREN}symbol
+		create {RBRACE}symbol
 		value.append (symbol.output)
 
 

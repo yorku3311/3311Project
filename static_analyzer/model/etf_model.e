@@ -33,6 +33,8 @@ feature {NONE} -- Initialization
 			create evaluate_expression.make
 			create print_expression.make
 			create type_check_expression.make
+			is_reset := false
+			create my_stack.make(0)
 
 		end
 
@@ -42,6 +44,8 @@ feature -- Attributes
 	evaluate_expression : VISIT_EVALUATE
 	print_expression : VISIT_PRINT
 	type_check_expression : VISIT_TYPE_CHECK
+	is_reset : BOOLEAN
+	my_stack : ARRAYED_LIST [INTEGER]
 
 feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION
@@ -206,7 +210,13 @@ feature -- Enumeration operations
 		-- this will need to be updated
 		set_enum.set_expression_state (1)
 		set_enum.add_operation (create {NULL_EXPRESSION}.make_first)
-		myexpression.add (set_enum)
+		if not is_new then
+			myexpression := set_enum.deep_twin
+			is_new := false
+		else
+			myexpression.add (set_enum)
+		end
+		my_stack.extend (1)
 
 	end
 	end_set_enumeration
@@ -221,6 +231,9 @@ feature -- Terminal Symbols Addition Command
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
 		myexpression.add (integer_constant)
+		if my_stack.is_empty then
+			my_stack.remove
+		end
 
 		-- type_integer := true
 	end
@@ -231,6 +244,9 @@ feature -- Terminal Symbols Addition Command
 		create boolean_constant
 		boolean_constant.set_boolean_constant(b)
 		myexpression.add (boolean_constant)
+		if my_stack.is_empty then
+			my_stack.remove
+		end
 	end
 
 
@@ -266,6 +282,9 @@ feature{NONE} -- Auxillary Commands
 		else
 			myexpression.add (binary_op)
 		end
+		is_reset := false
+		my_stack.extend (1)
+		my_stack.extend (1)
 	end
 
 
@@ -274,6 +293,7 @@ do
 	create unary_op.make
 	unary_op.add_operation(e)
 	myexpression.add (unary_op)
+	my_stack.extend (1)
 end
 
 

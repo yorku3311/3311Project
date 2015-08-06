@@ -1,1 +1,1 @@
-add_boolean_constant(true)
+start_set_enumeration

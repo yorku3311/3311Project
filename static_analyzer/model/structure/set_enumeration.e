@@ -161,7 +161,7 @@ feature -- Test visitor pattern
 
 	start
 	do
-		expression_list.go_i_th (0)
+		expression_list.go_i_th (1)
 	end
 
 	forth
