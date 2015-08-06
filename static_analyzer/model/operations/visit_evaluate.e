@@ -154,14 +154,8 @@ feature -- Give the evaluated expression
 			across right_child_array as right
 			some
 				left.item = right.item
-				-- check if all elements are the same, remember, the order does not matter
 			end
 		end
-		-- either a set or an integer
-		-- {1,2,3} then e.left.accept dynamically binds it and then returns
-		-- a set enum list
-		-- 3 or true/false, then it's simply a constant, also add this to the enum list t
-		-- make computation easier
 	end
 
 	visit_generalized_and(e: UNARY_OP)
