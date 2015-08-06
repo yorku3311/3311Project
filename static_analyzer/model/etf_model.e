@@ -67,7 +67,11 @@ feature -- Error Reporting
 
 feature -- basic operations
 	pretty_print
+	local
+		d : STRING
 	do
+		myexpression.accept(print_expression)
+		d := print_expression.value
 		report.make_empty
 	--	report.append (myexpression.accept (create {VISIT_PRINT}))
 	end

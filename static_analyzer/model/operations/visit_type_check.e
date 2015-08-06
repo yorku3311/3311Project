@@ -152,11 +152,36 @@ feature -- Give the evaluated expression
 	end
 
 	visit_implication(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (right_visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+			type_check := true
+		end
 	end
 
 	visit_intersection(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		e.right.accept (right_visit_type_check)
+		b := (left_visit_type_check.type_flag  /= left_visit_type_check.type_mix)
 	end
 
 	visit_less_than(e: BINARY_OP)
@@ -266,7 +291,42 @@ feature -- Give the evaluated expression
 	end
 
 	visit_set_enumeration (e : SET_ENUMERATION)
+	local
+		eval: VISIT_PRINT
+		symbol : TERMINAL_SYMBOL
+		b : BOOLEAN
 	do
+		create eval.make
+		create {LPAREN}symbol
+		value.append (symbol.output)
+		type_check := true
+		from
+			e.start
+			e.item.accept(eval)
+		    b := eval.value.is_boolean
+		    if b then
+		    	type_flag := type_bool
+		    else
+		    	type_flag := type_int
+		    end
+		until
+			e.after
+		loop
+			-- if the first one is boolean, check to see if all the other ones are boolean
+			e.item.accept(eval)
+		    b := eval.value.is_boolean
+			if (type_check = type_bool) and b then
+				-- do nothing
+			elseif (type_check = type_int) and b then
+				type_check := false
+				type_flag := type_mix
+			end
+			e.forth
+
+		end
+		create {RPAREN}symbol
+		value.append (symbol.output)
+
 
 	end
 
