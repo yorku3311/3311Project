@@ -50,24 +50,31 @@ feature -- Give the evaluated expression
 		if b then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
+			type_check := true
 		end
 	end
 
 	visit_division(e: BINARY_OP)
 	local
 		b : BOOLEAN
-		visit_type_check : VISIT_TYPE_CHECK
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
-		create visit_type_check.make
-		e.left.accept (visit_type_check)
-		b := not visit_type_check.value.is_boolean
-		e.right.accept (visit_type_check)
-		b := b and (not visit_type_check.value.is_boolean)
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := not left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (not right_visit_type_check.value.is_boolean)
 		value := b.out
 		if b then
-			if visit_type_check.value.to_integer = 0 then
+			if right_visit_type_check.value.to_integer = 0 then
 				is_divisor_by_zero := true
+			else
+				is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+				right_visit_type_check.is_divisor_by_zero
 			end
+			type_check := true
 		end
 	end
 
@@ -90,15 +97,53 @@ feature -- Give the evaluated expression
 	end
 
 	visit_generalized_and(e: UNARY_OP)
+	local
+		b : BOOLEAN
+		visit_type_check : VISIT_TYPE_CHECK
 	do
+		create visit_type_check.make
+		e.child.accept (visit_type_check)
+		b := visit_type_check.type_check
+		value := b.out
+		if b  then
+			type_check := true
+		end
+
 	end
 
 	visit_generalized_or(e: UNARY_OP)
+	local
+		b : BOOLEAN
+		visit_type_check : VISIT_TYPE_CHECK
 	do
+		create visit_type_check.make
+		e.child.accept (visit_type_check)
+		b := visit_type_check.type_check
+		value := b.out
+		if b  then
+			type_check := true
+		end
+
 	end
 
 	visit_greater_than(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := not left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (not right_visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+			type_check := true
+		end
 	end
 
 	visit_implication(e: BINARY_OP)
@@ -110,23 +155,93 @@ feature -- Give the evaluated expression
 	end
 
 	visit_less_than(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := not left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (not right_visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+			type_check := true
+		end
 	end
 
 	visit_multiplication(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := not left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (not right_visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+				is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+				right_visit_type_check.is_divisor_by_zero
+				type_check := true
+		end
 	end
 
 	visit_negation(e: UNARY_OP)
+	local
+		b : BOOLEAN
+		visit_type_check : VISIT_TYPE_CHECK
 	do
+		create visit_type_check.make
+		e.child.accept (visit_type_check)
+		b := visit_type_check.value.is_boolean
+		value := b.out
+		if b then
+				is_divisor_by_zero := visit_type_check.is_divisor_by_zero
+				type_check := true
+		end
 	end
 
 	visit_negative(e: UNARY_OP)
+	local
+		b : BOOLEAN
+		visit_type_check : VISIT_TYPE_CHECK
 	do
+		create visit_type_check.make
+		e.child.accept (visit_type_check)
+		b := not visit_type_check.value.is_boolean
+		value := b.out
+		if b then
+			is_divisor_by_zero := visit_type_check.is_divisor_by_zero
+			type_check := true
+		end
 	end
 
 	visit_subtraction(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := not left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (not right_visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+				is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+				right_visit_type_check.is_divisor_by_zero
+				type_check := true
+		end
 	end
 
 	visit_sum(e: UNARY_OP)
