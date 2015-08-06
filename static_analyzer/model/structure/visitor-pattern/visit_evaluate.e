@@ -49,6 +49,18 @@ feature -- Give the evaluated expression
 		e.right.accept(visit_evaluate)
 		i := i - visit_evaluate.value.to_integer
 	end
+
+	visit_multiplication(e: BINARY_OP)
+	local
+		i : INTEGER
+		visit_evaluate : VISIT_EVALUATE
+	do
+		create visit_evaluate.make
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value.to_integer
+			e.right.accept(visit_evaluate)
+			i := i * visit_evaluate.value.to_integer
+	end
 -- you can do subtraction...
 -- so first e.left is just an expression
 -- e.right
@@ -79,7 +91,17 @@ feature -- Give the evaluated expression
 	end
 
 	visit_division(e: BINARY_OP)
+	local
+			i : INTEGER
+			j: DOUBLE
+			visit_evaluate : VISIT_EVALUATE
 	do
+		    create visit_evaluate.make
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value.to_integer
+			e.right.accept(visit_evaluate)
+			j := (i / visit_evaluate.value.to_integer)
+			i := j.floor
 	end
 
 	visit_equality(e: BINARY_OP)
@@ -110,9 +132,7 @@ feature -- Give the evaluated expression
 	do
 	end
 
-	visit_multiplication(e: BINARY_OP)
-	do
-	end
+
 
 	visit_negation(e: UNARY_OP)
 	do
