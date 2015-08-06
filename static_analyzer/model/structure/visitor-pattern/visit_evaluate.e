@@ -33,12 +33,19 @@ feature -- Give the evaluated expression
 	do
 
 		create eval
-		left_child := e.left.accept(eval)
+		e.left.accept(visit_evaluate)
 		i := visit_evaluate.value
-		right_child := e.right.accept(eval)
+	    e.right.accept(visit_evaluate)
 		i := i + visit_evaluate.value
 		value := i.out
 	end
+-- you can do subtraction...
+-- so first e.left is just an expression
+-- e.right
+-- when you do e.left.accept(eval)
+-- you are calling Visit_evaluate again
+-- keeps doing this until it treaches an integer constant
+-- then returns the integer value
 
 
 end
