@@ -23,6 +23,14 @@ feature
 	type_check : BOOLEAN
 	is_divisor_by_zero : BOOLEAN
 	set_enum_list : ARRAYED_LIST[STRING]
+	type_int :INTEGER  = 1
+	type_bool : INTEGER = 2
+	type_mix : INTEGER = 0
+	type_flag : INTEGER
+
+	if type_flag = typ_int  then
+
+	end
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
