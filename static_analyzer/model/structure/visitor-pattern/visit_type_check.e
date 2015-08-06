@@ -90,4 +90,9 @@ visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
 	end
 
+	visit_set_enumeration (e : SET_ENUMERATION)
+	do
+
+	end
+
 end

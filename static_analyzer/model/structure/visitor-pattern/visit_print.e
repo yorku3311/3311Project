@@ -271,7 +271,7 @@ feature -- Give the evaluated expression
 
 	visit_sum(e: UNARY_OP)
 	do
-		
+
 	end
 
 	visit_union(e: BINARY_OP)
@@ -289,6 +289,11 @@ feature -- Give the evaluated expression
 		value.append (eval.value)
 		create {RPAREN}symbol
 		value.append (symbol.output)
+
+	end
+
+	visit_set_enumeration (e : SET_ENUMERATION)
+	do
 
 	end
 end

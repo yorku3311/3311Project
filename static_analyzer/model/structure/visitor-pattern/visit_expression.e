@@ -90,4 +90,9 @@ feature
 	deferred
 	end
 
+	visit_set_enumeration (e : SET_ENUMERATION)
+	deferred
+
+	end
+
 end

@@ -17,11 +17,14 @@ feature -- Constructor
 		create {NULL_EXPRESSION}left_child.make
 		create {NULL_EXPRESSION}right_child.make
 		create value.make_empty
+		create set_enum_list.make (0)
 	end
 
 feature{NONE} -- Internal Attributes
 	left_child : EXPRESSION
 	right_child : EXPRESSION
+feature -- Extra Attributes
+	set_enum_list : ARRAYED_LIST[STRING]
 
 feature -- Give the evaluated expression
 	visit_addition(e: BINARY_OP)
@@ -73,11 +76,13 @@ feature -- Give the evaluated expression
 	visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
 		value := e.output
+		set_enum_list.extend (value)
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
 		value := e.output
+		set_enum_list.extend (value)
 	end
 
 	visit_conjunction(e: BINARY_OP)
@@ -132,7 +137,31 @@ feature -- Give the evaluated expression
 	end
 
 	visit_equality(e: BINARY_OP)
+	local
+		left_child_array : ARRAYED_LIST[STRING]
+		right_child_array : ARRAYED_LIST[STRING]
+		visit_evaluate : VISIT_EVALUATE
+		bool : BOOLEAN
 	do
+		create visit_evaluate.make
+		e.left.accept (visit_evaluate)
+		left_child_array := visit_evaluate.set_enum_list
+		e.right.accept (visit_evaluate)
+		right_child_array := visit_evaluate.set_enum_list
+		bool :=
+		across left_child_array as left
+		all
+			across right_child_array as right
+			some
+				left.item = right.item
+				-- check if all elements are the same, remember, the order does not matter
+			end
+		end
+		-- either a set or an integer
+		-- {1,2,3} then e.left.accept dynamically binds it and then returns
+		-- a set enum list
+		-- 3 or true/false, then it's simply a constant, also add this to the enum list t
+		-- make computation easier
 	end
 
 	visit_generalized_and(e: UNARY_OP)
@@ -169,15 +198,15 @@ feature -- Give the evaluated expression
 	visit_less_than(e: BINARY_OP) -- edit this !!!!
 	local
 			i : INTEGER
-
+			b : BOOLEAN
 			visit_evaluate : VISIT_EVALUATE
 	do
 		    create visit_evaluate.make
 			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_boolean
+			i := visit_evaluate.value.to_integer
 			e.right.accept(visit_evaluate)
-			i := i and visit_evaluate.value.to_boolean
-			value := i.out
+			b := i < visit_evaluate.value.to_integer
+			value := b.out
 	end
 
 
@@ -195,6 +224,11 @@ feature -- Give the evaluated expression
 
 	visit_union(e: BINARY_OP)
 	do
+	end
+
+	visit_set_enumeration (e : SET_ENUMERATION)
+	do
+
 	end
 
 
