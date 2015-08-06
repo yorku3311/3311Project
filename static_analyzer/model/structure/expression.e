@@ -15,5 +15,9 @@ output : STRING
 evaluate :STRING
 	deferred
 	end
+accept (visit : VISIT_EXPRESSION)
+	do
+
+	end
 
 end

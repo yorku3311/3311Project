@@ -15,7 +15,7 @@ feature -- Constructor
 	make
 	do
 		create {NULL_EXPRESSION}left_child.make
-		create {NULL_EXPRESSION}left_child.make
+		create {NULL_EXPRESSION}right_child.make
 		create visit_evaluate.make
 		create value.make_empty
 	end
@@ -30,11 +30,11 @@ feature -- Give the evaluated expression
 		i : INTEGER
 	do
 
-		create eval
+		--create eval
 		e.left.accept(visit_evaluate)
-		i := visit_evaluate.value
+		i := visit_evaluate.value.to_integer
 	    e.right.accept(visit_evaluate)
-		i := i + visit_evaluate.value
+		i := i + visit_evaluate.value.to_integer
 		value := i.out
 	end
 

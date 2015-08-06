@@ -30,12 +30,14 @@ feature {NONE} -- Initialization
 			create boolean_constant.make
 			create unary_op.make
 			create set_enum.make
+			create evaluate_expression.make
 
 		end
 
 feature -- Attributes
 	report : STRING
 	message :STRING
+	evaluate_expression : VISIT_EVALUATE
 
 feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION

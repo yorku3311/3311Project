@@ -8,6 +8,9 @@ class
 
 inherit
 	EXPRESSION
+	redefine
+		accept
+	end
 
 create
 	make
