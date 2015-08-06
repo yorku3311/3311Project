@@ -48,6 +48,7 @@ feature -- Give the evaluated expression
 		i := visit_evaluate.value.to_integer
 		e.right.accept(visit_evaluate)
 		i := i - visit_evaluate.value.to_integer
+		value := i.out
 	end
 
 	visit_multiplication(e: BINARY_OP)
@@ -60,6 +61,7 @@ feature -- Give the evaluated expression
 			i := visit_evaluate.value.to_integer
 			e.right.accept(visit_evaluate)
 			i := i * visit_evaluate.value.to_integer
+			value := i.out
 	end
 -- you can do subtraction...
 -- so first e.left is just an expression
@@ -79,16 +81,40 @@ feature -- Give the evaluated expression
 	end
 
 	visit_conjunction(e: BINARY_OP)
+
+		local
+			i : BOOLEAN
+
+			visit_evaluate : VISIT_EVALUATE
 	do
+		    create visit_evaluate.make
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value.to_boolean
+			e.right.accept(visit_evaluate)
+			i := i and visit_evaluate.value.to_boolean
+			value := i.out
 	end
+
+
 
 	visit_difference(e: BINARY_OP)
 	do
 	end
 
 	visit_disjunction(e: BINARY_OP)
+	local
+			i : BOOLEAN
+
+			visit_evaluate : VISIT_EVALUATE
 	do
+		    create visit_evaluate.make
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value.to_boolean
+			e.right.accept(visit_evaluate)
+			i := i or visit_evaluate.value.to_boolean
+			value := i.out
 	end
+
 
 	visit_division(e: BINARY_OP)
 	local
@@ -102,6 +128,7 @@ feature -- Give the evaluated expression
 			e.right.accept(visit_evaluate)
 			j := (i / visit_evaluate.value.to_integer)
 			i := j.floor
+			value := i.out
 	end
 
 	visit_equality(e: BINARY_OP)
@@ -121,17 +148,37 @@ feature -- Give the evaluated expression
 	end
 
 	visit_implication(e: BINARY_OP)
+	local
+			i : BOOLEAN
+
+			visit_evaluate : VISIT_EVALUATE
 	do
+		    create visit_evaluate.make
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value.to_boolean
+			e.right.accept(visit_evaluate)
+			i := i implies visit_evaluate.value.to_boolean
+			value := i.out
 	end
+
 
 	visit_intersection(e: BINARY_OP)
 	do
 	end
 
-	visit_less_than(e: BINARY_OP)
-	do
-	end
+	visit_less_than(e: BINARY_OP) -- edit this !!!!
+	local
+			i : INTEGER
 
+			visit_evaluate : VISIT_EVALUATE
+	do
+		    create visit_evaluate.make
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value.to_boolean
+			e.right.accept(visit_evaluate)
+			i := i and visit_evaluate.value.to_boolean
+			value := i.out
+	end
 
 
 	visit_negation(e: UNARY_OP)
