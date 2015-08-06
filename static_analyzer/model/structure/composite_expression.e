@@ -183,22 +183,22 @@ feature -- Special Commands
 feature --testing the visitor pattern
 	-- this is dynamically binded it should go to either printing, evaluation,
 	-- or type check
-	accept (visit :VISIT_EXPRESSION) : STRING
+	accept (visit :VISIT_EXPRESSION)
 	local
-		n : NULL_EXPRESSION
+	--	n : NULL_EXPRESSION
 	do
-		create n.make_first
-		create Result.make_empty
-		across expression_list as cursor
-		loop
-			if attached {COMPOSITE_EXPRESSION}cursor.item as a then
-				--a.accept (visit)
-				Result.append(a.accept (visit))
-			elseif attached {NULL_EXPRESSION}cursor.item as a then
-				Result.append (n.output)
-			end
+--		create n.make_first
+--		create Result.make_empty
+--		across expression_list as cursor
+--		loop
+--			if attached {COMPOSITE_EXPRESSION}cursor.item as a then
+--				--a.accept (visit)
+--				Result.append(a.accept (visit))
+--			elseif attached {NULL_EXPRESSION}cursor.item as a then
+--				Result.append (n.output)
+--			end
 
-		end
+--		end
 	end
 
 

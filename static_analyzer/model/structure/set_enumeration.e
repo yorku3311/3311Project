@@ -160,11 +160,11 @@ feature{NONE} -- Internal Feautures
 		current_expression_index := i
 	end
 feature -- Test visitor pattern
-	accept (visitor : VISIT_EXPRESSION) :STRING
+	accept (visitor : VISIT_EXPRESSION)
 
 	do
 		--Result.make_empty
-		Result:= visitor.visit (Current)
+	--	Result:= visitor.visit (Current)
 	end
 
 end

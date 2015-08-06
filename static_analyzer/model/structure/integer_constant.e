@@ -25,11 +25,11 @@ feature -- Command
 		Result := expression_list.at (1).output
 	end
 feature -- Test visitor pattern
-	accept (visitor : VISIT_EXPRESSION) :STRING
+	accept (visitor : VISIT_EXPRESSION)
 
 	do
 		--Result.make_empty
-		Result:= visitor.visit (Current)
+	--	Result:= visitor.visit (Current)
 	end
 
 end

@@ -68,18 +68,18 @@ feature -- basic operations
 	pretty_print
 	do
 		report.make_empty
-		report.append (myexpression.accept (create {VISIT_PRINT}))
+	--	report.append (myexpression.accept (create {VISIT_PRINT}))
 	end
 
 	evaluate
 	do
 		message.make_empty
-		message.append (myexpression.accept (create {VISIT_EVALUATE}))
+	--	message.append (myexpression.accept (create {VISIT_EVALUATE}))
 	end
 	type_check
 	do
 		report.make_empty
-		report.append (myexpression.accept (create {VISIT_TYPE_CHECK}))
+		--report.append (myexpression.accept (create {VISIT_TYPE_CHECK}))
 	end
 feature -- Binary operations
 	-- BINARY ARITHMATIC
@@ -149,7 +149,7 @@ feature -- Binary operations
     	    	add_binary_operation(create {UNION})
     end
 
-    add_intersect
+    add_intersection
     do
     	    	add_binary_operation(create {INTERSECT})
     end
@@ -175,7 +175,7 @@ feature -- Unary operations
 
 	--composite
 
-	
+
 	add_sum
 	do
 		add_unary_operation(create {SUM})

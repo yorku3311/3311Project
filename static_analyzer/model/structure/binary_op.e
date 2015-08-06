@@ -88,15 +88,15 @@ feature -- Commands to set the status of this expression type
 
 
 feature -- Command
-	add_operation(operator : EXPRESSION)
+	add_operation(op : EXPRESSION)
 		do
 			-- LPAREN Expression Operator Expression RPAREN
 			expression_list.put_i_th (create {LPAREN},1)
 			expression_list.extend(create {NULL_EXPRESSION}.make_first)
-			expression_list.extend(operator)
+			expression_list.extend(op)
 			expression_list.extend(create {NULL_EXPRESSION}.make)
 			expression_list.extend (create {RPAREN})
-			Current.operator := operator
+			operator := op
 		end
 
 feature -- Evaluate Queries
@@ -286,17 +286,17 @@ feature -- Test visitor pattern
 		elseif operator.output ~ minus.output then
 			visitor.visit_subtraction (Current)
 		elseif operator.output ~ op_and.output then
-			visitor.visit_generalized_and (Current)
+			visitor.visit_conjunction (Current)
 		elseif operator.output ~ op_or.output then
-			visitor.visit_generalized_or (Current)
+			visitor.visit_disjunction (Current)
 
 		elseif operator.output ~ op_equals.output then
 			visitor.visit_equality (Current)
 		elseif operator.output ~ op_implies.output then
 			visitor.visit_implication (Current)
-		elseif operator.output ~ lt.output then
+		elseif operator.output ~ op_lt.output then
 			visitor.visit_less_than (Current)
-		elseif operator.output ~ gt.output then
+		elseif operator.output ~ op_gt.output then
 			visitor.visit_greater_than (Current)
 		elseif operator.output ~ op_union.output then
 			visitor.visit_conjunction (Current)
