@@ -99,7 +99,7 @@ feature -- Command
 			-- LPAREN Expression Operator Expression RPAREN
 			expression_list.put_i_th(create {NULL_EXPRESSION}.make_first,1)
 			expression_list.extend(create {NULL_EXPRESSION}.make)
-			operator := op
+			operator := op.deep_twin
 		end
 
 
@@ -108,7 +108,7 @@ feature -- Test visitor pattern
 
 	do
 		if operator.output ~ times.output then
-			visitor.visit_multiplication (Current)
+			visitor.visit_multiplication (Current.deep_twin)
 		elseif operator.output ~ divide.output then
 			visitor.visit_division (Current)
 		elseif operator.output ~ plus.output then
