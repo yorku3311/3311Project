@@ -83,8 +83,8 @@ feature -- basic operations
 	do
 		message.make_empty
 	--	message.append (myexpression.accept (create {VISIT_EVALUATE}))
-		myexpression.accept (evaluate_expression)
-		d := evaluate_expression.value
+		--myexpression.accept (evaluate_expression)
+		--d := evaluate_expression.value
 	end
 	type_check
 	do
