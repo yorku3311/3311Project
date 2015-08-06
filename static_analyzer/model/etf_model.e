@@ -27,7 +27,7 @@ feature {NONE} -- Initialization
 			create {NULL_EXPRESSION}myexpression.make_first
 			create integer_constant.make
 			create binary_op.make
-			create boolean_constant.make
+			create boolean_constant
 			create unary_op.make
 			create set_enum.make
 			create evaluate_expression.make
@@ -228,7 +228,7 @@ feature -- Terminal Symbols Addition Command
 	add_boolean_constant (b : BOOLEAN)
 		-- add boolean constant
 	do
-		create boolean_constant.make
+		create boolean_constant
 		boolean_constant.set_boolean_constant(b)
 		myexpression.add (boolean_constant)
 	end

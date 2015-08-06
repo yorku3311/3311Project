@@ -83,11 +83,12 @@ feature -- Give the evaluated expression
 		end
 	end
 
-	visit_conjunction(e: BINARY_OP)
+	visit_conjunction(e: BINARY_OP) -- N
 	local
-		b : BOOLEAN
-		left_visit_type_check : VISIT_TYPE_CHECK
-		right_visit_type_check : VISIT_TYPE_CHECK
+		b: BOOLEAN
+		left_visit_type_check: VISIT_TYPE_CHECK
+		right_visit_type_check: VISIT_TYPE_CHECK
+
 	do
 		create left_visit_type_check.make
 		create right_visit_type_check.make
@@ -104,7 +105,7 @@ feature -- Give the evaluated expression
 		end
 	end
 
-	visit_difference(e: BINARY_OP)
+	visit_difference(e: BINARY_OP) -- N
 	local
 		left_eval_type_check : VISIT_TYPE_CHECK
 		right_eval_type_check : VISIT_TYPE_CHECK
@@ -343,7 +344,7 @@ feature -- Give the evaluated expression
 		end
 	end
 
-	visit_union(e: BINARY_OP)
+	visit_union(e: BINARY_OP) -- N
 	local
 		left_eval_type_check : VISIT_TYPE_CHECK
 		right_eval_type_check : VISIT_TYPE_CHECK

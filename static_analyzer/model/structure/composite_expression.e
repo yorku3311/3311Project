@@ -105,7 +105,7 @@ local
 do
 
 	create Result.make (0)
-	create bool_constant.make
+	create bool_constant
 	-- now the parsing is done we just have to convert it to a list of digits
 	across to_parsed_string(Current.evaluate) as cursor
 	loop
