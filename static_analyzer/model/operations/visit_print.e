@@ -158,16 +158,14 @@ feature{NONE} -- Internal Attributes
 		symbol : TERMINAL_SYMBOL
 		eval : VISIT_PRINT
 	do
---		create eval.make
---		create {LPAREN}symbol
---		value.append (symbol.output)
---		e.left.accept (eval)
---		value.append (eval.value)
---		value.append (e.operator.output)
---		e.right.accept (eval)
---		value.append (eval.value)
---		create {RPAREN}symbol
---		value.append (symbol.output)
+		create eval.make
+		create {LPAREN}symbol
+		value.append (symbol.output)
+		value.append (e.operator.output)
 
+		e.accept (eval)
+		value.append (eval.value)
+		create {RPAREN}symbol
+		value.append (symbol.output)
 	end
 end
