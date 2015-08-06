@@ -163,6 +163,7 @@ feature -- Give the evaluated expression
 	visit_null_expression (e  : NULL_EXPRESSION)
 
 	do
+		value.make_empty
 		value.append (e.output)
 	end
 
@@ -174,6 +175,7 @@ feature{NONE} -- Internal Attributes
 	do
 		create eval.make
 		create {LPAREN}symbol
+		value.make_empty
 		value.append (symbol.output)
 		e.left.accept (eval)
 		value.append (eval.value)

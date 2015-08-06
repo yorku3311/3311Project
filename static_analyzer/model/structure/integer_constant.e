@@ -8,25 +8,38 @@ class
 	INTEGER_CONSTANT
 
 inherit
-	COMPOSITE_EXPRESSION
+	EXPRESSION
 	redefine
-		accept
+		accept,output
 	end
-create
+create make
+feature -- Constructor
 	make
+	do
+		create value.make_empty
+	end
+feature {NONE} -- Attributes
+	value : STRING
 
 feature -- Command
 	set_integer_constant (i : INTEGER)
 	do
-		expression_list.put_i_th(create {DIGIT}.make_digit(i),1)
+		value := i.out
 	end
 
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		--Result.make_empty
-	--	Result:= visitor.visit (Current)
+		visitor.visit_integer_constant (Current)
 	end
 
+	output : STRING
+	do
+		Result := value
+	end
+	evaluate : STRING
+	do
+		Result := ""
+	end
 end

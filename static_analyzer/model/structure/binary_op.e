@@ -22,7 +22,6 @@ feature -- Constructors
 		create times create divide create plus create minus create op_and
 		create op_or create op_equals create op_implies create op_lt create op_gt
 		create op_union create op_intersect create op_difference
-		create {NULL_EXPRESSION}left.make create {NULL_EXPRESSION}right.make
 		create {NULL_EXPRESSION}operator.make
 	end
 feature{NONE} -- Attributes
@@ -40,8 +39,6 @@ feature{NONE} -- Attributes
 	op_intersect : INTERSECT
 	op_difference : DIFFERENCE
 feature -- External Attributes Accessible
-	left : EXPRESSION
-	right : EXPRESSION
 	operator : EXPRESSION
 feature -- Expression type
 	expression_type : INTEGER
@@ -49,6 +46,7 @@ feature -- Expression type
 	logical_boolean : INTEGER = 2
 	logical_arithmatic : INTEGER = 3
 	binary_set_operation : INTEGER = 4
+
 
 feature -- Commands
 	add (expression : EXPRESSION)
@@ -75,8 +73,6 @@ feature -- Commands
 
 		end
 		is_set := set_first_null
-		left := expression_list.at (2)
-		right := expression_list.at (4)
 	end
 
 
@@ -84,6 +80,16 @@ feature -- Commands to set the status of this expression type
 	set_expression_type (i :INTEGER)
 	do
 		expression_type := i
+	end
+
+	left : EXPRESSION
+	do
+		Result := expression_list.at(1)
+	end
+
+	right : EXPRESSION
+	do
+		Result := expression_list.at (2)
 	end
 
 

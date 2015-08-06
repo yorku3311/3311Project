@@ -45,6 +45,7 @@ feature -- Attributes
 
 feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION
+	is_new : BOOLEAN
 	binary_op : BINARY_OP
 	integer_constant : INTEGER_CONSTANT
 	boolean_constant : BOOLEAN_CONSTANT
@@ -73,7 +74,7 @@ feature -- basic operations
 		myexpression.accept(print_expression)
 		d := print_expression.value
 		report.make_empty
-	--	report.append (myexpression.accept (create {VISIT_PRINT}))
+		report.append (d)
 	end
 
 	evaluate
@@ -264,7 +265,12 @@ feature{NONE} -- Auxillary Commands
 		-- create a new binary operation and add it to the list of operations.
 		create binary_op.make
 		binary_op.add_operation (e)
-		myexpression.add (binary_op)
+		if not is_new then
+			myexpression := binary_op
+			is_new := true
+		else
+			myexpression.add (binary_op)
+		end
 	end
 
 
