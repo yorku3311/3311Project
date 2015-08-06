@@ -190,6 +190,7 @@ feature --testing the visitor pattern
 	local
 	--	n : NULL_EXPRESSION
 	do
+		expression_list.at(1).accept (visit)
 --		create n.make_first
 --		create Result.make_empty
 --		across expression_list as cursor
