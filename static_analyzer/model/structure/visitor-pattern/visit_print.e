@@ -22,6 +22,7 @@ feature -- Attributes
 	left_child : EXPRESSION
 	right_child :EXPRESSION
 
+
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
@@ -34,7 +35,22 @@ feature -- Give the evaluated expression
 	end
 
 	visit_addition(e: BINARY_OP)
+	local
+		symbol : TERMINAL_SYMBOL
+		eval : VISIT_PRINT
 	do
+		create eval.make
+		create {LPAREN}symbol
+		value.append (symbol.output)
+		e.left.accept (eval)
+		value.append (eval.value)
+		create {PLUS}symbol
+		value.append (symbol.output)
+		e.right.accept (eval)
+		value.append (eval.value)
+		create {RPAREN}symbol
+		value.append (symbol.output)
+
 	end
 
 	visit_conjunction(e: BINARY_OP)
