@@ -110,29 +110,29 @@ feature -- Test visitor pattern
 		if operator.output ~ times.output then
 			visitor.visit_multiplication (Current.deep_twin)
 		elseif operator.output ~ divide.output then
-			visitor.visit_division (Current)
+			visitor.visit_division (Current.deep_twin)
 		elseif operator.output ~ plus.output then
-			visitor.visit_addition (Current)
+			visitor.visit_addition (Current.deep_twin)
 		elseif operator.output ~ minus.output then
-			visitor.visit_subtraction (Current)
+			visitor.visit_subtraction (Current.deep_twin)
 		elseif operator.output ~ op_and.output then
-			visitor.visit_conjunction (Current)
+			visitor.visit_conjunction (Current.deep_twin)
 		elseif operator.output ~ op_or.output then
-			visitor.visit_disjunction (Current)
+			visitor.visit_disjunction (Current.deep_twin)
 		elseif operator.output ~ op_equals.output then
-			visitor.visit_equality (Current)
+			visitor.visit_equality (Current.deep_twin)
 		elseif operator.output ~ op_implies.output then
-			visitor.visit_implication (Current)
+			visitor.visit_implication (Current.deep_twin)
 		elseif operator.output ~ op_lt.output then
-			visitor.visit_less_than (Current)
+			visitor.visit_less_than (Current.deep_twin)
 		elseif operator.output ~ op_gt.output then
-			visitor.visit_greater_than (Current)
+			visitor.visit_greater_than (Current.deep_twin)
 		elseif operator.output ~ op_union.output then
-			visitor.visit_conjunction (Current)
+			visitor.visit_conjunction (Current.deep_twin)
 		elseif operator.output ~ op_intersect.output then
-			visitor.visit_disjunction (Current)
+			visitor.visit_disjunction (Current.deep_twin)
 		elseif operator.output ~ op_difference.output then
-			visitor.visit_difference (Current)
+			visitor.visit_difference (Current.deep_twin)
 		end
 
 	end

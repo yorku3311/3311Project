@@ -8,19 +8,20 @@ class
 	BOOLEAN_CONSTANT
 
 inherit
-	COMPOSITE_EXPRESSION
+	EXPRESSION
 	redefine
 		accept
 	end
-create
-	make
+
+feature -- Attributes
+	bool : BOOLEAN
 feature -- Commands
 	set_boolean_constant (b : BOOLEAN)
 	do
 		if b then
-			expression_list.put_i_th(create {BOOL_TRUE},1)
+			bool := true
 		else
-			expression_list.put_i_th(create {BOOL_FALSE},1)
+			bool := false
 		end
 
 	end
@@ -31,6 +32,16 @@ feature -- Test visitor pattern
 	do
 		--Result.make_empty
 	--	Result:= visitor.visit (Current)
+	end
+
+	output : STRING
+	do
+		Result := bool.out
+	end
+
+	evaluate : STRING
+	do
+		Result := ""
 	end
 
 

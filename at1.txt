@@ -1,4 +1,1 @@
-add_multiplication
-add_integer_constant(1)
-add_integer_constant(2)
-
+add_boolean_constant(true)
