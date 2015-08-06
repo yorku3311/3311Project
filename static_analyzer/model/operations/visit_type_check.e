@@ -9,8 +9,22 @@ class
 
 inherit
 	VISIT_EXPRESSION
+create make
+
+feature -- Constructor
+	make
+	do
+		create value.make_empty
+		create set_enum_list.make (0)
+		type_check := true
+		is_divisor_by_zero := false
+	end
+feature
+	type_check : BOOLEAN
+	is_divisor_by_zero : BOOLEAN
+	set_enum_list : ARRAYED_LIST[STRING]
 feature -- Give the evaluated expression
-visit_boolean_constant(e: BOOLEAN_CONSTANT)
+    visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
 	end
 
@@ -93,6 +107,10 @@ visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	visit_set_enumeration (e : SET_ENUMERATION)
 	do
 
+	end
+
+	visit_null_expression (e  : NULL_EXPRESSION)
+	do
 	end
 
 end

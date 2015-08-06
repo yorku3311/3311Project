@@ -95,4 +95,8 @@ feature
 
 	end
 
+	visit_null_expression (e  : NULL_EXPRESSION)
+	deferred
+	end
+
 end

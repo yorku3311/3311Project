@@ -35,209 +35,75 @@ feature -- Give the evaluated expression
 	end
 
 	visit_addition(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_conjunction(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		create {OPERAND_AND}symbol
-		value.append (symbol.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_difference(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_disjunction(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 	visit_division(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_equality(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
-	end
-
-	visit_generalized_and(e: UNARY_OP)
-	do
-	end
-
-	visit_generalized_or(e: UNARY_OP)
-	do
-
+		visit_binary_op(e)
 	end
 
 	visit_greater_than(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_implication(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_intersection(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_less_than(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		visit_binary_op(e)
 	end
 
 	visit_multiplication(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
+		visit_binary_op(e)
+	end
+
+
+
+	visit_subtraction(e: BINARY_OP)
+	do
+		visit_binary_op(e)
+	end
+
+
+
+	visit_union(e: BINARY_OP)
+	do
+		visit_binary_op(e)
+	end
+
+	visit_sum(e: UNARY_OP)
+	do
 
 	end
 
@@ -251,49 +117,57 @@ feature -- Give the evaluated expression
 
 	end
 
-	visit_subtraction(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
+	visit_generalized_and(e: UNARY_OP)
 	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
 	end
 
-	visit_sum(e: UNARY_OP)
+	visit_generalized_or(e: UNARY_OP)
 	do
-
-	end
-
-	visit_union(e: BINARY_OP)
-	local
-		symbol : TERMINAL_SYMBOL
-		eval : VISIT_PRINT
-	do
-		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		e.left.accept (eval)
-		value.append (eval.value)
-		value.append (e.operator.output)
-		e.right.accept (eval)
-		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
 
 	end
 
 	visit_set_enumeration (e : SET_ENUMERATION)
 	do
+
+	end
+
+	visit_null_expression (e  : NULL_EXPRESSION)
+	do
+	end
+
+feature{NONE} -- Internal Attributes
+	visit_binary_op (e : BINARY_OP)
+	local
+		symbol : TERMINAL_SYMBOL
+		eval : VISIT_PRINT
+	do
+		create eval.make
+		create {LPAREN}symbol
+		value.append (symbol.output)
+		e.left.accept (eval)
+		value.append (eval.value)
+		value.append (e.operator.output)
+		e.right.accept (eval)
+		value.append (eval.value)
+		create {RPAREN}symbol
+		value.append (symbol.output)
+
+	end
+	visit_unary_op (e : UNARY_OP)
+	local
+		symbol : TERMINAL_SYMBOL
+		eval : VISIT_PRINT
+	do
+--		create eval.make
+--		create {LPAREN}symbol
+--		value.append (symbol.output)
+--		e.left.accept (eval)
+--		value.append (eval.value)
+--		value.append (e.operator.output)
+--		e.right.accept (eval)
+--		value.append (eval.value)
+--		create {RPAREN}symbol
+--		value.append (symbol.output)
 
 	end
 end

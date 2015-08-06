@@ -21,6 +21,7 @@ feature -- Constructor
 		expression_list.extend (create {NULL_EXPRESSION}.make_first)
 		create negative create negation create sum create for_all create exists
 		create {NULL_EXPRESSION}operator.make
+		create {NULL_EXPRESSION}child.make
 	end
 feature{NONE} -- Internal attributes
 	negative : NEGATIVE
@@ -30,6 +31,7 @@ feature{NONE} -- Internal attributes
 	exists   : EXISTS
 feature -- Attributes
 	operator : EXPRESSION
+	child    : EXPRESSION
 
 feature -- Commands
 	add_operation(op : EXPRESSION)
