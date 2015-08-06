@@ -37,6 +37,16 @@ feature -- Give the evaluated expression
 		i := i + visit_evaluate.value
 		value := i.out
 	end
+
+	visit_subtraction(e: BINARY_OP)
+	local
+		do
+			create eval
+			e.left.accept(visit_evaluate)
+			i := visit_evaluate.value
+			e.right.accept(visit_evaluate)
+		i := i - visit_evaluate.value
+		end
 -- you can do subtraction...
 -- so first e.left is just an expression
 -- e.right

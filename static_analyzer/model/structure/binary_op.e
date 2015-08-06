@@ -27,7 +27,7 @@ feature -- Constructors
 	end
 feature{NONE} -- Attributes
 	times : TIMES
-	divide : DIVIDES
+	divide : DIVIDES -- how can you call e.left? when left feature is in binary_op class
 	plus : PLUS
 	minus : MINUS
 	op_and :OPERAND_AND
