@@ -266,7 +266,7 @@ feature{NONE} -- Auxillary Commands
 		create binary_op.make
 		binary_op.add_operation (e)
 		if not is_new then
-			myexpression := binary_op
+			myexpression := binary_op.deep_twin
 			is_new := true
 		else
 			myexpression.add (binary_op)
