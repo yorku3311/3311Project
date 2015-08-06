@@ -84,15 +84,72 @@ feature -- Give the evaluated expression
 	end
 
 	visit_conjunction(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b:= left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and right_visit_type_check.value.is_boolean
+		value := b.out
+
+		if b then
+			type_check := true
+		else
+			type_check := false
+		end
 	end
 
 	visit_difference(e: BINARY_OP)
+	local
+		left_eval_type_check : VISIT_TYPE_CHECK
+		right_eval_type_check : VISIT_TYPE_CHECK
+		left_bool :BOOLEAN
+		left_int: BOOLEAN
+		right_bool:BOOLEAN
+		right_int: BOOLEAN
 	do
+		create left_eval_type_check.make
+		create right_eval_type_check.make
+		e.left.accept (left_eval_type_check)
+		left_bool := left_eval_type_check.value.is_boolean
+		e.right.accept (right_eval_type_check)
+		right_bool := right_eval_type_check.value.is_boolean
+		left_int := left_eval_type_check.value.is_integer
+		right_int := right_eval_type_check.value.is_integer
+		if (left_bool = right_bool) or (left_int = right_int)  then
+			type_check := true
+
+			else
+				type_check := false
+		end
+		value := type_check.out
 	end
 
+
 	visit_disjunction(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b:= left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and right_visit_type_check.value.is_boolean
+		value := b.out
+
+		if b then
+			type_check := true
+		else
+			type_check := false
+		end
 	end
 
 
@@ -287,8 +344,31 @@ feature -- Give the evaluated expression
 	end
 
 	visit_union(e: BINARY_OP)
+	local
+		left_eval_type_check : VISIT_TYPE_CHECK
+		right_eval_type_check : VISIT_TYPE_CHECK
+		left_bool :BOOLEAN
+		left_int: BOOLEAN
+		right_bool:BOOLEAN
+		right_int: BOOLEAN
 	do
+		create left_eval_type_check.make
+		create right_eval_type_check.make
+		e.left.accept (left_eval_type_check)
+		left_bool := left_eval_type_check.value.is_boolean
+		e.right.accept (right_eval_type_check)
+		right_bool := right_eval_type_check.value.is_boolean
+		left_int := left_eval_type_check.value.is_integer
+		right_int := right_eval_type_check.value.is_integer
+		if (left_bool = right_bool) or (left_int = right_int)  then
+			type_check := true
+
+			else
+				type_check := false
+		end
+		value := type_check.out
 	end
+
 
 	visit_set_enumeration (e : SET_ENUMERATION)
 	local
