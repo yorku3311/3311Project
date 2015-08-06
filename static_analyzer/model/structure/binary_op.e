@@ -289,7 +289,6 @@ feature -- Test visitor pattern
 			visitor.visit_conjunction (Current)
 		elseif operator.output ~ op_or.output then
 			visitor.visit_disjunction (Current)
-
 		elseif operator.output ~ op_equals.output then
 			visitor.visit_equality (Current)
 		elseif operator.output ~ op_implies.output then
