@@ -233,11 +233,6 @@ feature -- Terminal Symbols Addition Command
 		myexpression.add (boolean_constant)
 	end
 
-	default_update
-			-- Perform update to the model state.
-		do
-
-		end
 
 	reset
 			-- Reset model state.
