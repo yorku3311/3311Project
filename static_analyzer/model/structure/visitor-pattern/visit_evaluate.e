@@ -9,9 +9,10 @@ class
 
 inherit
 	VISIT_EXPRESSION
+create make
 feature
 	value :STRING
-create make
+
 
 feature -- Constructor
 	make
