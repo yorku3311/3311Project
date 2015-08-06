@@ -28,9 +28,6 @@ feature
 	type_mix : INTEGER = 0
 	type_flag : INTEGER
 
-	if type_flag = typ_int  then
-
-	end
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
@@ -253,7 +250,15 @@ feature -- Give the evaluated expression
 	end
 
 	visit_sum(e: UNARY_OP)
+	local
+		eval_type_check : VISIT_TYPE_CHECK
 	do
+		create eval_type_check.make
+		e.child.accept (eval_type_check)
+		if eval_type_check.type_flag = eval_type_check.type_int then
+			type_check := true
+			value := type_check.out
+		end
 	end
 
 	visit_union(e: BINARY_OP)
