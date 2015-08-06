@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, evaluate,accept,make,add,end_set_enumeration
+		add_operation, accept,make,add,end_set_enumeration
 	end
 create
 	make
@@ -43,23 +43,14 @@ feature -- Commands
 	do
 		inspect expression_state
 		when begin_expression then
-			expression_list.put_i_th (create {LBRACE},1)
-			expression_list.extend(create {NULL_EXPRESSION}.make_first)
-			expression_list.extend (create {RBRACE}) -- this should be overwritten
+			expression_list.put_i_th(create {NULL_EXPRESSION}.make_first,1)
 			expression_state := middle_expression
 			is_current_expression := TRUE
 		when middle_expression then
-			expression_list.put_i_th (create {COMMA},current_expression_index)
-			expression_list.extend (create {NULL_EXPRESSION}.make_first)
-			expression_list.extend (create {RBRACE})
+			expression_list.put_i_th (create {NULL_EXPRESSION}.make_first,current_expression_index)
 			set_current_index(expression_list.count)
 		when end_expression then
 			-- Delete the last middle expression
-			expression_list.go_i_th (expression_list.count-2)
-			expression_list.remove
-			expression_list.remove
-			expression_list.remove
-			expression_list.extend (create {RBRACE})
 			is_current_expression := FALSE
 		end
 
@@ -112,12 +103,6 @@ feature -- Commands
 
 	end
 
-feature -- Evaluation Commands
-
-	evaluate :STRING
-	do
-		Result := output
-	end
 
 feature -- Override add operation
 	add (expression : EXPRESSION)
@@ -163,8 +148,7 @@ feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		--Result.make_empty
-	--	Result:= visitor.visit (Current)
+		visitor.visit_set_enumeration (Current)
 	end
 
 end

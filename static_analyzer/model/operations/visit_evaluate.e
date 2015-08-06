@@ -66,13 +66,7 @@ feature -- Give the evaluated expression
 			i := i * visit_evaluate.value.to_integer
 			value := i.out
 	end
--- you can do subtraction...
--- so first e.left is just an expression
--- e.right
--- when you do e.left.accept(eval)
--- you are calling Visit_evaluate again
--- keeps doing this until it treaches an integer constant
--- then returns the integer value
+
 	visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
 		value := e.output
@@ -108,32 +102,31 @@ feature -- Give the evaluated expression
 
 	visit_disjunction(e: BINARY_OP)
 	local
-			i : BOOLEAN
-
-			visit_evaluate : VISIT_EVALUATE
+		i : BOOLEAN
+		visit_evaluate : VISIT_EVALUATE
 	do
-		    create visit_evaluate.make
-			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_boolean
-			e.right.accept(visit_evaluate)
-			i := i or visit_evaluate.value.to_boolean
-			value := i.out
+		create visit_evaluate.make
+		e.left.accept(visit_evaluate)
+		i := visit_evaluate.value.to_boolean
+		e.right.accept(visit_evaluate)
+		i := i or visit_evaluate.value.to_boolean
+		value := i.out
 	end
 
 
 	visit_division(e: BINARY_OP)
 	local
-			i : INTEGER
-			j: DOUBLE
-			visit_evaluate : VISIT_EVALUATE
+		i : INTEGER
+		j: DOUBLE
+		visit_evaluate : VISIT_EVALUATE
 	do
-		    create visit_evaluate.make
-			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_integer
-			e.right.accept(visit_evaluate)
-			j := (i / visit_evaluate.value.to_integer)
-			i := j.floor
-			value := i.out
+		create visit_evaluate.make
+		e.left.accept(visit_evaluate)
+		i := visit_evaluate.value.to_integer
+		e.right.accept(visit_evaluate)
+		j := (i / visit_evaluate.value.to_integer)
+		i := j.floor
+		value := i.out
 	end
 
 	visit_equality(e: BINARY_OP)
@@ -172,16 +165,15 @@ feature -- Give the evaluated expression
 
 	visit_implication(e: BINARY_OP)
 	local
-			i : BOOLEAN
-
-			visit_evaluate : VISIT_EVALUATE
+		i : BOOLEAN
+		visit_evaluate : VISIT_EVALUATE
 	do
-		    create visit_evaluate.make
-			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_boolean
-			e.right.accept(visit_evaluate)
-			i := i implies visit_evaluate.value.to_boolean
-			value := i.out
+		create visit_evaluate.make
+		e.left.accept(visit_evaluate)
+		i := visit_evaluate.value.to_boolean
+		e.right.accept(visit_evaluate)
+		i := i implies visit_evaluate.value.to_boolean
+		value := i.out
 	end
 
 
@@ -191,16 +183,16 @@ feature -- Give the evaluated expression
 
 	visit_less_than(e: BINARY_OP) -- edit this !!!!
 	local
-			i : INTEGER
-			b : BOOLEAN
-			visit_evaluate : VISIT_EVALUATE
+		i : INTEGER
+		b : BOOLEAN
+		visit_evaluate : VISIT_EVALUATE
 	do
-		    create visit_evaluate.make
-			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_integer
-			e.right.accept(visit_evaluate)
-			b := i < visit_evaluate.value.to_integer
-			value := b.out
+		create visit_evaluate.make
+		e.left.accept(visit_evaluate)
+		i := visit_evaluate.value.to_integer
+		e.right.accept(visit_evaluate)
+		b := i < visit_evaluate.value.to_integer
+		value := b.out
 	end
 
 
