@@ -32,6 +32,7 @@ feature {NONE} -- Initialization
 			create set_enum.make
 			create evaluate_expression.make
 			create print_expression.make
+			create type_check_expression.make
 
 		end
 
@@ -40,6 +41,7 @@ feature -- Attributes
 	message :STRING
 	evaluate_expression : VISIT_EVALUATE
 	print_expression : VISIT_PRINT
+	type_check_expression : VISIT_TYPE_CHECK
 
 feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION

@@ -26,14 +26,49 @@ feature
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
+		value := e.output
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
+		value := e.output
 	end
 
 	visit_addition(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		b := not left_visit_type_check.value.is_boolean
+		e.right.accept (right_visit_type_check)
+		b := b and (not right_visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+		end
+	end
+
+	visit_division(e: BINARY_OP)
+	local
+		b : BOOLEAN
+		visit_type_check : VISIT_TYPE_CHECK
+	do
+		create visit_type_check.make
+		e.left.accept (visit_type_check)
+		b := not visit_type_check.value.is_boolean
+		e.right.accept (visit_type_check)
+		b := b and (not visit_type_check.value.is_boolean)
+		value := b.out
+		if b then
+			if visit_type_check.value.to_integer = 0 then
+				is_divisor_by_zero := true
+			end
+		end
 	end
 
 	visit_conjunction(e: BINARY_OP)
@@ -48,9 +83,7 @@ feature -- Give the evaluated expression
 	do
 	end
 
-	visit_division(e: BINARY_OP)
-	do
-	end
+
 
 	visit_equality(e: BINARY_OP)
 	do
