@@ -37,6 +37,7 @@ feature -- Give the evaluated expression
 	visit_addition(e: BINARY_OP)
 	do
 		visit_binary_op(e)
+
 	end
 
 	visit_conjunction(e: BINARY_OP)
@@ -104,35 +105,65 @@ feature -- Give the evaluated expression
 
 	visit_sum(e: UNARY_OP)
 	do
-
+		visit_unary_op(e)
 	end
 
 	visit_negation(e: UNARY_OP)
 	do
-
+		visit_unary_op(e)
 	end
 
 	visit_negative(e: UNARY_OP)
 	do
-
+		visit_unary_op(e)
 	end
 
 	visit_generalized_and(e: UNARY_OP)
 	do
+		visit_unary_op(e)
 	end
 
 	visit_generalized_or(e: UNARY_OP)
 	do
-
+		visit_unary_op(e)
 	end
 
 	visit_set_enumeration (e : SET_ENUMERATION)
+
+	local
+			eval: VISIT_PRINT
+			symbol : TERMINAL_SYMBOL
 	do
+		create eval.make
+		create {LPAREN}symbol
+		value.append (symbol.output)
+		from
+			e.start
+		until
+			e.after
+		loop
+
+        e.item.accept(eval)
+		value.append (eval.value)
+
+		if not e.is_last then
+		create {COMMA}symbol
+		value.append (symbol.output)
+		end
+
+		e.forth
+
+		end
+		create {RPAREN}symbol
+		value.append (symbol.output)
+
 
 	end
 
 	visit_null_expression (e  : NULL_EXPRESSION)
+
 	do
+		value.append (e.output)
 	end
 
 feature{NONE} -- Internal Attributes

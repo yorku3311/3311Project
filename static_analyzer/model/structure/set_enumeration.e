@@ -151,4 +151,32 @@ feature -- Test visitor pattern
 		visitor.visit_set_enumeration (Current)
 	end
 
+	feature -- accessor features
+
+	item : EXPRESSION
+
+	do
+		Result := expression_list.item
+	end
+
+	start
+	do
+		expression_list.go_i_th (0)
+	end
+
+	forth
+	do
+		expression_list.forth
+	end
+
+	after: BOOLEAN
+	do
+		Result:= expression_list.after
+	end
+
+	is_last: BOOLEAN
+	do
+		Result:= expression_list.islast
+	end
+
 end
