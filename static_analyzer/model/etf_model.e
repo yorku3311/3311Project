@@ -24,7 +24,7 @@ feature {NONE} -- Initialization
 			create report.make_empty
 			create message.make_empty
 
-			create myexpression.make
+			create {NULL_EXPRESSION}myexpression.make_first
 			create integer_constant.make
 			create binary_op.make
 			create boolean_constant.make

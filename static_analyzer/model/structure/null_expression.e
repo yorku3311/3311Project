@@ -7,7 +7,10 @@ note
 class
 	NULL_EXPRESSION
 inherit
-	EXPRESSION
+	COMPOSITE_EXPRESSION
+	redefine
+		make, output, evaluate,accept
+	end
 
 create
 	make,make_first
@@ -22,11 +25,13 @@ feature -- Constructors
 	make
 	do
 		create symbol.make_from_string("nil")
+		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
 		is_current := false
 	end
 	make_first
 	do
 		create symbol.make_from_string("?")
+		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
 		is_current := true
 	end
 feature -- Queries
@@ -37,6 +42,12 @@ feature -- Queries
 	evaluate :STRING
 	do
 		Result := output
+	end
+
+feature -- perform operations
+	accept(visitor : VISIT_EXPRESSION)
+	do
+		visitor.visit_null_expression (Current)
 	end
 
 

@@ -115,7 +115,7 @@ feature -- Evaluate Queries
 	do
 		create operator_type.make_from_string (expression_list.at (3).output)
 		create output_expression.make
-		create expression_1.make create expression_2.make
+		create {NULL_EXPRESSION}expression_1.make create {NULL_EXPRESSION}expression_2.make
 		create expression_digit_list.make(0)
 
 		-- we will use these to compute the union, intersect, and difference
