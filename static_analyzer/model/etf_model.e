@@ -31,6 +31,7 @@ feature {NONE} -- Initialization
 			create unary_op.make
 			create set_enum.make
 			create evaluate_expression.make
+			create print_expression.make
 
 		end
 
@@ -38,6 +39,7 @@ feature -- Attributes
 	report : STRING
 	message :STRING
 	evaluate_expression : VISIT_EVALUATE
+	print_expression : VISIT_PRINT
 
 feature{NONE} -- Internal Attributes
 	myexpression : COMPOSITE_EXPRESSION

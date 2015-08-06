@@ -9,13 +9,28 @@ class
 
 inherit
 	VISIT_EXPRESSION
+create make
+
+feature -- Constructor
+	make
+	do
+		create {NULL_EXPRESSION}left_child.make
+		create {NULL_EXPRESSION}right_child.make
+		create value.make_empty
+	end
+feature -- Attributes
+	left_child : EXPRESSION
+	right_child :EXPRESSION
+
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
+		value := e.output
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
+		value := e.output
 	end
 
 	visit_addition(e: BINARY_OP)
