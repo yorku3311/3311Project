@@ -63,7 +63,7 @@ feature -- Error Reporting
 
 
 	status_divisor_zero: STRING
-	attribute Result := "Divisor is zero" end
+	    attribute Result := "Divisor is zero" end
 
 
 feature -- basic operations

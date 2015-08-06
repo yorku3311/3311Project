@@ -40,13 +40,13 @@ feature -- Give the evaluated expression
 
 	visit_subtraction(e: BINARY_OP)
 	local
-		do
-			create eval
-			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value
-			e.right.accept(visit_evaluate)
-		i := i - visit_evaluate.value
-		end
+		i : INTEGER
+	do
+		e.left.accept(visit_evaluate)
+		i := visit_evaluate.value.to_integer
+		e.right.accept(visit_evaluate)
+		i := i - visit_evaluate.value.to_integer
+	end
 -- you can do subtraction...
 -- so first e.left is just an expression
 -- e.right
@@ -115,10 +115,6 @@ feature -- Give the evaluated expression
 	end
 
 	visit_negative(e: UNARY_OP)
-	do
-	end
-
-	visit_subtraction(e: BINARY_OP)
 	do
 	end
 
