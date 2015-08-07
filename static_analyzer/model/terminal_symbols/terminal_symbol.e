@@ -7,12 +7,11 @@ note
 deferred class
 	TERMINAL_SYMBOL
 
-inherit
-	EXPRESSION
+
 feature -- Query
-	evaluate : STRING
-	do
-		Result := output
+	output : STRING
+	deferred
+
 	end
 
 end
