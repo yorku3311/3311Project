@@ -91,15 +91,19 @@ feature -- basic operations
 	local
 		d : STRING
 	do
-		message.make_empty
-	--	message.append (myexpression.accept (create {VISIT_EVALUATE}))
-		--myexpression.accept (evaluate_expression)
-		--d := evaluate_expression.value
+		myexpression.accept(evaluate_expression)
+		d := evaluate_expression.value
+		report.make_empty
+		report.append (d)
 	end
 	type_check
+	local
+		d : STRING
 	do
+		myexpression.accept(type_check_expression)
+		d := type_check_expression.value
 		report.make_empty
-		--report.append (myexpression.accept (create {VISIT_TYPE_CHECK}))
+		report.append (d)
 	end
 feature -- Binary operations
 	-- BINARY ARITHMATIC
