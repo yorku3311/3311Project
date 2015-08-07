@@ -12,7 +12,7 @@ inherit
 feature -- Query
 	output: STRING
 	do
-		Result := ","
+		Result := ", "
 	end
 
 

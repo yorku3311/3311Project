@@ -61,27 +61,32 @@ feature{NONE} -- Internal Attributes
 
 feature -- Error Reporting
 	status_ok : STRING
-		attribute Result := "OK" end
+		attribute Result := "OK." end
 	status_initialized: STRING
-		attribute Result := "Expression is initialized" end
+		attribute Result := "Expression is initialized." end
 	status_incomplete_exp: STRING
-		attribute Result := "Error (Expression is not fully specified)." end
+		attribute Result := "Error (Expression is not yet fully specified)." end
 	status_completed_exp: STRING
 		attribute Result := "Error (Expression is already fully specified)." end
 	status_divisor_zero: STRING
-	    attribute Result := "Divisor is zero" end
+	    attribute Result := "Error (Divisor is zero)." end
 	status_expression_cannot_be_reset : STRING
 		attribute Result := "Error (Initial expression cannot be reset)." end
 	status_enumeration_not_being_specified : STRING
 		attribute Result := "Error (Set enumeration is not being specified)." end
 	status_enum_must_not_be_empty :STRING
 		attribute Result := "Error: (Set enumeration must be non-empty)." end
-	status_type_correct : STRING
+	status_not_type_correct_evaluate : STRING
 		attribute Result := "Error (Expression is not type-correct)." end
+	status_is_type_correct : STRING
+		attribute Result := " is type-correct." end
+	status_is_not_type_correct : STRING
+		attribute Result := " is not type-correct." end
 feature -- Set operations
 	set_message (e : STRING)
 	do
-		message := e
+		message.make_empty
+		message.append (e)
 	end
 
 feature -- basic operations
@@ -97,15 +102,16 @@ feature -- basic operations
 		type_check
 		report.make_empty
 		if not type_check_expression.type_check then
-			set_message(status_type_correct)
+			set_message(status_not_type_correct_evaluate)
 			report.append (print_expression.value)
 		elseif type_check_expression.is_divisor_by_zero then
 			set_message (status_divisor_zero)
 			report.append (print_expression.value)
 		else
 			myexpression.accept(evaluate_expression)
-		    report.append (evaluate_expression.value)
-		    set_message (status_ok)
+			message.make_empty
+		    report.append (print_expression.value)
+		    message.append (evaluate_expression.value)
 		end
 	end
 	type_check
@@ -114,9 +120,13 @@ feature -- basic operations
 		report.make_empty
 		report.append (print_expression.value)
 		if type_check_expression.type_check then
-			set_message (status_ok)
+			message.make_empty
+			message.append (print_expression.value)
+			message.append (status_is_type_correct)
 		else
-			set_message (status_type_correct)
+			message.make_empty
+			message.append (print_expression.value)
+			message.append (status_is_not_type_correct)
 		end
 	end
 
@@ -275,6 +285,7 @@ feature -- Primitive Type Expressions
 		do
 			make
 			is_new := true
+			set_message(status_ok)
 		end
 feature -- Enumeration operations
 	start_set_enumeration
@@ -347,7 +358,6 @@ feature{NONE} -- Auxillary Commands
 		end
 		pop
 		push(expresssion_is_extended)
-		my_stack.extend (1)
 		set_message (status_ok)
 	end
 
@@ -389,6 +399,10 @@ feature -- Queries
 		do
 			create Result.make_from_string ("  ")
 			Result.append ("Expression currently specified: ")
+			if is_new then
+				report.make_empty
+				report := "?"
+			end
 			Result.append (report)
 			Result.append ("%N")
 			Result.append ("  ")

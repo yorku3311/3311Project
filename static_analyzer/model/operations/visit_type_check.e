@@ -26,6 +26,7 @@ feature
 	type_int :INTEGER  = 1
 	type_bool : INTEGER = 2
 	type_mix : INTEGER = 0
+	type_set_enum : BOOLEAN
 	type_flag : INTEGER
 
 feature -- Give the evaluated expression
@@ -139,11 +140,10 @@ feature -- Give the evaluated expression
 	do
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
-		if visit_type_check.type_flag = type_bool then
+		if (visit_type_check.type_flag = type_bool) and visit_type_check.type_set_enum then
 			type_flag := type_bool
 			type_check := true
 		end
-
 
 	end
 
@@ -153,7 +153,7 @@ feature -- Give the evaluated expression
 	do
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
-		if visit_type_check.type_flag = type_bool then
+		if (visit_type_check.type_flag = type_bool) and visit_type_check.type_set_enum then
 			type_flag := type_bool
 			type_check := true
 		end
@@ -339,6 +339,7 @@ feature -- Give the evaluated expression
 			type_check := true
 
 		end
+		type_set_enum := true
 	end
 
 	visit_null_expression (e  : NULL_EXPRESSION)

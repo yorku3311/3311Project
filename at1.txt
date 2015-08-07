@@ -1,14 +1,11 @@
-start_set_enumeration
-add_less_than
-add_integer_constant(3)
-add_integer_constant(7)
-add_greater_than
-add_integer_constant(3)
-add_integer_constant(7)
-add_generalized_or
-add_boolean_constant(true)
-add_boolean_constant(false)
-add_integer_constant(5)
+add_generalized_and
+start_set_enumeration 
+add_conjunction
+add_boolean_constant (true)
+add_boolean_constant (false)
+add_disjunction
+add_boolean_constant (true)
+add_boolean_constant (false)
 end_set_enumeration
-evaluate
-add_integer_constant(6)
+type_check
+evaluate 
