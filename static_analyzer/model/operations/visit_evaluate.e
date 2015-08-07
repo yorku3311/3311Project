@@ -234,6 +234,7 @@ feature -- Give the evaluated expression
 		b : BOOLEAN
 		set_list : ARRAYED_LIST[STRING]
 		visit_evaluate : VISIT_EVALUATE
+		symbol : TERMINAL_SYMBOL
 	do
 		create visit_evaluate.make
 		b := true
@@ -246,6 +247,13 @@ feature -- Give the evaluated expression
 			set_list.extend (b.out)
 		end
 		set_enum_list := set_list
+
+		value.make_empty
+		create {LPAREN}symbol
+		value.append(symbol.output)
+		print_set_enumeration
+		create {RPAREN}symbol
+		value.append(symbol.output)
 	end
 
 	visit_sum(e: UNARY_OP)
@@ -267,6 +275,7 @@ feature -- Give the evaluated expression
 	local
 		visit_evaluate_left : VISIT_EVALUATE
 		visit_evaluate_right : VISIT_EVALUATE
+		symbol : TERMINAL_SYMBOL
 	do
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
@@ -283,12 +292,20 @@ feature -- Give the evaluated expression
 			end
 		end
 
+		value.make_empty
+		create {LPAREN}symbol
+		value.append(symbol.output)
+		print_set_enumeration
+		create {RPAREN}symbol
+		value.append(symbol.output)
+
 	end
 
 	visit_union(e: BINARY_OP)
 	local
 		visit_evaluate_left : VISIT_EVALUATE
 		visit_evaluate_right : VISIT_EVALUATE
+		symbol : TERMINAL_SYMBOL
 	do
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
@@ -304,6 +321,12 @@ feature -- Give the evaluated expression
 			set_enum_list.extend (right.item)
 		end
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list)
+		value.make_empty
+		create {LPAREN}symbol
+		value.append(symbol.output)
+		print_set_enumeration
+		create {RPAREN}symbol
+		value.append(symbol.output)
 	end
 
 
@@ -331,6 +354,7 @@ feature -- Give the evaluated expression
 		visit_evaluate_right : VISIT_EVALUATE
 		set_list : ARRAYED_LIST[STRING]
 		index_to_add : ARRAYED_LIST[INTEGER]
+		symbol : TERMINAL_SYMBOL
 	do
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
@@ -355,6 +379,13 @@ feature -- Give the evaluated expression
 		loop
 			set_enum_list.extend (visit_evaluate_left.set_enum_list.at (out_list.item))
 		end
+
+		value.make_empty
+		create {LPAREN}symbol
+		value.append(symbol.output)
+		print_set_enumeration
+		create {RPAREN}symbol
+		value.append(symbol.output)
 	end
 
 	visit_set_enumeration (e : SET_ENUMERATION)
@@ -373,6 +404,7 @@ feature -- Give the evaluated expression
 			e.forth
 		end
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list.deep_twin)
+		value.make_empty
 		print_set_enumeration
 	end
 	-- No need
@@ -408,7 +440,7 @@ feature{NONE}-- Internal Functios
 		symbol : TERMINAL_SYMBOL
 	do
 		create {LBRACE}symbol
-		value.make_empty
+		--value.make_empty
 		value.append (symbol.output)
 		create {COMMA}symbol
 

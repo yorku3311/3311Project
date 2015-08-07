@@ -113,9 +113,9 @@ feature -- Test visitor pattern
 		elseif operator.output ~ op_gt.output then
 			visitor.visit_greater_than (Current.deep_twin)
 		elseif operator.output ~ op_union.output then
-			visitor.visit_conjunction (Current.deep_twin)
+			visitor.visit_union (Current.deep_twin)
 		elseif operator.output ~ op_intersect.output then
-			visitor.visit_disjunction (Current.deep_twin)
+			visitor.visit_intersection (Current.deep_twin)
 		elseif operator.output ~ op_difference.output then
 			visitor.visit_difference (Current.deep_twin)
 		end
