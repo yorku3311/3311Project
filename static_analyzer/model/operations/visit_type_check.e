@@ -103,10 +103,21 @@ feature -- Give the evaluated expression
 	end
 
 	visit_difference(e: BINARY_OP)
+	local
+		left_visit_type_check: VISIT_TYPE_CHECK
+		right_visit_type_check: VISIT_TYPE_CHECK
 	do
-		-- here we can have a mix of elements
-		type_check := true
-		type_flag := type_mix
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		e.right.accept (right_visit_type_check)
+		if (left_visit_type_check.type_flag = right_visit_type_check.type_flag)
+			and (left_visit_type_check.type_set_enum and right_visit_type_check.type_set_enum) then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+			type_check := true
+			type_flag := left_visit_type_check.type_flag
+		end
 	end
 
 
@@ -171,7 +182,8 @@ feature -- Give the evaluated expression
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
 		e.right.accept (right_visit_type_check)
-		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int)
+			and (not left_visit_type_check.type_set_enum) and (not right_visit_type_check.type_set_enum)   then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
@@ -188,7 +200,8 @@ feature -- Give the evaluated expression
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
 		e.right.accept (right_visit_type_check)
-		if (left_visit_type_check.type_flag = type_bool) and (right_visit_type_check.type_flag = type_bool) then
+		if (left_visit_type_check.type_flag = type_bool) and (right_visit_type_check.type_flag = type_bool)
+			and (not left_visit_type_check.type_set_enum) and (not right_visit_type_check.type_set_enum) then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
@@ -205,7 +218,8 @@ feature -- Give the evaluated expression
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
 		e.right.accept (right_visit_type_check)
-		if left_visit_type_check.type_flag = right_visit_type_check.type_flag then
+		if left_visit_type_check.type_flag = right_visit_type_check.type_flag
+			and ( left_visit_type_check.type_set_enum) and (right_visit_type_check.type_set_enum) then
 			type_flag :=left_visit_type_check.type_flag
 		else
 			type_flag := type_mix
@@ -222,7 +236,8 @@ feature -- Give the evaluated expression
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
 		e.right.accept (right_visit_type_check)
-		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int)
+			and (not left_visit_type_check.type_set_enum) and (not right_visit_type_check.type_set_enum)   then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true

@@ -1,2 +1,6 @@
+add_implication
+add_boolean_constant(false)
 add_boolean_constant(true)
 type_check
+evaluate
+
