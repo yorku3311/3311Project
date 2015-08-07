@@ -335,8 +335,10 @@ feature -- Give the evaluated expression
 	local
 		i : INTEGER
 		visit_evaluate : VISIT_EVALUATE
+		symbol : TERMINAL_SYMBOL
 	do
 		create visit_evaluate.make
+
 		e.child.accept (visit_evaluate)
 
 		across visit_evaluate.set_enum_list as cursor
@@ -344,6 +346,17 @@ feature -- Give the evaluated expression
 			i := -1*cursor.item.to_integer
 			set_enum_list.extend (i.out)
 		end
+		value.make_empty
+		create {LPAREN}symbol
+		value.append(symbol.output)
+		if set_enum_list.count > 1 then
+			print_set_enumeration
+		else
+			value.append (i.out)
+		end
+
+		create {RPAREN}symbol
+		value.append(symbol.output)
 	end
 
 
