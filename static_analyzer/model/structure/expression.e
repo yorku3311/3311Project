@@ -12,12 +12,17 @@ feature -- Queries
 output : STRING
 	deferred
 	end
-evaluate :STRING
-	deferred
-	end
+
 accept (visit : VISIT_EXPRESSION)
 	do
 
 	end
+add ( e : EXPRESSION)
+do
+end
+end_set_enumeration
+do
+
+end
 
 end

@@ -15,7 +15,12 @@ feature -- command
 	reset
     	do
 			-- perform some update on the model state
-			model.reset
+			if not model.is_new then
+				model.set_message (model.status_expression_cannot_be_reset)
+			else
+				model.reset
+				model.set_message (model.status_ok)
+			end
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

@@ -33,7 +33,6 @@ feature {NONE} -- Initialization
 			create evaluate_expression.make
 			create print_expression.make
 			create type_check_expression.make
-			is_reset := false
 			create my_stack.make(0)
 
 		end
@@ -44,12 +43,12 @@ feature -- Attributes
 	evaluate_expression : VISIT_EVALUATE
 	print_expression : VISIT_PRINT
 	type_check_expression : VISIT_TYPE_CHECK
-	is_reset : BOOLEAN
+	is_new : BOOLEAN
 	my_stack : ARRAYED_LIST [INTEGER]
 
 feature{NONE} -- Internal Attributes
-	myexpression : COMPOSITE_EXPRESSION
-	is_new : BOOLEAN
+	myexpression : EXPRESSION
+
 	binary_op : BINARY_OP
 	integer_constant : INTEGER_CONSTANT
 	boolean_constant : BOOLEAN_CONSTANT
@@ -68,7 +67,13 @@ feature -- Error Reporting
 		attribute Result := "Error (Expression is already fully specified)." end
 	status_divisor_zero: STRING
 	    attribute Result := "Divisor is zero" end
-
+	status_expression_cannot_be_reset : STRING
+		attribute Result := "Error (Initial expression cannot be reset)" end
+feature -- Set operations
+	set_message (e : STRING)
+	do
+		message := e
+	end
 
 feature -- basic operations
 	pretty_print
@@ -209,7 +214,7 @@ feature -- Enumeration operations
 		create set_enum.make
 		-- this will need to be updated
 		set_enum.set_expression_state (1)
-		set_enum.add_operation (create {NULL_EXPRESSION}.make_first)
+		set_enum.add_operation (create {DUMMY})
 		if not is_new then
 			myexpression := set_enum.deep_twin
 			is_new := false
@@ -230,8 +235,13 @@ feature -- Terminal Symbols Addition Command
 	do
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
-		myexpression.add (integer_constant)
-		if my_stack.is_empty then
+		if not is_new then
+			myexpression := integer_constant.deep_twin
+			is_new := false
+		else
+			myexpression.add (integer_constant)
+		end
+		if not my_stack.is_empty then
 			my_stack.remove
 		end
 
@@ -243,8 +253,13 @@ feature -- Terminal Symbols Addition Command
 	do
 		create boolean_constant
 		boolean_constant.set_boolean_constant(b)
-		myexpression.add (boolean_constant)
-		if my_stack.is_empty then
+		if not is_new then
+			myexpression := boolean_constant.deep_twin
+			is_new := false
+		else
+			myexpression.add (boolean_constant)
+		end
+		if not my_stack.is_empty then
 			my_stack.remove
 		end
 	end
@@ -271,7 +286,7 @@ feature -- Queries
 
 feature{NONE} -- Auxillary Commands
 	-- add binary operation
-	add_binary_operation (e : EXPRESSION)
+	add_binary_operation (e : TERMINAL_SYMBOL)
 	do
 		-- create a new binary operation and add it to the list of operations.
 		create binary_op.make
@@ -282,18 +297,24 @@ feature{NONE} -- Auxillary Commands
 		else
 			myexpression.add (binary_op)
 		end
-		is_reset := false
+		if not my_stack.is_empty then
+			my_stack.remove
+		end
 		my_stack.extend (1)
 		my_stack.extend (1)
 	end
 
 
-add_unary_operation(e: EXPRESSION)
+add_unary_operation(e: TERMINAL_SYMBOL)
 do
 	create unary_op.make
 	unary_op.add_operation(e)
 	myexpression.add (unary_op)
+	if not my_stack.is_empty then
+		my_stack.remove
+	end
 	my_stack.extend (1)
+
 end
 
 

@@ -38,7 +38,7 @@ feature -- Modify the state of the enumeration
 	end
 
 feature -- Commands
-	add_operation (expression : EXPRESSION)
+	add_operation (expression : TERMINAL_SYMBOL)
 		-- expands the set depending on the expression_state specified
 	do
 		inspect expression_state
@@ -65,7 +65,7 @@ feature -- Commands
 		if is_current_expression then
 			expression_state := end_expression
 			is_current_expression := false
-			add_operation (create {NULL_EXPRESSION}.make_first)
+			add_operation (create {SUM})
 			is_current_expression_closed := true
 		else
 			across expression_list as c
@@ -91,7 +91,8 @@ feature -- Commands
 	    	if not Result then
 				is_current_expression := true
 				expression_state := middle_expression
-				add_operation(create {NULL_EXPRESSION}.make_first)
+				--add_operation(create {NULL_EXPRESSION}.make_first)
+				add_operation(create {SUM})
 		    else
 				is_current_expression := false
 				expression_state := middle_expression
@@ -134,7 +135,8 @@ feature -- Override add operation
 		end
 		is_set := set_first_null
 		if not is_set and not is_current_expression_closed then
-			add_operation (create {NULL_EXPRESSION}.make_first)
+			--add_operation (create {NULL_EXPRESSION}.make_first)
+			add_operation (create {SUM})
 		end
 	end
 

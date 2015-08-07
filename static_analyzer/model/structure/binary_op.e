@@ -22,7 +22,7 @@ feature -- Constructors
 		create times create divide create plus create minus create op_and
 		create op_or create op_equals create op_implies create op_lt create op_gt
 		create op_union create op_intersect create op_difference
-		create {NULL_EXPRESSION}operator.make
+		create {SUM}operator
 	end
 feature{NONE} -- Attributes
 	times : TIMES
@@ -39,7 +39,7 @@ feature{NONE} -- Attributes
 	op_intersect : INTERSECT
 	op_difference : DIFFERENCE
 feature -- External Attributes Accessible
-	operator : EXPRESSION
+	operator : TERMINAL_SYMBOL
 feature -- Expression type
 	expression_type : INTEGER
 	arithmatic : INTEGER = 1
@@ -94,7 +94,7 @@ feature -- Commands to set the status of this expression type
 
 
 feature -- Command
-	add_operation(op : EXPRESSION)
+	add_operation(op : TERMINAL_SYMBOL)
 		do
 			-- LPAREN Expression Operator Expression RPAREN
 			expression_list.put_i_th(create {NULL_EXPRESSION}.make_first,1)

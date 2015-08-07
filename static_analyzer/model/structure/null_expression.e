@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		make, output, evaluate,accept
+		make, output,accept
 	end
 
 create
@@ -39,9 +39,11 @@ feature -- Queries
 	do
 		Result := symbol
 	end
-	evaluate :STRING
+
+
+	add_operation (e : TERMINAL_SYMBOL)
 	do
-		Result := output
+
 	end
 
 feature -- perform operations

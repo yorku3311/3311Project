@@ -30,8 +30,7 @@ feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		--Result.make_empty
-	--	Result:= visitor.visit (Current)
+		visitor.visit_boolean_constant (Current.deep_twin)
 	end
 
 	output : STRING
@@ -39,10 +38,6 @@ feature -- Test visitor pattern
 		Result := bool.out
 	end
 
-	evaluate : STRING
-	do
-		Result := ""
-	end
 
 
 end
