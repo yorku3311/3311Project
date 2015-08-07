@@ -9,9 +9,7 @@ class
 
 inherit
 	COMPOSITE_EXPRESSION
-	redefine
-		add_operation,accept,make,add
-	end
+
 create
 	make
 feature -- Constructors
@@ -40,47 +38,34 @@ feature{NONE} -- Attributes
 	op_difference : DIFFERENCE
 feature -- External Attributes Accessible
 	operator : TERMINAL_SYMBOL
-feature -- Expression type
-	expression_type : INTEGER
-	arithmatic : INTEGER = 1
-	logical_boolean : INTEGER = 2
-	logical_arithmatic : INTEGER = 3
-	binary_set_operation : INTEGER = 4
-
 
 feature -- Commands
-	add (expression : EXPRESSION)
-		--extend to the first 'NULL_EXPRESSION' that is found
-	local
-		is_set :BOOLEAN
-	do
-		expression_list.go_i_th (0)
-	from
-		expression_list.forth
-	until
-		is_set or expression_list.after
-	loop
-			if attached {NULL_EXPRESSION}expression_list.item as c then
-				if c.is_current then
-					expression_list.put_i_th (expression,expression_list.index)
-					is_set := true
-				end
-				-- update the next 'NULL_EXPRESSION'
-			elseif attached {COMPOSITE_EXPRESSION}expression_list.item as b then
-				b.add(expression)
-			end
-			expression_list.forth
+--	add (expression : EXPRESSION)
+--		--extend to the first 'NULL_EXPRESSION' that is found
+--	local
+--		is_set :BOOLEAN
+--	do
+--		expression_list.go_i_th (0)
+--	from
+--		expression_list.forth
+--	until
+--		is_set or expression_list.after
+--	loop
+--			if attached {NULL_EXPRESSION}expression_list.item as c then
+--				if c.is_current then
+--					expression_list.put_i_th (expression,expression_list.index)
+--					is_set := true
+--				end
+--				-- update the next 'NULL_EXPRESSION'
+--			elseif attached {COMPOSITE_EXPRESSION}expression_list.item as b then
+--				b.add(expression)
+--			end
+--			expression_list.forth
 
-		end
-		is_set := set_first_null
-	end
+--		end
+--		is_set := set_first_null
+--	end
 
-
-feature -- Commands to set the status of this expression type
-	set_expression_type (i :INTEGER)
-	do
-		expression_type := i
-	end
 
 feature -- Query Children
 	left : EXPRESSION
@@ -102,11 +87,6 @@ feature -- Command
 			expression_list.extend(create {NULL_EXPRESSION}.make)
 			operator := op.deep_twin
 		end
-	output : STRING
-	do
-		Result := ""
-	end
-
 
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)

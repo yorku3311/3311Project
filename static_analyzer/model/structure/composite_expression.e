@@ -12,20 +12,13 @@ inherit
 		end_set_enumeration,add
 	end
 
-feature -- Constructor
-	make
-	do
-		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
-		expression_list.extend (create {NULL_EXPRESSION}.make_first)
-	end
-
 feature{NONE} -- Auxillary Attributes
 	expression_list : ARRAYED_LIST[EXPRESSION]
 
 feature -- Queries
 	output : STRING
-	deferred
-		
+	do
+		Result := ""
 	end
 
 

@@ -22,7 +22,7 @@ feature -- command
 				model.set_message (model.status_incomplete_exp)
 				model.set_message (model.status_ok)
 			end
-
+			model.pretty_print
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

@@ -407,8 +407,6 @@ feature -- Give the evaluated expression
 		end
 		create {RPAREN}symbol
 		value.append (symbol.output)
-
-
 	end
 
 	visit_null_expression (e  : NULL_EXPRESSION)

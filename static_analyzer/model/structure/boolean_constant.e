@@ -9,9 +9,7 @@ class
 
 inherit
 	EXPRESSION
-	redefine
-		accept
-	end
+
 
 feature -- Attributes
 	bool : BOOLEAN

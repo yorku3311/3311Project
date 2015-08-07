@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		make, output,accept
+		output
 	end
 
 create

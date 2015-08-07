@@ -9,20 +9,21 @@ deferred class
 
 
 feature -- Queries
-output : STRING
+	output : STRING
 	deferred
 	end
 
-accept (visit : VISIT_EXPRESSION)
-	do
+	accept (visit : VISIT_EXPRESSION)
+	deferred
 
 	end
-add ( e : EXPRESSION)
-do
-end
-end_set_enumeration
-do
 
-end
+	add ( e : EXPRESSION)
+	do
+	end
+
+	end_set_enumeration
+	do
+	end
 
 end

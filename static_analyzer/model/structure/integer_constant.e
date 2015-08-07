@@ -9,9 +9,7 @@ class
 
 inherit
 	EXPRESSION
-	redefine
-		accept,output
-	end
+
 create make
 feature -- Constructor
 	make
@@ -37,9 +35,5 @@ feature -- Test visitor pattern
 	output : STRING
 	do
 		Result := value
-	end
-	evaluate : STRING
-	do
-		Result := ""
 	end
 end

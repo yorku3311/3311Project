@@ -9,7 +9,7 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 	redefine
-		add_operation, accept,make,add,end_set_enumeration
+		add,end_set_enumeration
 	end
 create
 	make
@@ -100,18 +100,8 @@ feature -- Commands
 				is_current_expression := false
 				expression_state := middle_expression
 	    	end
-
 	    end
-
-
-
 	end
-
-	output : STRING
-	do
-		Result := ""
-	end
-
 
 feature -- Override add operation
 	add (expression : EXPRESSION)
@@ -154,14 +144,14 @@ feature{NONE} -- Internal Feautures
 	do
 		current_expression_index := i
 	end
-feature -- Test visitor pattern
+feature -- Perform Operations
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
 		visitor.visit_set_enumeration (Current.deep_twin)
 	end
 
-	feature -- accessor features
+feature -- Accessor features
 
 	item : EXPRESSION
 

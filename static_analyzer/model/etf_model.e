@@ -48,12 +48,10 @@ feature -- Attributes
 
 feature{NONE} -- Internal Attributes
 	myexpression : EXPRESSION
-
 	binary_op : BINARY_OP
 	integer_constant : INTEGER_CONSTANT
 	boolean_constant : BOOLEAN_CONSTANT
 	unary_op : UNARY_OP
-
 	set_enum : SET_ENUMERATION
 	first_set : BOOLEAN
 
@@ -220,6 +218,10 @@ feature -- Enumeration operations
 		else
 			myexpression.add (set_enum)
 		end
+		if not my_stack.is_empty then
+			my_stack.go_i_th (my_stack.count)
+			my_stack.remove
+		end
 		my_stack.extend (1)
 		set_message (status_ok)
 
@@ -286,6 +288,7 @@ feature -- Queries
 			Result.append ("  ")
 			Result.append ("Report: ")
 			Result.append (message)
+			message.make_empty
 		end
 
 feature{NONE} -- Auxillary Commands
@@ -311,24 +314,24 @@ feature{NONE} -- Auxillary Commands
 	end
 
 
-add_unary_operation(e: TERMINAL_SYMBOL)
-do
-	create unary_op.make
-	unary_op.add_operation(e)
-	if is_new then
-		myexpression := unary_op.deep_twin
-		is_new := false
-	else
-		myexpression.add (unary_op)
-	end
-	if not my_stack.is_empty then
-			my_stack.go_i_th (my_stack.count)
-			my_stack.remove
-	end
-	my_stack.extend (1)
-	set_message (status_ok)
+	add_unary_operation(e: TERMINAL_SYMBOL)
+	do
+		create unary_op.make
+		unary_op.add_operation(e)
+		if is_new then
+			myexpression := unary_op.deep_twin
+			is_new := false
+		else
+			myexpression.add (unary_op)
+		end
+		if not my_stack.is_empty then
+				my_stack.go_i_th (my_stack.count)
+				my_stack.remove
+		end
+		my_stack.extend (1)
+		set_message (status_ok)
 
-end
+	end
 
 
 

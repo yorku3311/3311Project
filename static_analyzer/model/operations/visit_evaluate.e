@@ -80,18 +80,16 @@ feature -- Give the evaluated expression
 	end
 
 	visit_conjunction(e: BINARY_OP)
-
-		local
-			i : BOOLEAN
-
-			visit_evaluate : VISIT_EVALUATE
+	local
+		i : BOOLEAN
+		visit_evaluate : VISIT_EVALUATE
 	do
-		    create visit_evaluate.make
-			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_boolean
-			e.right.accept(visit_evaluate)
-			i := i and visit_evaluate.value.to_boolean
-			value := i.out
+		create visit_evaluate.make
+		e.left.accept(visit_evaluate)
+		i := visit_evaluate.value.to_boolean
+		e.right.accept(visit_evaluate)
+		i := i and visit_evaluate.value.to_boolean
+		value := i.out
 	end
 
 	visit_disjunction(e: BINARY_OP)
@@ -153,8 +151,6 @@ feature -- Give the evaluated expression
 		end
 	end
 
-
-
 	visit_implication(e: BINARY_OP)
 	local
 		i : BOOLEAN
@@ -168,7 +164,7 @@ feature -- Give the evaluated expression
 		value := i.out
 	end
 
-	visit_less_than(e: BINARY_OP) -- edit this !!!!
+	visit_less_than(e: BINARY_OP) 
 	local
 		i : INTEGER
 		b : BOOLEAN
@@ -289,7 +285,6 @@ feature -- Give the evaluated expression
 
 	end
 
-
 	visit_union(e: BINARY_OP)
 	local
 		visit_evaluate_left : VISIT_EVALUATE
@@ -308,9 +303,7 @@ feature -- Give the evaluated expression
 		loop
 			set_enum_list.extend (right.item)
 		end
-
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list)
-
 	end
 
 
@@ -376,8 +369,9 @@ feature -- Give the evaluated expression
 			set_enum_list.extend (e.item.output)
 			e.forth
 		end
+		set_enum_list := remove_repeating_elements_in_set (set_enum_list.deep_twin)
 	end
-
+	-- No need
 	visit_null_expression (e  : NULL_EXPRESSION)
 	do
 	end
