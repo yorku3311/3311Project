@@ -95,7 +95,7 @@ feature -- Commands
 				is_current_expression := true
 				expression_state := middle_expression
 				--add_operation(create {NULL_EXPRESSION}.make_first)
-				add_operation(create {SUM})
+				add_operation(create {DUMMY})
 		    else
 				is_current_expression := false
 				expression_state := middle_expression
@@ -144,7 +144,7 @@ feature -- Override add operation
 		is_set := set_first_null
 		if not is_set and not is_current_expression_closed then
 			--add_operation (create {NULL_EXPRESSION}.make_first)
-			add_operation (create {SUM})
+			add_operation (create {DUMMY})
 		end
 	end
 

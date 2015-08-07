@@ -368,7 +368,14 @@ feature -- Give the evaluated expression
 	local
 
 	do
-
+		from
+			e.start
+		until
+			e.after
+		loop
+			set_enum_list.extend (e.item.output)
+			e.forth
+		end
 	end
 
 	visit_null_expression (e  : NULL_EXPRESSION)

@@ -194,10 +194,11 @@ feature{NONE} -- Internal Attributes
 	do
 		create eval.make
 		create {LPAREN}symbol
+		value.make_empty
 		value.append (symbol.output)
 		value.append (e.operator.output)
 
-		e.accept (eval)
+		e.child.accept (eval)
 		value.append (eval.value)
 		create {RPAREN}symbol
 		value.append (symbol.output)

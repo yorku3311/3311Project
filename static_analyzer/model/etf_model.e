@@ -195,7 +195,7 @@ feature -- Unary operations
 	--composite
 	add_sum
 	do
-		add_unary_operation(create {SUM})
+		add_unary_operation(create {OPERAND_SUM})
 	end
 
 	add_generalized_and
@@ -281,7 +281,6 @@ feature -- Queries
 		do
 			create Result.make_from_string ("  ")
 			Result.append ("Expression currently specified: ")
-			pretty_print
 			Result.append (report)
 			Result.append ("%N")
 			Result.append ("  ")
@@ -325,7 +324,7 @@ do
 	if not my_stack.is_empty then
 			my_stack.go_i_th (my_stack.count)
 			my_stack.remove
-		end
+	end
 	my_stack.extend (1)
 	set_message (status_ok)
 

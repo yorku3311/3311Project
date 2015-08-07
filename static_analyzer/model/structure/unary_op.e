@@ -20,26 +20,29 @@ feature -- Constructor
 		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
 		expression_list.extend (create {NULL_EXPRESSION}.make_first)
 		create negative create negation create sum create for_all create exists
-		create {NULL_EXPRESSION}child.make
 		create {DUMMY}operator
 	end
 feature{NONE} -- Internal attributes
 	negative : NEGATIVE
 	negation : NEGATION
-	sum      : SUM
+	sum      : OPERAND_SUM
 	for_all  : FORALL
 	exists   : EXISTS
 feature -- Attributes
 	operator : TERMINAL_SYMBOL
-	child    : EXPRESSION
+
+	child : EXPRESSION
+	do
+		Result := expression_list.at (1)
+	end
 
 feature -- Commands
-	add_operation(op : TERMINAL_SYMBOL)
+	add_operation(symb : TERMINAL_SYMBOL)
 		do
 			-- LPAREN Operator Expression RPAREN
 			--expression_list.extend(op)
 			expression_list.put_i_th(create {NULL_EXPRESSION}.make_first,1)
-			operator := op
+			operator := symb.deep_twin
 		end
 	output : STRING
 	do
@@ -51,15 +54,15 @@ feature -- Test visitor pattern
 
 	do
 		if operator.output ~ negative.output then
-			visitor.visit_negative (Current)
+			visitor.visit_negative (Current.deep_twin)
 		elseif operator.output ~ negation.output then
-			visitor.visit_negation (Current)
+			visitor.visit_negation (Current.deep_twin)
 		elseif operator.output ~ sum.output then
-			visitor.visit_sum (Current)
+			visitor.visit_sum (Current.deep_twin)
 		elseif operator.output ~ for_all.output then
-			visitor.visit_generalized_and (Current)
+			visitor.visit_generalized_and (Current.deep_twin)
 		elseif operator.output ~ exists.output then
-			visitor.visit_generalized_or (Current)
+			visitor.visit_generalized_or (Current.deep_twin)
 		end
 
 	end
