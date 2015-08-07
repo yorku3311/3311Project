@@ -45,6 +45,9 @@ feature -- Attributes
 	type_check_expression : VISIT_TYPE_CHECK
 	is_new : BOOLEAN
 	my_stack : ARRAYED_LIST [INTEGER]
+	-- used to ensure user does not try to close a currently open set which is empty
+	is_new_set : BOOLEAN
+	set_enum_count : INTEGER
 
 feature{NONE} -- Internal Attributes
 	myexpression : EXPRESSION
@@ -218,18 +221,21 @@ feature -- Enumeration operations
 		else
 			myexpression.add (set_enum)
 		end
-		if not my_stack.is_empty then
-			my_stack.go_i_th (my_stack.count)
-			my_stack.remove
-		end
-		my_stack.extend (1)
+
+		is_new_set := true
+
+		pop
+		push (expression_at_set_enumeration)
+		set_enum_count := set_enum_count + 1
 		set_message (status_ok)
 
 	end
 	end_set_enumeration
 	do
 		myexpression.end_set_enumeration
+		pop_set_enumeration
 		set_message (status_ok)
+		set_enum_count := set_enum_count - 1
 	end
 
 feature -- Terminal Symbols Addition Command
@@ -244,9 +250,13 @@ feature -- Terminal Symbols Addition Command
 		else
 			myexpression.add (integer_constant)
 		end
-		if not my_stack.is_empty then
-			my_stack.go_i_th (my_stack.count)
-			my_stack.remove
+
+		if is_new_set then
+			is_new_set := false
+		end
+
+		if not (peek = expression_at_set_enumeration) then
+			pop
 		end
 
 		set_message (status_ok)
@@ -263,10 +273,15 @@ feature -- Terminal Symbols Addition Command
 		else
 			myexpression.add (boolean_constant)
 		end
-		if not my_stack.is_empty then
-			my_stack.go_i_th (my_stack.count)
-			my_stack.remove
+
+		if is_new_set then
+			is_new_set := false
 		end
+
+		if not (peek = expression_at_set_enumeration) then
+			pop
+		end
+
 		set_message (status_ok)
 	end
 
@@ -304,12 +319,14 @@ feature{NONE} -- Auxillary Commands
 		else
 			myexpression.add (binary_op)
 		end
-		if not my_stack.is_empty then
-			my_stack.go_i_th (my_stack.count)
-			my_stack.remove
+
+		if is_new_set then
+			is_new_set := false
 		end
-		my_stack.extend (1)
-		my_stack.extend (1)
+
+		pop
+		push(expresssion_is_extended)
+		push(expresssion_is_extended)
 		set_message (status_ok)
 	end
 
@@ -324,13 +341,49 @@ feature{NONE} -- Auxillary Commands
 		else
 			myexpression.add (unary_op)
 		end
-		if not my_stack.is_empty then
-				my_stack.go_i_th (my_stack.count)
-				my_stack.remove
+
+		if is_new_set then
+			is_new_set := false
 		end
+		pop
+		push(expresssion_is_extended)
 		my_stack.extend (1)
 		set_message (status_ok)
+	end
 
+feature{NONE} -- Stack Attributes
+	expression_at_set_enumeration : INTEGER = 2
+	expresssion_is_extended : INTEGER = 1
+
+feature{NONE} -- Stack Operations
+	pop
+	do
+		if not my_stack.is_empty and not (peek = expression_at_set_enumeration) then
+			my_stack.go_i_th (my_stack.count)
+			my_stack.remove
+		end
+	end
+
+	push ( i : INTEGER)
+	do
+		my_stack.extend (i)
+	end
+
+	peek : INTEGER
+	do
+		if not my_stack.is_empty then
+			Result := my_stack.at (my_stack.count)
+		else
+			Result := 0
+		end
+	end
+
+	pop_set_enumeration
+	do
+		if not my_stack.is_empty  then
+			my_stack.go_i_th (my_stack.count)
+			my_stack.remove
+		end
 	end
 
 

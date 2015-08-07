@@ -1,6 +1,8 @@
-add_sum
 start_set_enumeration
 add_integer_constant(3)
+add_conjunction
 add_integer_constant(6)
+add_integer_constant(8)
+start_set_enumeration
+add_integer_constant(8)
 end_set_enumeration
-evaluate
