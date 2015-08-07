@@ -1,6 +1,8 @@
-add_implication
-add_boolean_constant(false)
-add_boolean_constant(true)
+add_intersection
+start_set_enumeration
+add_integer_constant(3)
+add_integer_constant(5)
+end_set_enumeration
+add_integer_constant(3)
 type_check
 evaluate
-
