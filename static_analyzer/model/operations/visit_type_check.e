@@ -356,7 +356,7 @@ feature -- Give the evaluated expression
 			-- if the first one is boolean, check to see if all the other ones are boolean
 			e.item.accept(eval)
 		    if not (eval.type_flag = type_flag)
-		    	and (type_set_enum = eval.type_set_enum) then
+		    	or not (type_set_enum = eval.type_set_enum) then
 				type_flag := type_mix
 				type_check := false
 		    else
