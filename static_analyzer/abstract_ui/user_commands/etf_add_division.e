@@ -16,7 +16,13 @@ feature -- command
     	do
 			-- perform some update on the model state
 			-- error reporting
-			model.add_division
+			if model.type_check_expression.is_divisor_by_zero then
+				model.set_message (model.status_divisor_zero)
+			else
+				model.add_division
+				model.set_message (model.status_ok)
+			end
+
 			etf_cmd_container.on_change.notify ([Current])
     	end
 
