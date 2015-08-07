@@ -164,7 +164,7 @@ feature -- Give the evaluated expression
 		value := i.out
 	end
 
-	visit_less_than(e: BINARY_OP) 
+	visit_less_than(e: BINARY_OP)
 	local
 		i : INTEGER
 		b : BOOLEAN
@@ -359,17 +359,21 @@ feature -- Give the evaluated expression
 
 	visit_set_enumeration (e : SET_ENUMERATION)
 	local
-
+		visit_evaluate : VISIT_EVALUATE
 	do
+		create visit_evaluate.make
 		from
 			e.start
 		until
 			e.after
 		loop
-			set_enum_list.extend (e.item.output)
+			e.item.accept (visit_evaluate)
+
+			set_enum_list.extend (visit_evaluate.value)
 			e.forth
 		end
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list.deep_twin)
+		print_set_enumeration
 	end
 	-- No need
 	visit_null_expression (e  : NULL_EXPRESSION)
@@ -378,8 +382,46 @@ feature -- Give the evaluated expression
 
 feature{NONE}-- Internal Functios
 	remove_repeating_elements_in_set (set_enum :ARRAYED_LIST[STRING]) : ARRAYED_LIST[STRING]
+
 	do
 		create Result.make (0)
+
+		across set_enum as cursor
+		loop
+			if Result.is_empty then
+				Result.extend (cursor.item)
+
+
+			elseif across Result as second_list
+				all
+					cursor.item /~ second_list.item
+			    end
+
+				then
+					Result.extend(cursor.item)
+				end
+		end
+	end
+
+	print_set_enumeration
+	local
+		symbol : TERMINAL_SYMBOL
+	do
+		create {LBRACE}symbol
+		value.make_empty
+		value.append (symbol.output)
+		create {COMMA}symbol
+
+		across set_enum_list as cursor
+		loop
+			value.append (cursor.item.out)
+
+			if not cursor.is_last then
+				value.append (symbol.output)
+			end
+		end
+		create {RBRACE}symbol
+		value.append (symbol.output)
 	end
 
 end

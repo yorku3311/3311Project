@@ -112,7 +112,12 @@ feature -- basic operations
 	do
 		myexpression.accept(type_check_expression)
 		report.make_empty
-		report.append (type_check_expression.value)
+		report.append (print_expression.value)
+		if type_check_expression.type_check then
+			set_message (status_ok)
+		else
+			set_message (status_type_correct)
+		end
 	end
 
 feature -- Binary operations

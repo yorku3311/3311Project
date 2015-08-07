@@ -16,7 +16,6 @@ feature -- command
     	do
     		if model.my_stack.is_empty then
     			model.type_check
-    			model.set_message (model.status_ok)
     		else
     			model.set_message (model.status_incomplete_exp)
     		end

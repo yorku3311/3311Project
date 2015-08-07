@@ -16,7 +16,7 @@ feature -- Constructor
 	do
 		create value.make_empty
 		create set_enum_list.make (0)
-		type_check := true
+		type_check := false
 		is_divisor_by_zero := false
 	end
 feature
