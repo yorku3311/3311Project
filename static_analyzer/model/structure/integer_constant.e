@@ -31,7 +31,7 @@ feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		visitor.visit_integer_constant (Current)
+		visitor.visit_integer_constant (Current.deep_twin)
 	end
 
 	output : STRING

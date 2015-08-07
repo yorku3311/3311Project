@@ -1,1 +1,3 @@
-reset
+start_set_enumeration
+add_integer_constant(2)
+end_set_enumeration

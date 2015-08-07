@@ -239,6 +239,7 @@ feature -- Terminal Symbols Addition Command
 			myexpression.add (integer_constant)
 		end
 		if not my_stack.is_empty then
+			my_stack.go_i_th (my_stack.count)
 			my_stack.remove
 		end
 
@@ -257,6 +258,7 @@ feature -- Terminal Symbols Addition Command
 			myexpression.add (boolean_constant)
 		end
 		if not my_stack.is_empty then
+			my_stack.go_i_th (my_stack.count)
 			my_stack.remove
 		end
 		set_message (status_ok)
@@ -297,6 +299,7 @@ feature{NONE} -- Auxillary Commands
 			myexpression.add (binary_op)
 		end
 		if not my_stack.is_empty then
+			my_stack.go_i_th (my_stack.count)
 			my_stack.remove
 		end
 		my_stack.extend (1)
@@ -316,8 +319,9 @@ do
 		myexpression.add (unary_op)
 	end
 	if not my_stack.is_empty then
-		my_stack.remove
-	end
+			my_stack.go_i_th (my_stack.count)
+			my_stack.remove
+		end
 	my_stack.extend (1)
 	set_message (status_ok)
 

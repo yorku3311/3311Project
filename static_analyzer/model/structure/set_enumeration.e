@@ -24,7 +24,7 @@ feature -- Expression State
 feature -- Constructor redefinition
 	make
 	do
-		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
+		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (500)
 		expression_list.extend (create {NULL_EXPRESSION}.make_first)
 		expression_state := begin_expression
 		current_expression_index := 3
@@ -47,11 +47,14 @@ feature -- Commands
 			expression_state := middle_expression
 			is_current_expression := TRUE
 		when middle_expression then
-			expression_list.put_i_th (create {NULL_EXPRESSION}.make_first,current_expression_index)
+			--expression_list.put_i_th (create {NULL_EXPRESSION}.make_first,current_expression_index)
+			expression_list.extend (create {NULL_EXPRESSION}.make_first)
 			set_current_index(expression_list.count)
 		when end_expression then
 			-- Delete the last middle expression
 			is_current_expression := FALSE
+			expression_list.go_i_th (expression_list.count)
+			expression_list.remove
 		end
 
 
@@ -65,7 +68,7 @@ feature -- Commands
 		if is_current_expression then
 			expression_state := end_expression
 			is_current_expression := false
-			add_operation (create {SUM})
+			add_operation (create {DUMMY})
 			is_current_expression_closed := true
 		else
 			across expression_list as c
@@ -155,7 +158,7 @@ feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		visitor.visit_set_enumeration (Current)
+		visitor.visit_set_enumeration (Current.deep_twin)
 	end
 
 	feature -- accessor features
