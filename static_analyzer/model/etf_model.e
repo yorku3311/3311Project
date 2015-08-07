@@ -35,6 +35,7 @@ feature {NONE} -- Initialization
 			create type_check_expression.make
 			create my_stack.make(0)
 			is_new := true
+			set_message (status_initialized)
 		end
 
 feature -- Attributes
@@ -70,7 +71,13 @@ feature -- Error Reporting
 	status_divisor_zero: STRING
 	    attribute Result := "Divisor is zero" end
 	status_expression_cannot_be_reset : STRING
-		attribute Result := "Error (Initial expression cannot be reset)" end
+		attribute Result := "Error (Initial expression cannot be reset)." end
+	status_enumeration_not_being_specified : STRING
+		attribute Result := "Error (Set enumeration is not being specified)." end
+	status_enum_must_not_be_empty :STRING
+		attribute Result := "Error: (Set enumeration must be non-empty)." end
+	status_type_correct : STRING
+		attribute Result := "Error (Expression is not type-correct)." end
 feature -- Set operations
 	set_message (e : STRING)
 	do
@@ -79,33 +86,30 @@ feature -- Set operations
 
 feature -- basic operations
 	pretty_print
-	local
-		d : STRING
 	do
-		myexpression.accept(print_expression)
-		d := print_expression.value
 		report.make_empty
-		report.append (d)
+		myexpression.accept(print_expression)
+		report.append (print_expression.value)
 	end
 
 	evaluate
-	local
-		d : STRING
 	do
 		myexpression.accept(evaluate_expression)
-		d := evaluate_expression.value
+		type_check
 		report.make_empty
-		report.append (d)
+		if not type_check_expression.type_check then
+			report.append (status_type_correct)
+		else
+		    report.append (evaluate_expression.value)
+		end
 	end
 	type_check
-	local
-		d : STRING
 	do
 		myexpression.accept(type_check_expression)
-		d := type_check_expression.value
 		report.make_empty
-		report.append (d)
+		report.append (type_check_expression.value)
 	end
+	
 feature -- Binary operations
 	-- BINARY ARITHMATIC
 	add_addition

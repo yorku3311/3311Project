@@ -14,12 +14,13 @@ create
 feature -- command
 	type_check
     	do
-			-- perform some update on the model state
---			if theres no error then
---				model.type_check
---			else
---				report the error
---			end
+    		if model.my_stack.is_empty then
+    			model.type_check
+    			model.set_message (model.status_ok)
+    		else
+    			model.set_message (model.status_incomplete_exp)
+    		end
+
 
 			etf_cmd_container.on_change.notify ([Current])
     	end
