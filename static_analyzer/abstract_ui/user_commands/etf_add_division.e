@@ -15,14 +15,12 @@ feature -- command
 	add_division
     	do
 			-- perform some update on the model state
-			-- error reporting
-			if model.type_check_expression.is_divisor_by_zero then
-				model.set_message (model.status_divisor_zero)
+			if model.my_stack.is_empty and not model.is_new then
+				model.set_message (model.status_completed_exp)
 			else
 				model.add_division
-				model.set_message (model.status_ok)
+				model.pretty_print
 			end
-			model.pretty_print
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

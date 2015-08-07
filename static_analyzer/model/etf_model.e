@@ -94,13 +94,18 @@ feature -- basic operations
 
 	evaluate
 	do
-		myexpression.accept(evaluate_expression)
 		type_check
 		report.make_empty
 		if not type_check_expression.type_check then
-			report.append (status_type_correct)
+			set_message(status_type_correct)
+			report.append (print_expression.value)
+		elseif type_check_expression.is_divisor_by_zero then
+			set_message (status_divisor_zero)
+			report.append (print_expression.value)
 		else
+			myexpression.accept(evaluate_expression)
 		    report.append (evaluate_expression.value)
+		    set_message (status_ok)
 		end
 	end
 	type_check
@@ -109,7 +114,7 @@ feature -- basic operations
 		report.make_empty
 		report.append (type_check_expression.value)
 	end
-	
+
 feature -- Binary operations
 	-- BINARY ARITHMATIC
 	add_addition
@@ -307,7 +312,7 @@ feature -- Queries
 			Result.append ("  ")
 			Result.append ("Report: ")
 			Result.append (message)
-			message.make_empty
+
 		end
 
 feature{NONE} -- Auxillary Commands

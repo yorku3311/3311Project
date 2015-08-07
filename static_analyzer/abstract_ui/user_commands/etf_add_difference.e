@@ -15,8 +15,12 @@ feature -- command
 	add_difference
     	do
 			-- perform some update on the model state
-			model.add_difference
-			model.pretty_print
+			if model.my_stack.is_empty and not model.is_new then
+				model.set_message (model.status_completed_exp)
+			else
+				model.add_difference
+				model.pretty_print
+			end
 			etf_cmd_container.on_change.notify ([Current])
     	end
 

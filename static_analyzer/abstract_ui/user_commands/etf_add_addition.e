@@ -14,7 +14,6 @@ create
 feature -- command
 	add_addition
     	do
-			-- perform some update on the model state
 			if model.my_stack.is_empty and not model.is_new then
 				model.set_message (model.status_completed_exp)
 			else

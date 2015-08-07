@@ -32,11 +32,13 @@ feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
 		value := e.output
+		type_flag := type_bool
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
 		value := e.output
+		type_flag := type_int
 	end
 
 	visit_addition(e: BINARY_OP)
@@ -48,15 +50,15 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := not left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (not right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
+
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
+			type_flag := type_int
 		end
+
 	end
 
 	visit_division(e: BINARY_OP)
@@ -68,18 +70,15 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := not left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (not right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
 			if right_visit_type_check.value.to_integer = 0 then
 				is_divisor_by_zero := true
-			else
-				is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
-				right_visit_type_check.is_divisor_by_zero
 			end
 			type_check := true
+			type_flag := type_int
 		end
 	end
 
@@ -93,63 +92,38 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b:= left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and right_visit_type_check.value.is_boolean
-		value := b.out
-
-		if b then
+		if (left_visit_type_check.type_flag = type_bool) and (right_visit_type_check.type_flag = type_bool) then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
 			type_check := true
-		else
-			type_check := false
+			type_flag := type_bool
 		end
+
 	end
 
-	visit_difference(e: BINARY_OP) -- N
-	local
-		left_eval_type_check : VISIT_TYPE_CHECK
-		right_eval_type_check : VISIT_TYPE_CHECK
-		left_bool :BOOLEAN
-		left_int: BOOLEAN
-		right_bool:BOOLEAN
-		right_int: BOOLEAN
+	visit_difference(e: BINARY_OP)
 	do
-		create left_eval_type_check.make
-		create right_eval_type_check.make
-		e.left.accept (left_eval_type_check)
-		left_bool := left_eval_type_check.value.is_boolean
-		e.right.accept (right_eval_type_check)
-		right_bool := right_eval_type_check.value.is_boolean
-		left_int := left_eval_type_check.value.is_integer
-		right_int := right_eval_type_check.value.is_integer
-		if (left_bool = right_bool) or (left_int = right_int)  then
-			type_check := true
-
-			else
-				type_check := false
-		end
-		value := type_check.out
+		-- here we can have a mix of elements
+		type_check := true
+		type_flag := type_mix
 	end
 
 
 	visit_disjunction(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b:= left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and right_visit_type_check.value.is_boolean
-		value := b.out
-
-		if b then
+		if (left_visit_type_check.type_flag = type_bool) and (right_visit_type_check.type_flag = type_bool) then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
 			type_check := true
-		else
-			type_check := false
+			type_flag := type_bool
 		end
 	end
 
@@ -157,33 +131,33 @@ feature -- Give the evaluated expression
 
 	visit_equality(e: BINARY_OP)
 	do
+		-- can have a mix
+		type_check := true
+		type_flag := type_mix
 	end
 
 	visit_generalized_and(e: UNARY_OP)
 	local
-		b : BOOLEAN
 		visit_type_check : VISIT_TYPE_CHECK
 	do
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
-		b := visit_type_check.type_check
-		value := b.out
-		if b  then
+		if visit_type_check.type_flag = type_bool then
+			type_flag := type_bool
 			type_check := true
 		end
+
 
 	end
 
 	visit_generalized_or(e: UNARY_OP)
 	local
-		b : BOOLEAN
 		visit_type_check : VISIT_TYPE_CHECK
 	do
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
-		b := visit_type_check.type_check
-		value := b.out
-		if b  then
+		if visit_type_check.type_flag = type_bool then
+			type_flag := type_bool
 			type_check := true
 		end
 
@@ -191,21 +165,18 @@ feature -- Give the evaluated expression
 
 	visit_greater_than(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := not left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (not right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
+			type_flag := type_bool
 		end
 	end
 
@@ -218,14 +189,12 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
+		if (left_visit_type_check.type_flag = type_bool) and (right_visit_type_check.type_flag = type_bool) then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
+			type_flag := type_bool
 		end
 	end
 
@@ -239,7 +208,12 @@ feature -- Give the evaluated expression
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
 		e.right.accept (right_visit_type_check)
-		b := (left_visit_type_check.type_flag  /= left_visit_type_check.type_mix)
+		if left_visit_type_check.type_flag = right_visit_type_check.type_flag then
+			type_flag :=left_visit_type_check.type_flag
+		else
+			type_flag := type_mix
+		end
+		type_check := true
 	end
 
 	visit_less_than(e: BINARY_OP)
@@ -251,14 +225,12 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := not left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (not right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
+			type_flag := type_bool
 		end
 	end
 
@@ -271,14 +243,12 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := not left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (not right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
-				is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
-				right_visit_type_check.is_divisor_by_zero
-				type_check := true
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+			type_check := true
+			type_flag := type_int
 		end
 	end
 
@@ -289,11 +259,9 @@ feature -- Give the evaluated expression
 	do
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
-		b := visit_type_check.value.is_boolean
-		value := b.out
-		if b then
-				is_divisor_by_zero := visit_type_check.is_divisor_by_zero
-				type_check := true
+		if (visit_type_check.type_flag = type_bool) then
+			type_check := true
+			type_flag := type_bool
 		end
 	end
 
@@ -304,11 +272,10 @@ feature -- Give the evaluated expression
 	do
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
-		b := not visit_type_check.value.is_boolean
-		value := b.out
-		if b then
-			is_divisor_by_zero := visit_type_check.is_divisor_by_zero
+
+		if (visit_type_check.type_flag = type_int) then
 			type_check := true
+			type_flag := type_int
 		end
 	end
 
@@ -321,92 +288,68 @@ feature -- Give the evaluated expression
 		create left_visit_type_check.make
 		create right_visit_type_check.make
 		e.left.accept (left_visit_type_check)
-		b := not left_visit_type_check.value.is_boolean
 		e.right.accept (right_visit_type_check)
-		b := b and (not right_visit_type_check.value.is_boolean)
-		value := b.out
-		if b then
-				is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
-				right_visit_type_check.is_divisor_by_zero
-				type_check := true
+		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int) then
+			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
+			right_visit_type_check.is_divisor_by_zero
+			type_check := true
+			type_flag := type_int
 		end
 	end
 
 	visit_sum(e: UNARY_OP)
 	local
-		eval_type_check : VISIT_TYPE_CHECK
+		visit_type_check : VISIT_TYPE_CHECK
 	do
-		create eval_type_check.make
-		e.child.accept (eval_type_check)
-		if eval_type_check.type_flag = eval_type_check.type_int then
+		create visit_type_check.make
+		e.child.accept (visit_type_check)
+		if (visit_type_check.type_flag = type_int) then
 			type_check := true
-			value := type_check.out
+			type_flag := type_int
 		end
 	end
 
 	visit_union(e: BINARY_OP) -- N
 	local
-		left_eval_type_check : VISIT_TYPE_CHECK
-		right_eval_type_check : VISIT_TYPE_CHECK
-		left_bool :BOOLEAN
-		left_int: BOOLEAN
-		right_bool:BOOLEAN
-		right_int: BOOLEAN
+		left_visit_type_check : VISIT_TYPE_CHECK
+		right_visit_type_check : VISIT_TYPE_CHECK
 	do
-		create left_eval_type_check.make
-		create right_eval_type_check.make
-		e.left.accept (left_eval_type_check)
-		left_bool := left_eval_type_check.value.is_boolean
-		e.right.accept (right_eval_type_check)
-		right_bool := right_eval_type_check.value.is_boolean
-		left_int := left_eval_type_check.value.is_integer
-		right_int := right_eval_type_check.value.is_integer
-		if (left_bool = right_bool) or (left_int = right_int)  then
-			type_check := true
-
-			else
-				type_check := false
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		e.right.accept (right_visit_type_check)
+		if left_visit_type_check.type_flag = right_visit_type_check.type_flag then
+			type_flag := left_visit_type_check.type_flag
+		else
+			type_flag := type_mix
 		end
-		value := type_check.out
+		type_check := true
 	end
 
 
 	visit_set_enumeration (e : SET_ENUMERATION)
 	local
-		eval: VISIT_PRINT
-		symbol : TERMINAL_SYMBOL
+		eval : VISIT_TYPE_CHECK
 		b : BOOLEAN
 	do
 		create eval.make
-		create {LPAREN}symbol
-		value.append (symbol.output)
-		type_check := true
 		from
 			e.start
 			e.item.accept(eval)
-		    b := eval.value.is_boolean
-		    if b then
-		    	type_flag := type_bool
-		    else
-		    	type_flag := type_int
-		    end
+		    type_flag := eval.type_flag
 		until
 			e.after
 		loop
 			-- if the first one is boolean, check to see if all the other ones are boolean
 			e.item.accept(eval)
-		    b := eval.value.is_boolean
-			if (type_check = type_bool) and b then
-				-- do nothing
-			elseif (type_check = type_int) and b then
-				type_check := false
+		    if not (eval.type_flag = type_flag) then
 				type_flag := type_mix
-			end
+
+		    end
 			e.forth
+			type_check := true
 
 		end
-		create {RPAREN}symbol
-		value.append (symbol.output)
 	end
 
 	visit_null_expression (e  : NULL_EXPRESSION)

@@ -20,6 +20,7 @@ feature -- command
 				model.set_message (model.status_completed_exp)
 			else
 				model.add_boolean_constant(c)
+				model.set_message (model.status_ok)
 				model.pretty_print
 			end
 			etf_cmd_container.on_change.notify ([Current])
