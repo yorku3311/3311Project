@@ -349,17 +349,21 @@ feature -- Give the evaluated expression
 			e.start
 			e.item.accept(eval)
 		    type_flag := eval.type_flag
+		    type_set_enum := eval.type_set_enum
 		until
 			e.after
 		loop
 			-- if the first one is boolean, check to see if all the other ones are boolean
 			e.item.accept(eval)
-		    if not (eval.type_flag = type_flag) then
+		    if not (eval.type_flag = type_flag)
+		    	and (type_set_enum = eval.type_set_enum) then
 				type_flag := type_mix
-
+				type_check := false
+		    else
+		    	type_check := true
 		    end
 			e.forth
-			type_check := true
+
 
 		end
 		type_set_enum := true
