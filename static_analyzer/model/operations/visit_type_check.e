@@ -34,12 +34,14 @@ feature -- Give the evaluated expression
 	do
 		value := e.output
 		type_flag := type_bool
+		type_check := true
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
 		value := e.output
 		type_flag := type_int
+		type_check := true
 	end
 
 	visit_addition(e: BINARY_OP)
