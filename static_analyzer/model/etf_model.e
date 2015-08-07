@@ -34,7 +34,7 @@ feature {NONE} -- Initialization
 			create print_expression.make
 			create type_check_expression.make
 			create my_stack.make(0)
-
+			is_new := true
 		end
 
 feature -- Attributes
@@ -53,6 +53,7 @@ feature{NONE} -- Internal Attributes
 	integer_constant : INTEGER_CONSTANT
 	boolean_constant : BOOLEAN_CONSTANT
 	unary_op : UNARY_OP
+
 	set_enum : SET_ENUMERATION
 	first_set : BOOLEAN
 
@@ -115,14 +116,12 @@ feature -- Binary operations
 		-- add binary operation 'multiplication'
 	do
 		add_binary_operation(create {TIMES})
-		message := status_ok
 	end
 
 	add_division
 		-- add binary operation 'division'
 	do
 		add_binary_operation(create {DIVIDES})
-		message := status_ok
 
 	end
 
@@ -178,22 +177,18 @@ feature -- Binary operations
     end
 feature -- Unary operations
 	--arithmatic
-
 	add_negative
 	do
 		add_unary_operation(create {NEGATIVE})
 	end
 
 	--logical
-
 	add_negation
 	do
 		add_unary_operation(create {NEGATION})
 	end
 
 	--composite
-
-
 	add_sum
 	do
 		add_unary_operation(create {SUM})
@@ -215,18 +210,20 @@ feature -- Enumeration operations
 		-- this will need to be updated
 		set_enum.set_expression_state (1)
 		set_enum.add_operation (create {DUMMY})
-		if not is_new then
+		if is_new then
 			myexpression := set_enum.deep_twin
 			is_new := false
 		else
 			myexpression.add (set_enum)
 		end
 		my_stack.extend (1)
+		set_message (status_ok)
 
 	end
 	end_set_enumeration
 	do
 		myexpression.end_set_enumeration
+		set_message (status_ok)
 	end
 
 feature -- Terminal Symbols Addition Command
@@ -235,7 +232,7 @@ feature -- Terminal Symbols Addition Command
 	do
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
-		if not is_new then
+		if is_new then
 			myexpression := integer_constant.deep_twin
 			is_new := false
 		else
@@ -245,7 +242,7 @@ feature -- Terminal Symbols Addition Command
 			my_stack.remove
 		end
 
-		-- type_integer := true
+		set_message (status_ok)
 	end
 
 	add_boolean_constant (b : BOOLEAN)
@@ -253,7 +250,7 @@ feature -- Terminal Symbols Addition Command
 	do
 		create boolean_constant
 		boolean_constant.set_boolean_constant(b)
-		if not is_new then
+		if is_new then
 			myexpression := boolean_constant.deep_twin
 			is_new := false
 		else
@@ -262,6 +259,7 @@ feature -- Terminal Symbols Addition Command
 		if not my_stack.is_empty then
 			my_stack.remove
 		end
+		set_message (status_ok)
 	end
 
 
@@ -269,6 +267,7 @@ feature -- Terminal Symbols Addition Command
 			-- Reset model state.
 		do
 			make
+			is_new := true
 		end
 
 feature -- Queries
@@ -291,9 +290,9 @@ feature{NONE} -- Auxillary Commands
 		-- create a new binary operation and add it to the list of operations.
 		create binary_op.make
 		binary_op.add_operation (e)
-		if not is_new then
+		if is_new then
 			myexpression := binary_op.deep_twin
-			is_new := true
+			is_new := false
 		else
 			myexpression.add (binary_op)
 		end
@@ -302,6 +301,7 @@ feature{NONE} -- Auxillary Commands
 		end
 		my_stack.extend (1)
 		my_stack.extend (1)
+		set_message (status_ok)
 	end
 
 
@@ -309,11 +309,17 @@ add_unary_operation(e: TERMINAL_SYMBOL)
 do
 	create unary_op.make
 	unary_op.add_operation(e)
-	myexpression.add (unary_op)
+	if is_new then
+		myexpression := unary_op.deep_twin
+		is_new := false
+	else
+		myexpression.add (unary_op)
+	end
 	if not my_stack.is_empty then
 		my_stack.remove
 	end
 	my_stack.extend (1)
+	set_message (status_ok)
 
 end
 

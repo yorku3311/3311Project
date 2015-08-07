@@ -14,8 +14,7 @@ create
 feature -- command
 	reset
     	do
-			-- perform some update on the model state
-			if not model.is_new then
+			if model.is_new then
 				model.set_message (model.status_expression_cannot_be_reset)
 			else
 				model.reset

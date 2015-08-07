@@ -9,11 +9,9 @@ deferred class
 inherit
 	EXPRESSION
 	redefine
-		add, end_set_enumeration
+		end_set_enumeration,add
 	end
 
---create
---	make
 feature -- Constructor
 	make
 	do
@@ -25,18 +23,10 @@ feature{NONE} -- Auxillary Attributes
 	expression_list : ARRAYED_LIST[EXPRESSION]
 
 feature -- Queries
-output : STRING
-	do
-		-- Go thru the arrayed list and print everything out
-		create Result.make_empty
-		across expression_list as cursor
-		loop
-			Result.append (cursor.item.output)
-		end
+	output : STRING
+	deferred
+		
 	end
-
-
-feature{COMPOSITE_EXPRESSION} -- String conversion to a set of arithmatic/logical expressions
 
 
 feature -- Commands
@@ -65,6 +55,7 @@ feature -- Commands
 		end
 		is_set := set_first_null
 	end
+
 	set_first_null :BOOLEAN
 		--sets the next null item found to '?'. Returns false if no '?' found
 		-- this would be useful for checking if th expression is complete.
@@ -86,11 +77,13 @@ feature -- Commands
 
 		end
 	end
+
 feature -- Special Commands
 	add_operation(expression : TERMINAL_SYMBOL)
 	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
 	deferred
 	end
+
 
 	end_set_enumeration
 	-- ends the current enumeration that is open
@@ -106,9 +99,6 @@ feature -- Special Commands
 		dummy_bool := set_first_null
 	end
 
-feature --testing the visitor pattern
-	-- this is dynamically binded it should go to either printing, evaluation,
-	-- or type check
 
 
 

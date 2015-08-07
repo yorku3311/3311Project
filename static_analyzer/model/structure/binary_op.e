@@ -22,7 +22,7 @@ feature -- Constructors
 		create times create divide create plus create minus create op_and
 		create op_or create op_equals create op_implies create op_lt create op_gt
 		create op_union create op_intersect create op_difference
-		create {SUM}operator
+		create {DUMMY}operator
 	end
 feature{NONE} -- Attributes
 	times : TIMES
@@ -82,6 +82,7 @@ feature -- Commands to set the status of this expression type
 		expression_type := i
 	end
 
+feature -- Query Children
 	left : EXPRESSION
 	do
 		Result := expression_list.at(1)
@@ -101,6 +102,10 @@ feature -- Command
 			expression_list.extend(create {NULL_EXPRESSION}.make)
 			operator := op.deep_twin
 		end
+	output : STRING
+	do
+		Result := ""
+	end
 
 
 feature -- Test visitor pattern

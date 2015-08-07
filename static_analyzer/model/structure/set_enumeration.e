@@ -104,6 +104,11 @@ feature -- Commands
 
 	end
 
+	output : STRING
+	do
+		Result := ""
+	end
+
 
 feature -- Override add operation
 	add (expression : EXPRESSION)

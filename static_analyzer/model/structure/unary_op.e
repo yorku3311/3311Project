@@ -41,6 +41,10 @@ feature -- Commands
 			expression_list.put_i_th(create {NULL_EXPRESSION}.make_first,1)
 			operator := op
 		end
+	output : STRING
+	do
+		Result := ""
+	end
 
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)

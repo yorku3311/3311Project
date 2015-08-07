@@ -16,15 +16,15 @@ create make
 feature -- Constructor
 	make
 	do
-		create valuez.make_empty
+		create value.make_empty
 	end
 feature {NONE} -- Attributes
-	valuez : STRING
+	value : STRING
 
 feature -- Command
 	set_integer_constant (i : INTEGER)
 	do
-		valuez := i.out
+		value := i.out
 	end
 
 feature -- Test visitor pattern
@@ -36,7 +36,7 @@ feature -- Test visitor pattern
 
 	output : STRING
 	do
-		Result := valuez
+		Result := value
 	end
 	evaluate : STRING
 	do
