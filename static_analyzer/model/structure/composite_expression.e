@@ -50,9 +50,6 @@ feature -- Commands
 	end
 
 	set_first_null :BOOLEAN
-		--sets the next null item found to '?'. Returns false if no '?' found
-		-- this would be useful for checking if th expression is complete.
-		-- also needed for the recursive calls.
 	do
 		expression_list.go_i_th (0)
 	from
@@ -71,13 +68,6 @@ feature -- Commands
 		end
 	end
 
-feature -- Special Commands
-	add_operation(expression : TERMINAL_SYMBOL)
-	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
-	deferred
-	end
-
-
 	end_set_enumeration
 	-- ends the current enumeration that is open
 	local
@@ -92,6 +82,12 @@ feature -- Special Commands
 		dummy_bool := set_first_null
 	end
 
+
+feature -- Special Commands
+	add_operation(expression : TERMINAL_SYMBOL)
+	-- this will be done by either BINARY_OP, UNARY_OP, SET_ENUMERATION
+	deferred
+	end
 
 
 

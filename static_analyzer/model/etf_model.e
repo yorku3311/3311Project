@@ -221,38 +221,8 @@ feature -- Unary operations
 	do
 		add_unary_operation(create {EXISTS})
 	end
-feature -- Enumeration operations
-	-- TO DO : start set enumeration, end set enumeration
-	start_set_enumeration
-	do
-		create set_enum.make
-		-- this will need to be updated
-		set_enum.set_expression_state (1)
-		set_enum.add_operation (create {DUMMY})
-		if is_new then
-			myexpression := set_enum.deep_twin
-			is_new := false
-		else
-			myexpression.add (set_enum)
-		end
 
-		is_new_set := true
-
-		pop
-		push (expression_at_set_enumeration)
-		set_enum_count := set_enum_count + 1
-		set_message (status_ok)
-
-	end
-	end_set_enumeration
-	do
-		myexpression.end_set_enumeration
-		pop_set_enumeration
-		set_message (status_ok)
-		set_enum_count := set_enum_count - 1
-	end
-
-feature -- Terminal Symbols Addition Command
+feature -- Primitive Type Expressions
 	add_integer_constant (i : INTEGER)
 		-- add an integer constant
 	do
@@ -306,19 +276,35 @@ feature -- Terminal Symbols Addition Command
 			make
 			is_new := true
 		end
-
-feature -- Queries
-	out : STRING
-		do
-			create Result.make_from_string ("  ")
-			Result.append ("Expression currently specified: ")
-			Result.append (report)
-			Result.append ("%N")
-			Result.append ("  ")
-			Result.append ("Report: ")
-			Result.append (message)
-
+feature -- Enumeration operations
+	start_set_enumeration
+	do
+		create set_enum.make
+		-- this will need to be updated
+		set_enum.set_expression_state (1)
+		set_enum.add_operation (create {DUMMY})
+		if is_new then
+			myexpression := set_enum.deep_twin
+			is_new := false
+		else
+			myexpression.add (set_enum)
 		end
+
+		is_new_set := true
+
+		pop
+		push (expression_at_set_enumeration)
+		set_enum_count := set_enum_count + 1
+		set_message (status_ok)
+
+	end
+	end_set_enumeration
+	do
+		myexpression.end_set_enumeration
+		pop_set_enumeration
+		set_message (status_ok)
+		set_enum_count := set_enum_count - 1
+	end
 
 feature{NONE} -- Auxillary Commands
 	-- add binary operation
@@ -365,11 +351,9 @@ feature{NONE} -- Auxillary Commands
 		set_message (status_ok)
 	end
 
-feature{NONE} -- Stack Attributes
-	expression_at_set_enumeration : INTEGER = 2
-	expresssion_is_extended : INTEGER = 1
-
 feature{NONE} -- Stack Operations
+    expression_at_set_enumeration : INTEGER = 2
+	expresssion_is_extended : INTEGER = 1
 	pop
 	do
 		if not my_stack.is_empty and not (peek = expression_at_set_enumeration) then
@@ -399,6 +383,20 @@ feature{NONE} -- Stack Operations
 			my_stack.remove
 		end
 	end
+
+feature -- Queries
+	out : STRING
+		do
+			create Result.make_from_string ("  ")
+			Result.append ("Expression currently specified: ")
+			Result.append (report)
+			Result.append ("%N")
+			Result.append ("  ")
+			Result.append ("Report: ")
+			Result.append (message)
+
+		end
+
 
 
 

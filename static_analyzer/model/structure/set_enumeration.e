@@ -20,15 +20,16 @@ feature -- Expression State
 	is_current_expression : BOOLEAN
 	is_current_expression_closed : BOOLEAN
 	expression_state :INTEGER
-	current_expression_index : INTEGER
+	--current_expression_index : INTEGER
 feature -- Constructor redefinition
 	make
 	do
 		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (500)
 		expression_list.extend (create {NULL_EXPRESSION}.make_first)
 		expression_state := begin_expression
-		current_expression_index := 3
+		--current_expression_index := 3
 	end
+
 feature -- Modify the state of the enumeration
 	set_expression_state(i :INTEGER)
 	require
@@ -49,7 +50,7 @@ feature -- Commands
 		when middle_expression then
 			--expression_list.put_i_th (create {NULL_EXPRESSION}.make_first,current_expression_index)
 			expression_list.extend (create {NULL_EXPRESSION}.make_first)
-			set_current_index(expression_list.count)
+			--set_current_index(expression_list.count)
 		when end_expression then
 			-- Delete the last middle expression
 			is_current_expression := FALSE
@@ -133,20 +134,18 @@ feature -- Override add operation
 		end
 		is_set := set_first_null
 		if not is_set and not is_current_expression_closed then
-			--add_operation (create {NULL_EXPRESSION}.make_first)
 			add_operation (create {DUMMY})
 		end
 	end
 
 feature{NONE} -- Internal Feautures
-	set_current_index (i : INTEGER)
-		-- used to figure out where the next expression should be inserted
-	do
-		current_expression_index := i
-	end
+--	set_current_index (i : INTEGER)
+--		-- used to figure out where the next expression should be inserted
+--	do
+--		current_expression_index := i
+--	end
 feature -- Perform Operations
 	accept (visitor : VISIT_EXPRESSION)
-
 	do
 		visitor.visit_set_enumeration (Current.deep_twin)
 	end

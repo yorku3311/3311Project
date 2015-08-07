@@ -25,9 +25,8 @@ feature -- Command
 		value := i.out
 	end
 
-feature -- Test visitor pattern
+feature -- Operation
 	accept (visitor : VISIT_EXPRESSION)
-
 	do
 		visitor.visit_integer_constant (Current.deep_twin)
 	end

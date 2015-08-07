@@ -43,7 +43,6 @@ feature -- Give the evaluated expression
 
 	visit_addition(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -63,7 +62,6 @@ feature -- Give the evaluated expression
 
 	visit_division(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -84,7 +82,6 @@ feature -- Give the evaluated expression
 
 	visit_conjunction(e: BINARY_OP) -- N
 	local
-		b: BOOLEAN
 		left_visit_type_check: VISIT_TYPE_CHECK
 		right_visit_type_check: VISIT_TYPE_CHECK
 
@@ -182,7 +179,6 @@ feature -- Give the evaluated expression
 
 	visit_implication(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -200,7 +196,6 @@ feature -- Give the evaluated expression
 
 	visit_intersection(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -218,7 +213,6 @@ feature -- Give the evaluated expression
 
 	visit_less_than(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -236,7 +230,6 @@ feature -- Give the evaluated expression
 
 	visit_multiplication(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -254,7 +247,6 @@ feature -- Give the evaluated expression
 
 	visit_negation(e: UNARY_OP)
 	local
-		b : BOOLEAN
 		visit_type_check : VISIT_TYPE_CHECK
 	do
 		create visit_type_check.make
@@ -267,7 +259,6 @@ feature -- Give the evaluated expression
 
 	visit_negative(e: UNARY_OP)
 	local
-		b : BOOLEAN
 		visit_type_check : VISIT_TYPE_CHECK
 	do
 		create visit_type_check.make
@@ -281,7 +272,6 @@ feature -- Give the evaluated expression
 
 	visit_subtraction(e: BINARY_OP)
 	local
-		b : BOOLEAN
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
 	do
@@ -330,7 +320,6 @@ feature -- Give the evaluated expression
 	visit_set_enumeration (e : SET_ENUMERATION)
 	local
 		eval : VISIT_TYPE_CHECK
-		b : BOOLEAN
 	do
 		create eval.make
 		from

@@ -11,7 +11,7 @@ inherit
 	EXPRESSION
 
 
-feature -- Attributes
+feature{NONE} -- Attributes
 	bool : BOOLEAN
 feature -- Commands
 	set_boolean_constant (b : BOOLEAN)

@@ -14,8 +14,9 @@ inherit
 
 create
 	make,make_first
-feature -- Attributes
+feature{NONE} -- Internal Attributes
 	symbol : STRING
+feature -- Attributes
 	is_current : BOOLEAN
 		-- is this the current item we are changing?
 
@@ -40,10 +41,9 @@ feature -- Queries
 		Result := symbol
 	end
 
-
+	-- Dummy implementation
 	add_operation (e : TERMINAL_SYMBOL)
 	do
-
 	end
 
 feature -- perform operations
