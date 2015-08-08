@@ -1,10 +1,5 @@
-start_set_enumeration
-start_set_enumeration
-add_integer_constant(1)
-end_set_enumeration
+add_union
 add_integer_constant(3)
-end_set_enumeration
+add_integer_constant(5)
 type_check
 evaluate
-
-
