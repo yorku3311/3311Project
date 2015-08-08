@@ -32,13 +32,14 @@ feature -- Give the evaluated expression
 		i : INTEGER
 		visit_evaluate : VISIT_EVALUATE
 	do
-
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
-		i := visit_evaluate.value.to_integer
+		i := visit_evaluate.set_enum_list.at (1).to_integer
 	    e.right.accept(visit_evaluate)
-		i := i + visit_evaluate.value.to_integer
-		value := i.out
+		i := i + visit_evaluate.set_enum_list.at (1).to_integer
+		value.make_empty
+		value.append (i.out)
 	end
 
 	visit_subtraction(e: BINARY_OP)
@@ -46,12 +47,14 @@ feature -- Give the evaluated expression
 		i : INTEGER
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
-		i := visit_evaluate.value.to_integer
+		i := visit_evaluate.set_enum_list.at (1).to_integer
 		e.right.accept(visit_evaluate)
-		i := i - visit_evaluate.value.to_integer
-		value := i.out
+		i := i - visit_evaluate.set_enum_list.at (1).to_integer
+		value.make_empty
+		value.append (i.out)
 	end
 
 	visit_multiplication(e: BINARY_OP)
@@ -59,25 +62,29 @@ feature -- Give the evaluated expression
 		i : INTEGER
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 			e.left.accept(visit_evaluate)
-			i := visit_evaluate.value.to_integer
+			i := visit_evaluate.set_enum_list.at (1).to_integer
 			e.right.accept(visit_evaluate)
-			i := i * visit_evaluate.value.to_integer
-			value := i.out
+			i := i * visit_evaluate.set_enum_list.at (1).to_integer
+			value.make_empty
+		value.append (i.out)
 	end
 
 	visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
-		value := e.output
-		set_enum_list.make (0)
+		value.make_empty
+		create set_enum_list.make (0)
+		value.append (e.output)
 		set_enum_list.extend (value)
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
-		value := e.output
-		set_enum_list.make (0)
+		value.make_empty
+		value.append (e.output)
+		create set_enum_list.make (0)
 		set_enum_list.extend (value)
 	end
 
@@ -86,12 +93,14 @@ feature -- Give the evaluated expression
 		i : BOOLEAN
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
 		i := visit_evaluate.value.to_boolean
 		e.right.accept(visit_evaluate)
 		i := i and visit_evaluate.value.to_boolean
-		value := i.out
+		value.make_empty
+		value.append (i.out)
 	end
 
 	visit_disjunction(e: BINARY_OP)
@@ -99,12 +108,14 @@ feature -- Give the evaluated expression
 		i : BOOLEAN
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
 		i := visit_evaluate.value.to_boolean
 		e.right.accept(visit_evaluate)
 		i := i or visit_evaluate.value.to_boolean
-		value := i.out
+		value.make_empty
+		value.append (i.out)
 	end
 
 
@@ -114,13 +125,15 @@ feature -- Give the evaluated expression
 		j: DOUBLE
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
-		i := visit_evaluate.value.to_integer
+		i := visit_evaluate.set_enum_list.at (1).to_integer
 		e.right.accept(visit_evaluate)
-		j := (i / visit_evaluate.value.to_integer)
+		j := (i / visit_evaluate.set_enum_list.at (1).to_integer)
 		i := j.floor
-		value := i.out
+		value.make_empty
+		value.append (i.out)
 	end
 
 	visit_equality(e: BINARY_OP)
@@ -131,6 +144,7 @@ feature -- Give the evaluated expression
 		right_visit_evaluate : VISIT_EVALUATE
 		bool : BOOLEAN
 	do
+		create set_enum_list.make (0)
 		create left_visit_evaluate.make
 		create right_visit_evaluate.make
 		e.left.accept (left_visit_evaluate)
@@ -152,7 +166,8 @@ feature -- Give the evaluated expression
 				left.item ~ right.item
 			end
 		end
-		value := bool.out
+		value.make_empty
+		value.append (bool.out)
 	end
 
 	visit_implication(e: BINARY_OP)
@@ -160,12 +175,14 @@ feature -- Give the evaluated expression
 		i : BOOLEAN
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
 		i := visit_evaluate.value.to_boolean
 		e.right.accept(visit_evaluate)
 		i := i implies visit_evaluate.value.to_boolean
-		value := i.out
+		value.make_empty
+		value.append (i.out)
 	end
 
 	visit_less_than(e: BINARY_OP)
@@ -174,12 +191,14 @@ feature -- Give the evaluated expression
 		b : BOOLEAN
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
-		i := visit_evaluate.value.to_integer
+		i := visit_evaluate.set_enum_list.at (1).to_integer
 		e.right.accept(visit_evaluate)
-		b := i < visit_evaluate.value.to_integer
-		value := b.out
+		b := i < visit_evaluate.set_enum_list.at (1).to_integer
+		value.make_empty
+		value.append (b.out)
 	end
 
 	visit_greater_than(e: BINARY_OP)
@@ -188,69 +207,70 @@ feature -- Give the evaluated expression
 		b : BOOLEAN
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.left.accept(visit_evaluate)
-		i := visit_evaluate.value.to_integer
+		i := visit_evaluate.set_enum_list.at (1).to_integer
 		e.right.accept(visit_evaluate)
-		b := i > visit_evaluate.value.to_integer
-		value := b.out
+		b := i > visit_evaluate.set_enum_list.at (1).to_integer
+		value.make_empty
+		value.append (b.out)
 	end
 
 
 	visit_generalized_and(e: UNARY_OP)
 	local
 		b : BOOLEAN
-		set_list : ARRAYED_LIST[STRING]
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		b := true
 		e.child.accept (visit_evaluate)
-		set_list := visit_evaluate.set_enum_list
 
-		across set_list as cursor
+		across visit_evaluate.set_enum_list as cursor
 		loop
 			b := b and cursor.item.to_boolean
 		end
-		value := b.out
+		value.make_empty
+		value.append (b.out)
 	end
 
 	visit_generalized_or(e: UNARY_OP)
 	local
 		b : BOOLEAN
-		set_list : ARRAYED_LIST[STRING]
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		b := true
 		e.child.accept (visit_evaluate)
-		set_list := visit_evaluate.set_enum_list
 
-		across set_list as cursor
+		across visit_evaluate.set_enum_list as cursor
 		loop
 			b := b or cursor.item.to_boolean
 		end
-		value := b.out
+		value.make_empty
+		value.append (b.out)
 	end
 
 	visit_negation(e: UNARY_OP)
 	local
 		b : BOOLEAN
-		set_list : ARRAYED_LIST[STRING]
 		visit_evaluate : VISIT_EVALUATE
 		symbol : TERMINAL_SYMBOL
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		b := true
 		e.child.accept (visit_evaluate)
-		create set_list.make (0)
 
 		across visit_evaluate.set_enum_list as cursor
 		loop
 			b := not cursor.item.to_boolean
-			set_list.extend (b.out)
+			set_enum_list.extend (b.out)
 		end
-		set_enum_list := set_list
+
 
 		value.make_empty
 		create {LPAREN}symbol
@@ -265,6 +285,7 @@ feature -- Give the evaluated expression
 		i : INTEGER
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		e.child.accept (visit_evaluate)
 
@@ -272,7 +293,8 @@ feature -- Give the evaluated expression
 		loop
 			i := i + cursor.item.to_integer
 		end
-		value := i.out
+		value.make_empty
+		value.append (i.out)
 	end
 
 	visit_intersection(e: BINARY_OP)
@@ -281,6 +303,7 @@ feature -- Give the evaluated expression
 		visit_evaluate_right : VISIT_EVALUATE
 		symbol : TERMINAL_SYMBOL
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
 		e.left.accept (visit_evaluate_left)
@@ -311,6 +334,7 @@ feature -- Give the evaluated expression
 		visit_evaluate_right : VISIT_EVALUATE
 		symbol : TERMINAL_SYMBOL
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
 		e.left.accept (visit_evaluate_left)
@@ -341,6 +365,7 @@ feature -- Give the evaluated expression
 		visit_evaluate : VISIT_EVALUATE
 		symbol : TERMINAL_SYMBOL
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 
 		e.child.accept (visit_evaluate)
@@ -354,6 +379,7 @@ feature -- Give the evaluated expression
 		create {LPAREN}symbol
 		value.append(symbol.output)
 		if set_enum_list.count > 1 then
+
 			print_set_enumeration
 		else
 			value.append (i.out)
@@ -374,6 +400,7 @@ feature -- Give the evaluated expression
 		symbol : TERMINAL_SYMBOL
 		dummy_b : BOOLEAN
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
 		create set_list.make (0)
@@ -419,6 +446,7 @@ feature -- Give the evaluated expression
 	local
 		visit_evaluate : VISIT_EVALUATE
 	do
+		create set_enum_list.make (0)
 		create visit_evaluate.make
 		from
 			e.start
@@ -427,7 +455,7 @@ feature -- Give the evaluated expression
 		loop
 			e.item.accept (visit_evaluate)
 
-			set_enum_list.extend (visit_evaluate.value)
+			set_enum_list.extend (visit_evaluate.value.deep_twin)
 			e.forth
 		end
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list.deep_twin)
@@ -469,13 +497,14 @@ feature{NONE}-- Internal Functios
 		create {LBRACE}symbol
 		--value.make_empty
 		value.append (symbol.output)
-		create {COMMA}symbol
+
 
 		across set_enum_list as cursor
 		loop
 			value.append (cursor.item.out)
 
 			if not cursor.is_last then
+				create {COMMA}symbol
 				value.append (symbol.output)
 			end
 		end

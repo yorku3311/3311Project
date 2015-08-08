@@ -36,7 +36,7 @@ feature -- Commands
 	loop
 			if attached {NULL_EXPRESSION}expression_list.item as c then
 				if c.is_current then
-					expression_list.put_i_th (expression,expression_list.index)
+					expression_list.put_i_th (expression.deep_twin,expression_list.index)
 					is_set := true
 				end
 				-- update the next 'NULL_EXPRESSION'

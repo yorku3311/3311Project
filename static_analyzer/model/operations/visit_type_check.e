@@ -72,17 +72,20 @@ feature -- Give the evaluated expression
 	local
 		left_visit_type_check : VISIT_TYPE_CHECK
 		right_visit_type_check : VISIT_TYPE_CHECK
+		divisor_check : VISIT_EVALUATE
 	do
 		create left_visit_type_check.make
 		create right_visit_type_check.make
+		create divisor_check.make
 		e.left.accept (left_visit_type_check)
 		e.right.accept (right_visit_type_check)
+		e.right.accept (divisor_check)
 		if (left_visit_type_check.type_flag = type_int) and (right_visit_type_check.type_flag = type_int)
 			and (not left_visit_type_check.type_set_enum) and (not right_visit_type_check.type_set_enum)
 			and left_visit_type_check.type_check and right_visit_type_check.type_check then
 			is_divisor_by_zero := left_visit_type_check.is_divisor_by_zero or
 			right_visit_type_check.is_divisor_by_zero
-			if right_visit_type_check.value.to_integer = 0 then
+			if divisor_check.value.to_integer = 0 then
 				is_divisor_by_zero := true
 			end
 			type_check := true
@@ -402,14 +405,14 @@ feature -- Give the evaluated expression
 		    		type_check := true
 		    	end
 		    elseif type_flag = type_int then
-		    	if eval.type_set_enum or (type_flag = type_bool) then
+		    	if eval.type_set_enum or (eval.type_flag = type_bool) then
 		    		type_check := false
 		    		exit_bool := true
 		    	else
 		    		type_check := true
 		    	end
 		    elseif type_flag = type_bool then
-		    	if eval.type_set_enum or (type_flag = type_int) then
+		    	if eval.type_set_enum or (eval.type_flag = type_int) then
 		    		type_check := false
 		    		exit_bool := true
 		    	else

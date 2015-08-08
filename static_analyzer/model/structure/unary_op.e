@@ -31,7 +31,7 @@ feature -- Attributes
 
 	child : EXPRESSION
 	do
-		Result := expression_list.at (1)
+		Result := expression_list.at (1).deep_twin
 	end
 
 feature -- Commands

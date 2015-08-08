@@ -42,12 +42,12 @@ feature -- External Attributes Accessible
 feature -- Query Children
 	left : EXPRESSION
 	do
-		Result := expression_list.at(1)
+		Result := expression_list.at(1).deep_twin
 	end
 
 	right : EXPRESSION
 	do
-		Result := expression_list.at (2)
+		Result := expression_list.at (2).deep_twin
 	end
 
 

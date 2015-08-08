@@ -1,12 +1,11 @@
-add_union
+add_difference
 start_set_enumeration
-add_integer_constant(3)
-add_integer_constant(5)
+add_boolean_constant(true)
+add_boolean_constant(true)
 end_set_enumeration
 start_set_enumeration
-add_integer_constant(6)
-add_integer_constant(5)
+add_boolean_constant(true)
+add_boolean_constant(true)
 end_set_enumeration
-
 type_check
 evaluate
