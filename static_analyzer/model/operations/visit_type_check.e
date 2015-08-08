@@ -343,10 +343,12 @@ feature -- Give the evaluated expression
 		if left_visit_type_check.type_flag = right_visit_type_check.type_flag and (left_visit_type_check.type_set_enum)
 			and (right_visit_type_check.type_set_enum)  then
 			type_flag := left_visit_type_check.type_flag
+			type_check := true
 		else
 			type_flag := type_mix
+			type_check := false
 		end
-		type_check := true
+
 	end
 
 
