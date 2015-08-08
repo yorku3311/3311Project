@@ -27,6 +27,7 @@ feature
 	type_bool : INTEGER = 2
 	type_mix : INTEGER = 0
 	type_set_enum : BOOLEAN
+	type_set : INTEGER = 3
 	type_flag : INTEGER
 
 feature -- Give the evaluated expression
@@ -375,6 +376,9 @@ feature -- Give the evaluated expression
 				type_check := false
 		    else
 		    	type_check := true
+		    end
+		    if eval.type_set_enum then
+		    	type_flag := type_set
 		    end
 			e.forth
 

@@ -1,5 +1,7 @@
-add_negation
-add_boolean_cons
+add_sum
+start_set_enumeration
 add_integer_constant(5)
+add_integer_constant(6)
+end_set_enumeration
 type_check
 evaluate
