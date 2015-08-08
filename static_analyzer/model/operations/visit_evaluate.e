@@ -272,12 +272,14 @@ feature -- Give the evaluated expression
 		end
 
 
-		value.make_empty
-		create {LPAREN}symbol
-		value.append(symbol.output)
-		print_set_enumeration
-		create {RPAREN}symbol
-		value.append(symbol.output)
+		--value.make_empty
+		--create {LPAREN}symbol
+		--value.append(symbol.output)
+		value.append (set_enum_list.at (1))
+		
+
+		--create {RPAREN}symbol
+		--value.append(symbol.output)
 	end
 
 	visit_sum(e: UNARY_OP)
@@ -320,11 +322,11 @@ feature -- Give the evaluated expression
 		end
 
 		value.make_empty
-		create {LPAREN}symbol
-		value.append(symbol.output)
+		--create {LPAREN}symbol
+		--value.append(symbol.output)
 		print_set_enumeration
-		create {RPAREN}symbol
-		value.append(symbol.output)
+		--create {RPAREN}symbol
+		--value.append(symbol.output)
 
 	end
 
@@ -350,11 +352,11 @@ feature -- Give the evaluated expression
 		end
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list)
 		value.make_empty
-		create {LPAREN}symbol
-		value.append(symbol.output)
+		--create {LPAREN}symbol
+		--value.append(symbol.output)
 		print_set_enumeration
-		create {RPAREN}symbol
-		value.append(symbol.output)
+		--create {RPAREN}symbol
+		--value.append(symbol.output)
 	end
 
 
@@ -376,8 +378,8 @@ feature -- Give the evaluated expression
 			set_enum_list.extend (i.out)
 		end
 		value.make_empty
-		create {LPAREN}symbol
-		value.append(symbol.output)
+		--create {LPAREN}symbol
+		--value.append(symbol.output)
 		if set_enum_list.count > 1 then
 
 			print_set_enumeration
@@ -385,8 +387,8 @@ feature -- Give the evaluated expression
 			value.append (i.out)
 		end
 
-		create {RPAREN}symbol
-		value.append(symbol.output)
+		--create {RPAREN}symbol
+		--value.append(symbol.output)
 	end
 
 
@@ -435,11 +437,11 @@ feature -- Give the evaluated expression
 		set_list := remove_repeating_elements_in_set (set_list.deep_twin)
 		set_enum_list := set_list.deep_twin
 		value.make_empty
-		create {LPAREN}symbol
-		value.append(symbol.output)
+		--create {LPAREN}symbol
+		--value.append(symbol.output)
 		print_set_enumeration
-		create {RPAREN}symbol
-		value.append(symbol.output)
+		--create {RPAREN}symbol
+		--value.append(symbol.output)
 	end
 
 	visit_set_enumeration (e : SET_ENUMERATION)

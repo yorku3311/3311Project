@@ -162,6 +162,8 @@ feature -- Give the evaluated expression
 	do
 		create left_visit_type_check.make
 		create right_visit_type_check.make
+		e.left.accept (left_visit_type_check)
+		e.right.accept (right_visit_type_check)
 		if (left_visit_type_check.type_flag = right_visit_type_check.type_flag)
 		 and (left_visit_type_check.type_set_enum = right_visit_type_check.type_set_enum)
 		 and left_visit_type_check.type_check and right_visit_type_check.type_check then
@@ -301,7 +303,7 @@ feature -- Give the evaluated expression
 		create visit_type_check.make
 		e.child.accept (visit_type_check)
 		if (visit_type_check.type_flag = type_bool)
-		and visit_type_check.type_check then
+		and visit_type_check.type_check and not visit_type_check.type_set_enum then
 			type_check := true
 			type_flag := type_bool
 		end
@@ -315,7 +317,7 @@ feature -- Give the evaluated expression
 		e.child.accept (visit_type_check)
 
 		if (visit_type_check.type_flag = type_int)
-		and visit_type_check.type_check then
+		and visit_type_check.type_check and not visit_type_check.type_set_enum then
 			type_check := true
 			type_flag := type_int
 		end
