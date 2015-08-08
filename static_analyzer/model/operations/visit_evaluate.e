@@ -70,12 +70,14 @@ feature -- Give the evaluated expression
 	visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
 		value := e.output
+		set_enum_list.make (0)
 		set_enum_list.extend (value)
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
 		value := e.output
+		set_enum_list.make (0)
 		set_enum_list.extend (value)
 	end
 
@@ -125,30 +127,32 @@ feature -- Give the evaluated expression
 	local
 		left_child_array : ARRAYED_LIST[STRING]
 		right_child_array : ARRAYED_LIST[STRING]
-		visit_evaluate : VISIT_EVALUATE
+		left_visit_evaluate : VISIT_EVALUATE
+		right_visit_evaluate : VISIT_EVALUATE
 		bool : BOOLEAN
 	do
-		create visit_evaluate.make
-		e.left.accept (visit_evaluate)
-		left_child_array := visit_evaluate.set_enum_list
-		e.right.accept (visit_evaluate)
-		right_child_array := visit_evaluate.set_enum_list
+		create left_visit_evaluate.make
+		create right_visit_evaluate.make
+		e.left.accept (left_visit_evaluate)
+		e.right.accept (right_visit_evaluate)
 		bool :=
-		across left_child_array as left
+		across left_visit_evaluate.set_enum_list as left
 		all
-			across right_child_array as right
+			across right_visit_evaluate.set_enum_list as right
 			some
-				left.item = right.item
+				left.item ~ right.item
 			end
 		end
-		implies
-		across right_child_array as right
+
+		bool := bool and
+		across right_visit_evaluate.set_enum_list as right
 		all
-			across left_child_array as left
+			across left_visit_evaluate.set_enum_list as left
 			some
-				left.item = right.item
+				left.item ~ right.item
 			end
 		end
+		value := bool.out
 	end
 
 	visit_implication(e: BINARY_OP)
@@ -368,6 +372,7 @@ feature -- Give the evaluated expression
 		set_list : ARRAYED_LIST[STRING]
 		index_to_add : ARRAYED_LIST[INTEGER]
 		symbol : TERMINAL_SYMBOL
+		dummy_b : BOOLEAN
 	do
 		create visit_evaluate_left.make
 		create visit_evaluate_right.make
@@ -377,22 +382,31 @@ feature -- Give the evaluated expression
 		e.left.accept (visit_evaluate_left)
 		e.right.accept (visit_evaluate_right)
 		-- Set the initial list to the first list
-		set_list := visit_evaluate_left.set_enum_list
+
 
 		across visit_evaluate_left.set_enum_list as other_list loop
+			dummy_b:=
 			across visit_evaluate_right.set_enum_list as my_list
-			loop
-				if not(my_list.item ~ other_list.item) then
-					index_to_add.extend (my_list.cursor_index)
-				end
+			all
+				not (other_list.item ~ my_list.item)
+			end
+			if dummy_b then
+				set_list.extend (other_list.item)
 			end
 		end
-		-- put this in the output lit
-		across index_to_add as out_list
-		loop
-			set_enum_list.extend (visit_evaluate_left.set_enum_list.at (out_list.item))
+		across visit_evaluate_right.set_enum_list as other_list loop
+			dummy_b:=
+			across visit_evaluate_left.set_enum_list as my_list
+			all
+				not (other_list.item ~ my_list.item)
+			end
+			if dummy_b then
+				set_list.extend (other_list.item)
+			end
 		end
-
+		-- remove duplicates
+		set_list := remove_repeating_elements_in_set (set_list.deep_twin)
+		set_enum_list := set_list.deep_twin
 		value.make_empty
 		create {LPAREN}symbol
 		value.append(symbol.output)

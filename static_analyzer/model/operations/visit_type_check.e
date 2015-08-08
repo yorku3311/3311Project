@@ -35,6 +35,7 @@ feature -- Give the evaluated expression
 		value := e.output
 		type_flag := type_bool
 		type_check := true
+		type_set_enum := false
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
@@ -42,6 +43,7 @@ feature -- Give the evaluated expression
 		value := e.output
 		type_flag := type_int
 		type_check := true
+		type_set_enum := false
 	end
 
 	visit_addition(e: BINARY_OP)
@@ -143,8 +145,16 @@ feature -- Give the evaluated expression
 
 
 	visit_equality(e: BINARY_OP)
+	local
+		left_visit_type_check: VISIT_TYPE_CHECK
+		right_visit_type_check: VISIT_TYPE_CHECK
 	do
-		-- can have a mix
+		create left_visit_type_check.make
+		create right_visit_type_check.make
+		if (left_visit_type_check.type_flag = right_visit_type_check.type_flag)
+		 and (left_visit_type_check.type_set_enum = right_visit_type_check.type_set_enum) then
+
+		end
 		type_check := true
 		type_flag := type_mix
 	end
