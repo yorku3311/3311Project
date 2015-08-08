@@ -234,7 +234,6 @@ feature -- Unary operations
 
 feature -- Primitive Type Expressions
 	add_integer_constant (i : INTEGER)
-		-- add an integer constant
 	do
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
@@ -257,7 +256,6 @@ feature -- Primitive Type Expressions
 	end
 
 	add_boolean_constant (b : BOOLEAN)
-		-- add boolean constant
 	do
 		create boolean_constant
 		boolean_constant.set_boolean_constant(b)

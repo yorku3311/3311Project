@@ -1,5 +1,5 @@
-add_union
-add_integer_constant(3)
+add_negation
+add_boolean_cons
 add_integer_constant(5)
 type_check
 evaluate
