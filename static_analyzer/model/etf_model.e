@@ -104,7 +104,7 @@ feature -- basic operations
 
 	evaluate
 	require
-		not no_expression_on_stack and is_type_correct and not is_divisor_zero
+		no_expression_on_stack and is_type_correct and not is_divisor_zero
 	do
 		type_check
 		report.make_empty
@@ -123,7 +123,7 @@ feature -- basic operations
 	end
 	type_check
 	require
-		not no_expression_on_stack
+		no_expression_on_stack
 	do
 		myexpression.accept(type_check_expression)
 		report.make_empty
