@@ -36,6 +36,7 @@ feature {NONE} -- Initialization
 			create my_stack.make(0)
 			is_new := true
 			set_message (status_initialized)
+			is_type_correct := true
 		end
 
 feature -- Attributes
@@ -49,6 +50,8 @@ feature -- Attributes
 	-- used to ensure user does not try to close a currently open set which is empty
 	is_new_set : BOOLEAN
 	set_enum_count : INTEGER
+	is_type_correct : BOOLEAN
+	is_divisor_zero : BOOLEAN
 
 feature{NONE} -- Internal Attributes
 	myexpression : EXPRESSION
@@ -58,6 +61,8 @@ feature{NONE} -- Internal Attributes
 	unary_op : UNARY_OP
 	set_enum : SET_ENUMERATION
 	first_set : BOOLEAN
+
+
 
 feature -- Error Reporting
 	status_ok : STRING
@@ -98,6 +103,8 @@ feature -- basic operations
 	end
 
 	evaluate
+	require
+		not no_expression_on_stack and is_type_correct and not is_divisor_zero
 	do
 		type_check
 		report.make_empty
@@ -115,6 +122,8 @@ feature -- basic operations
 		end
 	end
 	type_check
+	require
+		not no_expression_on_stack
 	do
 		myexpression.accept(type_check_expression)
 		report.make_empty
@@ -123,6 +132,8 @@ feature -- basic operations
 			message.make_empty
 			message.append (print_expression.value)
 			message.append (status_is_type_correct)
+			is_type_correct := true
+			is_divisor_zero := type_check_expression.is_divisor_by_zero
 		else
 			message.make_empty
 			message.append (print_expression.value)
@@ -234,6 +245,8 @@ feature -- Unary operations
 
 feature -- Primitive Type Expressions
 	add_integer_constant (i : INTEGER)
+	require
+		not expression_fully_specified
 	do
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
@@ -255,9 +268,13 @@ feature -- Primitive Type Expressions
 		end
 
 		set_message (status_ok)
+	ensure
+		message.is_equal (status_ok)
 	end
 
 	add_boolean_constant (b : BOOLEAN)
+	require
+		not expression_fully_specified
 	do
 		create boolean_constant
 		boolean_constant.set_boolean_constant(b)
@@ -280,18 +297,26 @@ feature -- Primitive Type Expressions
 		end
 
 		set_message (status_ok)
+	ensure
+		message.is_equal (status_ok)
 	end
 
 
 	reset
-			-- Reset model state.
+		-- Reset model state.
+		require
+			not is_newly_initialized
 		do
 			make
 			is_new := true
 			set_message(status_ok)
+		ensure
+			message.is_equal (status_ok)
 		end
 feature -- Enumeration operations
 	start_set_enumeration
+	require
+		not expression_fully_specified
 	do
 		create set_enum.make
 		-- this will need to be updated
@@ -313,8 +338,12 @@ feature -- Enumeration operations
 		set_enum_count := set_enum_count + 1
 		set_message (status_ok)
 
+	ensure
+			message.is_equal (status_ok)
 	end
 	end_set_enumeration
+	require
+		not expression_fully_specified and is_set_enum_being_specified and not is_set_enum_empty
 	do
 		if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
 			comp_exp.end_set_enumeration
@@ -322,11 +351,15 @@ feature -- Enumeration operations
 			set_message (status_ok)
 			set_enum_count := set_enum_count - 1
 		end
+	ensure
+		message.is_equal (status_ok)
 	end
 
 feature{NONE} -- Auxillary Commands
 	-- add binary operation
 	add_binary_operation (e : TERMINAL_SYMBOL)
+	require
+		not expression_fully_specified
 	do
 		-- create a new binary operation and add it to the list of operations.
 		create binary_op.make
@@ -348,10 +381,14 @@ feature{NONE} -- Auxillary Commands
 		push(expresssion_is_extended)
 		push(expresssion_is_extended)
 		set_message (status_ok)
+	ensure
+		message.is_equal (status_ok)
 	end
 
 
 	add_unary_operation(e: TERMINAL_SYMBOL)
+	require
+		not expression_fully_specified
 	do
 		create unary_op.make
 		unary_op.add_operation(e)
@@ -370,6 +407,34 @@ feature{NONE} -- Auxillary Commands
 		pop
 		push(expresssion_is_extended)
 		set_message (status_ok)
+	ensure
+		message.is_equal (status_ok)
+	end
+
+feature  -- Error Booleans
+	no_expression_on_stack : BOOLEAN
+	do
+		Result := my_stack.is_empty
+	end
+
+	expression_fully_specified : BOOLEAN
+	do
+		Result := my_stack.is_empty and not is_new
+	end
+
+	is_set_enum_being_specified : BOOLEAN
+	do
+		Result := not (set_enum_count = 0)
+	end
+
+	is_set_enum_empty : BOOLEAN
+	do
+		Result := is_new_set
+	end
+
+	is_newly_initialized : BOOLEAN
+	do
+		Result := is_new
 	end
 
 feature{NONE} -- Stack Operations
@@ -396,6 +461,7 @@ feature{NONE} -- Stack Operations
 			Result := 0
 		end
 	end
+
 
 	pop_set_enumeration
 	do

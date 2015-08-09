@@ -15,6 +15,7 @@ feature -- command
 	end_set_enumeration
     	do
 			-- perform some update on the model state
+			
 			if model.my_stack.is_empty and not model.is_new then
 				model.set_message (model.status_completed_exp)
 			elseif model.set_enum_count = 0 then
