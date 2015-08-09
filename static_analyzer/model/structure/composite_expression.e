@@ -9,7 +9,7 @@ deferred class
 inherit
 	EXPRESSION
 	redefine
-		end_set_enumeration,add
+		
 	end
 
 feature{NONE} -- Auxillary Attributes

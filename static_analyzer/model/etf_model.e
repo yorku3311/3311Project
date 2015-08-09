@@ -241,7 +241,9 @@ feature -- Primitive Type Expressions
 			myexpression := integer_constant.deep_twin
 			is_new := false
 		else
-			myexpression.add (integer_constant)
+			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
+				comp_exp.add (integer_constant)
+			end
 		end
 
 		if is_new_set then
@@ -263,7 +265,10 @@ feature -- Primitive Type Expressions
 			myexpression := boolean_constant.deep_twin
 			is_new := false
 		else
-			myexpression.add (boolean_constant)
+			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
+				comp_exp.add (boolean_constant)
+			end
+
 		end
 
 		if is_new_set then
@@ -296,7 +301,9 @@ feature -- Enumeration operations
 			myexpression := set_enum.deep_twin
 			is_new := false
 		else
-			myexpression.add (set_enum)
+			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
+				comp_exp.add (binary_op)
+			end
 		end
 
 		is_new_set := true
@@ -309,10 +316,12 @@ feature -- Enumeration operations
 	end
 	end_set_enumeration
 	do
-		myexpression.end_set_enumeration
-		pop_set_enumeration
-		set_message (status_ok)
-		set_enum_count := set_enum_count - 1
+		if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
+			comp_exp.end_set_enumeration
+			pop_set_enumeration
+			set_message (status_ok)
+			set_enum_count := set_enum_count - 1
+		end
 	end
 
 feature{NONE} -- Auxillary Commands
@@ -326,7 +335,9 @@ feature{NONE} -- Auxillary Commands
 			myexpression := binary_op.deep_twin
 			is_new := false
 		else
-			myexpression.add (binary_op)
+			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
+				comp_exp.add (binary_op)
+			end
 		end
 
 		if is_new_set then
@@ -348,7 +359,9 @@ feature{NONE} -- Auxillary Commands
 			myexpression := unary_op.deep_twin
 			is_new := false
 		else
-			myexpression.add (unary_op)
+			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
+				comp_exp.add (unary_op)
+			end
 		end
 
 		if is_new_set then

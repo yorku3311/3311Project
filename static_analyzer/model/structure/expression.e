@@ -15,15 +15,10 @@ feature -- Queries
 
 	accept (visit : VISIT_EXPRESSION)
 	deferred
-
 	end
 
-	add ( e : EXPRESSION)
-	do
-	end
 
-	end_set_enumeration
-	do
-	end
+
+
 
 end
