@@ -14,8 +14,13 @@ create
 feature -- command
 	type_check
     	do
-    		if not model.my_stack.is_empty then
+
+    		if not model.my_stack.is_empty or (model.my_stack.is_empty and model.is_new) then
     			model.set_message (model.status_incomplete_exp)
+    		elseif not model.is_type_correct then
+    			model.message.make_empty
+				model.message.append (model.print_expression.value)
+				model.message.append (model.status_is_not_type_correct)
     		else
     			model.type_check
     		end

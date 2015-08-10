@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 			create my_stack.make(0)
 			is_new := true
 			set_message (status_initialized)
-			is_type_correct := true
+
 		end
 
 feature -- Attributes
@@ -50,7 +50,6 @@ feature -- Attributes
 	-- used to ensure user does not try to close a currently open set which is empty
 	is_new_set : BOOLEAN
 	set_enum_count : INTEGER
-	is_type_correct : BOOLEAN
 	is_divisor_zero : BOOLEAN
 
 feature{NONE} -- Internal Attributes
@@ -94,6 +93,12 @@ feature -- Set operations
 		message.append (e)
 	end
 
+	is_type_correct : BOOLEAN
+	do
+		myexpression.accept (type_check_expression)
+		Result := type_check_expression.type_check
+	end
+
 feature -- basic operations
 	pretty_print
 	do
@@ -106,20 +111,13 @@ feature -- basic operations
 	require
 		no_expression_on_stack and is_type_correct and not is_divisor_zero
 	do
-		type_check
+
 		report.make_empty
-		if not type_check_expression.type_check then
-			set_message(status_not_type_correct_evaluate)
-			report.append (print_expression.value)
-		elseif type_check_expression.is_divisor_by_zero then
-			set_message (status_divisor_zero)
-			report.append (print_expression.value)
-		else
-			myexpression.accept(evaluate_expression)
-			message.make_empty
-		    report.append (print_expression.value)
-		    message.append (evaluate_expression.value)
-		end
+		myexpression.accept(evaluate_expression)
+		message.make_empty
+	    report.append (print_expression.value)
+	    message.append (evaluate_expression.value)
+
 	end
 	type_check
 	require
@@ -128,17 +126,11 @@ feature -- basic operations
 		myexpression.accept(type_check_expression)
 		report.make_empty
 		report.append (print_expression.value)
-		if type_check_expression.type_check then
-			message.make_empty
-			message.append (print_expression.value)
-			message.append (status_is_type_correct)
-			is_type_correct := true
-			is_divisor_zero := type_check_expression.is_divisor_by_zero
-		else
-			message.make_empty
-			message.append (print_expression.value)
-			message.append (status_is_not_type_correct)
-		end
+
+		message.make_empty
+		message.append (print_expression.value)
+		message.append (status_is_type_correct)
+		is_divisor_zero := type_check_expression.is_divisor_by_zero
 	end
 
 feature -- Binary operations
@@ -183,53 +175,62 @@ feature -- Binary operations
        add_binary_operation(create {OPERATOR_IMPLIES})
     end
 
--- binary relational
+
 
     add_equality
+    -- binary relational
     do
     	add_binary_operation(create {OPERATOR_EQUAL})
     end
 
     add_greater_than
+    -- binary relational
     do
     	 add_binary_operation(create {OPERATOR_GT})
     end
 
     add_less_than
+    -- binary relational
     do
     	add_binary_operation(create {OPERATOR_LT})
     end
 
--- binary set op
+
     add_union
+    -- binary set op
     do
     	add_binary_operation(create {UNION})
     end
 
     add_intersection
+    -- binary set op
     do
     	add_binary_operation(create {INTERSECT})
     end
 
     add_difference
+    -- binary set op
     do
     	add_binary_operation(create {DIFFERENCE})
     end
 feature -- Unary operations
-	--arithmatic
+
 	add_negative
+	--arithmatic
 	do
 		add_unary_operation(create {NEGATIVE})
 	end
 
-	--logical
+
 	add_negation
+	--logical
 	do
 		add_unary_operation(create {NEGATION})
 	end
 
-	--composite
+
 	add_sum
+	--composite
 	do
 		add_unary_operation(create {OPERAND_SUM})
 	end
@@ -304,15 +305,16 @@ feature -- Primitive Type Expressions
 
 	reset
 		-- Reset model state.
-		require
-			not is_newly_initialized
-		do
-			make
-			is_new := true
-			set_message(status_ok)
-		ensure
-			message.is_equal (status_ok)
-		end
+	require
+		not is_newly_initialized
+	do
+		make
+		is_new := true
+		set_message(status_ok)
+	ensure
+		message.is_equal (status_ok)
+	end
+
 feature -- Enumeration operations
 	start_set_enumeration
 	require
@@ -327,7 +329,7 @@ feature -- Enumeration operations
 			is_new := false
 		else
 			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-				comp_exp.add (binary_op)
+				comp_exp.add (set_enum)
 			end
 		end
 
@@ -339,8 +341,9 @@ feature -- Enumeration operations
 		set_message (status_ok)
 
 	ensure
-			message.is_equal (status_ok)
+		message.is_equal (status_ok)
 	end
+	
 	end_set_enumeration
 	require
 		not expression_fully_specified and is_set_enum_being_specified and not is_set_enum_empty
