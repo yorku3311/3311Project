@@ -26,12 +26,15 @@ feature -- Attributes
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
-		value := e.output
+		--value := e.output
+		value.make_empty
+		value.append (e.output)
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
-		value := e.output
+		value.make_empty
+		value.append (e.output)
 	end
 
 	visit_addition(e: BINARY_OP)

@@ -14,15 +14,10 @@ create make
 feature -- Constructor
 	make
 	do
-		create {NULL_EXPRESSION}left_child.make
-		create {NULL_EXPRESSION}right_child.make
 		create value.make_empty
 		create set_enum_list.make (0)
 	end
 
-feature{NONE} -- Internal Attributes
-	left_child : EXPRESSION
-	right_child : EXPRESSION
 feature -- Extra Attributes
 	set_enum_list : ARRAYED_LIST[STRING]
 
@@ -329,12 +324,7 @@ feature -- Give the evaluated expression
 		end
 
 		value.make_empty
-		--create {LPAREN}symbol
-		--value.append(symbol.output)
 		print_set_enumeration
-		--create {RPAREN}symbol
-		--value.append(symbol.output)
-
 	end
 
 	visit_union(e: BINARY_OP)
@@ -359,11 +349,7 @@ feature -- Give the evaluated expression
 		end
 		set_enum_list := remove_repeating_elements_in_set (set_enum_list)
 		value.make_empty
-		--create {LPAREN}symbol
-		--value.append(symbol.output)
 		print_set_enumeration
-		--create {RPAREN}symbol
-		--value.append(symbol.output)
 	end
 
 
@@ -382,10 +368,6 @@ feature -- Give the evaluated expression
 
 		value.make_empty
 		value.append (i.out)
-
-
-		--create {RPAREN}symbol
-		--value.append(symbol.output)
 	end
 
 

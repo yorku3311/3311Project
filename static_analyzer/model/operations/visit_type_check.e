@@ -33,7 +33,9 @@ feature
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
-		value := e.output
+		--value := e.output
+		value.make_empty
+		value.append (e.output)
 		type_flag := type_bool
 		type_check := true
 		type_set_enum := false
@@ -41,7 +43,9 @@ feature -- Give the evaluated expression
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
-		value := e.output
+		--value := e.output
+		value.make_empty
+		value.append (e.output)
 		type_flag := type_int
 		type_check := true
 		type_set_enum := false

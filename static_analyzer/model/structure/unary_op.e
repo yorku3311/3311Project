@@ -45,7 +45,6 @@ feature -- Commands
 
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
-
 	do
 		if operator.output ~ negative.output then
 			visitor.visit_negative (Current.deep_twin)

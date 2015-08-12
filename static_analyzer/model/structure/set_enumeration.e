@@ -48,9 +48,7 @@ feature -- Commands
 			expression_state := middle_expression
 			is_current_expression := TRUE
 		when middle_expression then
-			--expression_list.put_i_th (create {NULL_EXPRESSION}.make_first,current_expression_index)
 			expression_list.extend (create {NULL_EXPRESSION}.make_first)
-			--set_current_index(expression_list.count)
 		when end_expression then
 			-- Delete the last middle expression
 			is_current_expression := FALSE
@@ -81,6 +79,7 @@ feature -- Commands
 			b := set_new_current_expression
 			end
 	end
+
 	set_new_current_expression:BOOLEAN
 		-- sets the new current expression. this is if there is an enumeration set within
 		-- an enumeration set. such as { {?} }. it tells which one should it close (the inner one)
@@ -138,12 +137,7 @@ feature -- Override add operation
 		end
 	end
 
-feature{NONE} -- Internal Feautures
---	set_current_index (i : INTEGER)
---		-- used to figure out where the next expression should be inserted
---	do
---		current_expression_index := i
---	end
+
 feature -- Perform Operations
 	accept (visitor : VISIT_EXPRESSION)
 	do

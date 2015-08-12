@@ -26,7 +26,6 @@ feature -- Commands
 
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
-
 	do
 		visitor.visit_boolean_constant (Current.deep_twin)
 	end
