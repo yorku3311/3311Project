@@ -322,7 +322,8 @@ feature -- Enumeration operations
 	do
 		create set_enum.make
 		-- this will need to be updated
-		set_enum.set_expression_state (1)
+
+		set_enum.set_expression_state (expresssion_is_extended)
 		set_enum.add_operation (create {DUMMY})
 		if is_new then
 			myexpression := set_enum.deep_twin
@@ -343,7 +344,7 @@ feature -- Enumeration operations
 	ensure
 		message.is_equal (status_ok)
 	end
-	
+
 	end_set_enumeration
 	require
 		not expression_fully_specified and is_set_enum_being_specified and not is_set_enum_empty
@@ -481,7 +482,8 @@ feature -- Queries
 			Result.append ("Expression currently specified: ")
 			if is_new then
 				report.make_empty
-				report := "?"
+				--report := "?"
+				report.append ("?")
 			end
 			Result.append (report)
 			Result.append ("%N")
