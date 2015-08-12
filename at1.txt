@@ -1,11 +1,7 @@
-add_addition
+add_negative
+start_set_enumeration
 add_integer_constant(3)
-add_division
-add_integer_constant(3)
-
-add_addition
-add_integer_constant(3)
-add_integer_constant(-3)
-
+add_integer_constant(5)
+end_set_enumeration
 type_check
 evaluate
