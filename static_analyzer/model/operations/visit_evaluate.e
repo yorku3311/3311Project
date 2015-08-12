@@ -92,7 +92,11 @@ feature -- Give the evaluated expression
 		i := left_visit_evaluate.value.to_integer
 		e.right.accept(right_visit_evaluate)
 		j := (i / right_visit_evaluate.value.to_integer)
-		i := j.floor
+		if j > 0 then
+			i := j.floor
+		else
+			i := j.ceiling
+		end
 		value.make_empty
 		value.append (i.out)
 	end

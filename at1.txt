@@ -1,5 +1,11 @@
-end_set_enumeration
+add_addition
+add_integer_constant(3)
+add_division
+add_integer_constant(3)
+
+add_addition
+add_integer_constant(3)
+add_integer_constant(-3)
 
 type_check
-
 evaluate
