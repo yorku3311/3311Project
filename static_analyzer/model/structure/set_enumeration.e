@@ -27,7 +27,6 @@ feature -- Constructor redefinition
 		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (500)
 		expression_list.extend (create {NULL_EXPRESSION}.make_first)
 		expression_state := begin_expression
-		--current_expression_index := 3
 	end
 
 feature -- Modify the state of the enumeration

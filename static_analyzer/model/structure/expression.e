@@ -9,9 +9,6 @@ deferred class
 
 
 feature -- Queries
-	output : STRING
-	deferred
-	end
 
 	accept (visit : VISIT_EXPRESSION)
 	deferred

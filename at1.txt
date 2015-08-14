@@ -1,11 +1,7 @@
-add_sum
-start_set_enumeration
-add_integer_constant(9)
-add_integer_constant(10)
-start_set_enumeration
-add_integer_constant(15)
-add_integer_constant(10)
-end_set_enumeration
-end_set_enumeration
+add_equality
+add_integer_constant(3)
+add_equality
+add_integer_constant(3)
+add_integer_constant(3)
 type_check
 evaluate

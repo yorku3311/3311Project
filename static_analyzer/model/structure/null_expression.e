@@ -8,9 +8,6 @@ class
 	NULL_EXPRESSION
 inherit
 	COMPOSITE_EXPRESSION
-	redefine
-		output
-	end
 
 create
 	make,make_first

@@ -8,19 +8,10 @@ deferred class
 
 inherit
 	EXPRESSION
-	redefine
-		
-	end
+
 
 feature{NONE} -- Auxillary Attributes
 	expression_list : ARRAYED_LIST[EXPRESSION]
-
-feature -- Queries
-	output : STRING
-	do
-		Result := ""
-	end
-
 
 feature -- Commands
 	add (expression : EXPRESSION)
