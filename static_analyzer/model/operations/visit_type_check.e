@@ -172,7 +172,7 @@ feature -- Give the evaluated expression
 		 and (left_visit_type_check.type_set_enum = right_visit_type_check.type_set_enum)
 		 and left_visit_type_check.type_check and right_visit_type_check.type_check then
 			type_check := true
-			type_flag := left_visit_type_check.type_flag
+			type_flag := type_bool
 		end
 	end
 
