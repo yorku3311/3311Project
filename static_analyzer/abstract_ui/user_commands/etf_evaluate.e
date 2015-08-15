@@ -19,6 +19,7 @@ feature -- command
     		model.message.make_empty
 			if not model.no_expression_on_stack or (model.no_expression_on_stack and model.is_new) then
     			model.set_message (model.status_incomplete_exp)
+				model.report.append (model.print_expression.value)
     		elseif not model.is_type_correct then
 				model.set_message(model.status_not_type_correct_evaluate)
 			    model.report.append (model.print_expression.value)
