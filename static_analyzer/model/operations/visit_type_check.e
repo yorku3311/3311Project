@@ -134,6 +134,7 @@ feature -- Give the evaluated expression
 			right_visit_type_check.is_divisor_by_zero
 			type_check := true
 			type_flag := left_visit_type_check.type_flag
+			type_set_enum := true
 		end
 	end
 
@@ -256,6 +257,7 @@ feature -- Give the evaluated expression
 			and left_visit_type_check.type_check and right_visit_type_check.type_check then
 			type_flag :=left_visit_type_check.type_flag
 			type_check := true
+			type_set_enum := true
 		else
 			type_flag := type_mix
 		end
@@ -373,6 +375,7 @@ feature -- Give the evaluated expression
 			and left_visit_type_check.type_check and right_visit_type_check.type_check then
 			type_flag := left_visit_type_check.type_flag
 			type_check := true
+			type_set_enum := true
 		else
 			type_flag := type_mix
 			type_check := false
