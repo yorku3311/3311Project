@@ -119,7 +119,7 @@ feature -- basic operations
 	    message.append (evaluate_expression.value)
 
 	end
-	
+
 	type_check
 	require
 		no_expression_on_stack

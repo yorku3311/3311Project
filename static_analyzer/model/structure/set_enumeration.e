@@ -73,9 +73,13 @@ feature -- Commands
 			loop
 				if attached {COMPOSITE_EXPRESSION} c.item as comp_exp then
 					comp_exp.end_set_enumeration
+					
 				end
 			end
-			b := set_new_current_expression
+			if not b then
+				b := set_new_current_expression
+			end
+
 			end
 	end
 
@@ -93,11 +97,11 @@ feature -- Commands
 	    	if not Result then
 				is_current_expression := true
 				expression_state := middle_expression
-				--add_operation(create {NULL_EXPRESSION}.make_first)
 				add_operation(create {DUMMY})
-		    else
-				is_current_expression := false
-				expression_state := middle_expression
+				Result := true
+--		    else
+--				is_current_expression := false
+--				expression_state := middle_expression
 	    	end
 	    end
 	end
