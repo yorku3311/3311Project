@@ -10,86 +10,201 @@ class
 inherit
 	COMPOSITE_EXPRESSION
 
+
 create
-	make
+	make, make_add, make_subtract, make_times, make_divides, make_and, make_or, make_implies, make_equal,
+	make_gt, make_lt, make_union, make_intersect, make_difference
 feature -- Constructors
 	make
 	do
 		create {ARRAYED_LIST[EXPRESSION]}expression_list.make (0)
 		expression_list.extend (create {NULL_EXPRESSION}.make_first)
-		create times create divide create plus create minus create op_and
-		create op_or create op_equals create op_implies create op_lt create op_gt
-		create op_union create op_intersect create op_difference
-		create {DUMMY}operator
+		expression_list.extend (create {NULL_EXPRESSION}.make)
+		left.set_current_expression (true)
 	end
-feature{NONE} -- Attributes
-	times : TIMES
-	divide : DIVIDES 
-	plus : PLUS
-	minus : MINUS
-	op_and :OPERAND_AND
-	op_or : OPERAND_OR
-	op_equals : OPERATOR_EQUAL
-	op_implies : OPERATOR_IMPLIES
-	op_lt : OPERATOR_LT
-	op_gt : OPERATOR_GT
-	op_union : UNION
-	op_intersect : INTERSECT
-	op_difference : DIFFERENCE
-feature -- External Attributes Accessible
-	operator : TERMINAL_SYMBOL
+	make_add
+	do
+		make
+		set_expression_type (type_add)
+	end
+	make_subtract
+	do
+		make
+		set_expression_type (type_subtract)
+
+	end
+	make_times
+	do
+		make
+		set_expression_type (type_times)
+	end
+	make_divides
+	do
+		make
+		set_expression_type (type_divides)
+
+	end
+	make_and
+	do
+		make
+		set_expression_type (type_and)
+
+	end
+	make_or
+	do
+		make
+		set_expression_type (type_or)
+
+	end
+	make_implies
+	do
+		make
+		set_expression_type (type_implies)
+
+	end
+	make_equal
+	do
+		make
+		set_expression_type (type_equal)
+
+	end
+	make_gt
+	do
+		make
+		set_expression_type (type_gt)
+
+	end
+	make_lt
+	do
+		make
+		set_expression_type (type_lt)
+
+	end
+	make_union
+	do
+		make
+		set_expression_type (type_union)
+
+	end
+	make_intersect
+	do
+		make
+		set_expression_type (type_intersect)
+
+	end
+	make_difference
+	do
+		make
+		set_expression_type (type_difference)
+
+	end
 
 feature -- Query Children
 	left : EXPRESSION
 	do
-		Result := expression_list.at(1).deep_twin
+		Result := expression_list.at(1)
 	end
 
 	right : EXPRESSION
 	do
-		Result := expression_list.at (2).deep_twin
+		Result := expression_list.at (2)
 	end
 
 
-feature -- Command
-	add_operation(op : TERMINAL_SYMBOL)
-		do
-			-- LPAREN Expression Operator Expression RPAREN
-			expression_list.put_i_th(create {NULL_EXPRESSION}.make_first,1)
-			expression_list.extend(create {NULL_EXPRESSION}.make)
-			operator := op.deep_twin
+feature -- Commands
+	set_left (e1 : EXPRESSION)
+	do
+		expression_list.put_i_th (e1,1)
+	end
+
+	set_right (e1 : EXPRESSION)
+	do
+		expression_list.put_i_th (e1,2)
+	end
+
+	set_by_ref (e : NULL_EXPRESSION)
+	do
+		if left = e then
+			expression_list.put_i_th (e, 1)
+		elseif right = e then
+			expression_list.put_i_th (e, 1)
+		else
+			if not left_expression_is_fully_specified then
+				if attached {COMPOSITE_EXPRESSION}left as left_expression then
+					left_expression.set_by_ref (e)
+				end
+			elseif not right_expression_is_fully_specified then
+				if attached {COMPOSITE_EXPRESSION}right as right_expression then
+					right_expression.set_by_ref (e)
+				end
+			end
 		end
+	end
+
+	current_expression_is_fully_specified : BOOLEAN
+	do
+		if not attached {NULL_EXPRESSION}left as left_expression then
+			if not attached {NULL_EXPRESSION}right as right_expression then
+				Result := true
+			end
+		end
+	end
+	left_expression_is_fully_specified : BOOLEAN
+	do
+		if not attached {NULL_EXPRESSION}left as left_expression then
+			Result := true
+		end
+	end
+
+	right_expression_is_fully_specified : BOOLEAN
+	do
+		if not attached {NULL_EXPRESSION}right as right_expression then
+				Result := true
+		end
+	end
+
 
 feature -- Test visitor pattern
 	accept (visitor : VISIT_EXPRESSION)
 
 	do
-		if operator.output ~ times.output then
+		inspect get_expression_type
+		when type_times then
 			visitor.visit_multiplication (Current.deep_twin)
-		elseif operator.output ~ divide.output then
+		when type_divides then
 			visitor.visit_division (Current.deep_twin)
-		elseif operator.output ~ plus.output then
+		when type_add then
 			visitor.visit_addition (Current.deep_twin)
-		elseif operator.output ~ minus.output then
+		when type_subtract then
 			visitor.visit_subtraction (Current.deep_twin)
-		elseif operator.output ~ op_and.output then
+		when type_and then
 			visitor.visit_conjunction (Current.deep_twin)
-		elseif operator.output ~ op_or.output then
+		when type_or then
 			visitor.visit_disjunction (Current.deep_twin)
-		elseif operator.output ~ op_equals.output then
+		when type_equal then
 			visitor.visit_equality (Current.deep_twin)
-		elseif operator.output ~ op_implies.output then
+		when type_implies then
 			visitor.visit_implication (Current.deep_twin)
-		elseif operator.output ~ op_lt.output then
+		when type_lt then
 			visitor.visit_less_than (Current.deep_twin)
-		elseif operator.output ~ op_gt.output then
+		when type_gt then
 			visitor.visit_greater_than (Current.deep_twin)
-		elseif operator.output ~ op_union.output then
+		when type_union then
 			visitor.visit_union (Current.deep_twin)
-		elseif operator.output ~ op_intersect.output then
+		when type_intersect then
 			visitor.visit_intersection (Current.deep_twin)
-		elseif operator.output ~ op_difference.output then
+		when type_difference then
 			visitor.visit_difference (Current.deep_twin)
+		end
+	end
+
+feature -- Commands
+	get_current_expression : EXPRESSION
+	do
+		create {NULL_EXPRESSION}Result.make
+		Result := left.get_current_expression
+		if not attached {NULL_EXPRESSION}Result as a then
+			Result := right.get_current_expression
 		end
 
 	end

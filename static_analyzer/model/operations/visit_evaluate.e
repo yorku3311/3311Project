@@ -16,10 +16,13 @@ feature -- Constructor
 	do
 		create value.make_empty
 		create set_enum_list.make (0)
+		create symbol.make
 	end
 
 feature -- Extra Attributes
 	set_enum_list : ARRAYED_LIST[STRING]
+feature {NONE}
+	symbol : TERMINAL_SYMBOL
 
 feature -- Give the evaluated expression
 	visit_addition(e: BINARY_OP)
@@ -270,7 +273,6 @@ feature -- Give the evaluated expression
 	local
 		b : BOOLEAN
 		visit_evaluate : VISIT_EVALUATE
-		symbol : TERMINAL_SYMBOL
 	do
 		create set_enum_list.make (0)
 		create visit_evaluate.make
@@ -305,7 +307,6 @@ feature -- Give the evaluated expression
 	local
 		visit_evaluate_left : VISIT_EVALUATE
 		visit_evaluate_right : VISIT_EVALUATE
-		symbol : TERMINAL_SYMBOL
 	do
 		create set_enum_list.make (0)
 		create visit_evaluate_left.make
@@ -331,7 +332,6 @@ feature -- Give the evaluated expression
 	local
 		visit_evaluate_left : VISIT_EVALUATE
 		visit_evaluate_right : VISIT_EVALUATE
-		symbol : TERMINAL_SYMBOL
 	do
 		create set_enum_list.make (0)
 		create visit_evaluate_left.make
@@ -358,7 +358,6 @@ feature -- Give the evaluated expression
 	local
 		i : INTEGER
 		visit_evaluate : VISIT_EVALUATE
-		symbol : TERMINAL_SYMBOL
 	do
 		create set_enum_list.make (0)
 		create visit_evaluate.make
@@ -378,7 +377,6 @@ feature -- Give the evaluated expression
 		visit_evaluate_right : VISIT_EVALUATE
 		set_list : ARRAYED_LIST[STRING]
 		index_to_add : ARRAYED_LIST[INTEGER]
-		symbol : TERMINAL_SYMBOL
 		dummy_b : BOOLEAN
 	do
 		create set_enum_list.make (0)
@@ -470,12 +468,9 @@ feature{NONE}-- Internal Functios
 	end
 
 	print_set_enumeration
-	local
-		symbol : TERMINAL_SYMBOL
 	do
-		create {LBRACE}symbol
 		--value.make_empty
-		value.append (symbol.output)
+		value.append (symbol.lbrace)
 
 
 		across set_enum_list as cursor
@@ -483,12 +478,10 @@ feature{NONE}-- Internal Functios
 			value.append (cursor.item.out)
 
 			if not cursor.is_last then
-				create {COMMA}symbol
-				value.append (symbol.output)
+				value.append (symbol.comma)
 			end
 		end
-		create {RBRACE}symbol
-		value.append (symbol.output)
+		value.append (symbol.rbrace)
 	end
 
 end

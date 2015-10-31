@@ -15,6 +15,7 @@ feature -- Constructor
 	make
 	do
 		create value.make_empty
+		set_expression_type (type_integer_constant)
 	end
 feature {NONE} -- Attributes
 	value : STRING
@@ -34,5 +35,10 @@ feature -- Operation
 	output : STRING
 	do
 		Result := value
+	end
+
+	get_current_expression : EXPRESSION
+	do
+		Result := current
 	end
 end

@@ -9,7 +9,14 @@ class
 
 inherit
 	EXPRESSION
+create
+	make
 
+feature -- Constructor
+	make
+	do
+		set_expression_type (type_boolean_constant)
+	end
 
 feature{NONE} -- Attributes
 	bool : BOOLEAN
@@ -33,6 +40,11 @@ feature -- Test visitor pattern
 	output : STRING
 	do
 		Result := bool.out
+	end
+
+	get_current_expression : EXPRESSION
+	do
+		Result := current
 	end
 
 

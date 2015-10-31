@@ -17,24 +17,24 @@ feature -- Constructor
 		create {NULL_EXPRESSION}left_child.make
 		create {NULL_EXPRESSION}right_child.make
 		create value.make_empty
+		create symbol.make
 	end
 feature -- Attributes
 	left_child : EXPRESSION
 	right_child :EXPRESSION
+feature{NONE} -- Internal
+	symbol : TERMINAL_SYMBOL
 
 
 feature -- Give the evaluated expression
     visit_boolean_constant(e: BOOLEAN_CONSTANT)
 	do
-		--value := e.output
-		value.make_empty
-		value.append (e.output)
+		value.make_from_string (e.output)
 	end
 
 	visit_integer_constant(e: INTEGER_CONSTANT)
 	do
-		value.make_empty
-		value.append (e.output)
+		value.make_from_string (e.output)
 	end
 
 	visit_addition(e: BINARY_OP)
@@ -135,12 +135,9 @@ feature -- Give the evaluated expression
 
 	local
 			eval: VISIT_PRINT
-			symbol : TERMINAL_SYMBOL
 	do
 		create eval.make
-		create {LBRACE}symbol
-		value.make_empty
-		value.append (symbol.output)
+		value.make_from_string (symbol.lbrace)
 		from
 			e.start
 		until
@@ -151,15 +148,13 @@ feature -- Give the evaluated expression
 		value.append (eval.value)
 
 		if not e.is_last then
-		create {COMMA}symbol
-		value.append (symbol.output)
+			value.append (symbol.comma)
 		end
 
 		e.forth
 
 		end
-		create {RBRACE}symbol
-		value.append (symbol.output)
+		value.append (symbol.rbrace)
 
 
 	end
@@ -167,43 +162,35 @@ feature -- Give the evaluated expression
 	visit_null_expression (e  : NULL_EXPRESSION)
 
 	do
-		value.make_empty
-		value.append (e.output)
+		value.make_from_string (get_symbol (e))
 	end
 
 feature{NONE} -- Internal Attributes
 	visit_binary_op (e : BINARY_OP)
 	local
-		symbol : TERMINAL_SYMBOL
 		eval : VISIT_PRINT
 	do
 		create eval.make
-		create {LPAREN}symbol
 		value.make_empty
-		value.append (symbol.output)
+		value.append (symbol.lparen)
 		e.left.accept (eval)
 		value.append (eval.value)
-		value.append (e.operator.output)
+		value.append (get_symbol(e))
 		e.right.accept (eval)
 		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
-
+		value.append (symbol.rparen)
 	end
+
 	visit_unary_op (e : UNARY_OP)
 	local
-		symbol : TERMINAL_SYMBOL
 		eval : VISIT_PRINT
 	do
 		create eval.make
-		create {LPAREN}symbol
 		value.make_empty
-		value.append (symbol.output)
-		value.append (e.operator.output)
-
+		value.append (symbol.lparen)
+		value.append (get_symbol (e))
 		e.child.accept (eval)
 		value.append (eval.value)
-		create {RPAREN}symbol
-		value.append (symbol.output)
+		value.append (symbol.rparen)
 	end
 end

@@ -23,19 +23,19 @@ feature {NONE} -- Initialization
 			--Strings, message specifies the current state.
 			create report.make_empty
 			create message.make_empty
-
-			create {NULL_EXPRESSION}myexpression.make_first
 			create integer_constant.make
 			create binary_op.make
-			create boolean_constant
+			create boolean_constant.make
 			create unary_op.make
-			create set_enum.make
+			create set_enum.make_empty
 			create evaluate_expression.make
 			create print_expression.make
 			create type_check_expression.make
 			create my_stack.make(0)
 			is_new := true
 			set_message (status_initialized)
+			create null_expression.make_first
+			create master_expression.make_empty
 
 		end
 
@@ -51,15 +51,20 @@ feature -- Attributes
 	is_new_set : BOOLEAN
 	set_enum_count : INTEGER
 	is_divisor_zero : BOOLEAN
+	master_expression : MASTER_EXPRESSION
 
 feature{NONE} -- Internal Attributes
 	myexpression : EXPRESSION
+	do
+		Result := master_expression.get_expression
+	end
 	binary_op : BINARY_OP
 	integer_constant : INTEGER_CONSTANT
 	boolean_constant : BOOLEAN_CONSTANT
 	unary_op : UNARY_OP
 	set_enum : SET_ENUMERATION
 	first_set : BOOLEAN
+	null_expression : NULL_EXPRESSION
 
 
 
@@ -138,23 +143,27 @@ feature -- Binary operations
 	-- BINARY ARITHMATIC
 	add_addition
 	do
-		add_binary_operation(create {PLUS})
+		create binary_op.make_add
+		add_binary_operation
 	end
 
 	add_subtraction
 	do
-		add_binary_operation(create {MINUS})
+		create binary_op.make_subtract
+		add_binary_operation
 	end
 	add_multiplication
 		-- add binary operation 'multiplication'
 	do
-		add_binary_operation(create {TIMES})
+		create binary_op.make_times
+		add_binary_operation
 	end
 
 	add_division
 		-- add binary operation 'division'
 	do
-		add_binary_operation(create {DIVIDES})
+		create binary_op.make_divides
+		add_binary_operation
 
 	end
 
@@ -162,87 +171,96 @@ feature -- Binary operations
 
     add_conjunction
     do
-    	add_binary_operation(create {OPERAND_AND})
+    	create binary_op.make_and
+		add_binary_operation
 
     end
 
     add_disjunction
     do
-    	add_binary_operation(create {OPERAND_OR})
+    	create binary_op.make_or
+		add_binary_operation
     end
 
     add_implication
     do
-       add_binary_operation(create {OPERATOR_IMPLIES})
+       create binary_op.make_implies
+		add_binary_operation
     end
-
-
 
     add_equality
     -- binary relational
     do
-    	add_binary_operation(create {OPERATOR_EQUAL})
+    	create binary_op.make_equal
+		add_binary_operation
     end
 
     add_greater_than
     -- binary relational
     do
-    	 add_binary_operation(create {OPERATOR_GT})
+    	 create binary_op.make_gt
+		add_binary_operation
     end
 
     add_less_than
     -- binary relational
     do
-    	add_binary_operation(create {OPERATOR_LT})
+    	create binary_op.make_lt
+		add_binary_operation
     end
-
 
     add_union
     -- binary set op
     do
-    	add_binary_operation(create {UNION})
+    	create binary_op.make_union
+		add_binary_operation
     end
 
     add_intersection
     -- binary set op
     do
-    	add_binary_operation(create {INTERSECT})
+    	create binary_op.make_intersect
+		add_binary_operation
     end
 
     add_difference
     -- binary set op
     do
-    	add_binary_operation(create {DIFFERENCE})
+    	create binary_op.make_difference
+		add_binary_operation
     end
 feature -- Unary operations
 
 	add_negative
 	--arithmatic
 	do
-		add_unary_operation(create {NEGATIVE})
+		create unary_op.make_negative
+		add_unary_operation
 	end
-
 
 	add_negation
 	--logical
 	do
-		add_unary_operation(create {NEGATION})
+		create unary_op.make_negation
+		add_unary_operation
 	end
-
 
 	add_sum
 	--composite
 	do
-		add_unary_operation(create {OPERAND_SUM})
+		create unary_op.make_sum
+		add_unary_operation
 	end
 
 	add_generalized_and
 	do
-		add_unary_operation(create {FORALL})
+		create unary_op.make_forall
+		add_unary_operation
 	end
 	add_generalized_or
 	do
-		add_unary_operation(create {EXISTS})
+		create unary_op.make_exists
+		add_unary_operation
 	end
 
 feature -- Primitive Type Expressions
@@ -253,12 +271,10 @@ feature -- Primitive Type Expressions
 		create integer_constant.make
 		integer_constant.set_integer_constant(i)
 		if is_new then
-			myexpression := integer_constant.deep_twin
+			master_expression.make (integer_constant)
 			is_new := false
 		else
-			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-				comp_exp.add (integer_constant)
-			end
+			master_expression.add (integer_constant)
 		end
 
 		if is_new_set then
@@ -278,16 +294,13 @@ feature -- Primitive Type Expressions
 	require
 		not expression_fully_specified
 	do
-		create boolean_constant
+		create boolean_constant.make
 		boolean_constant.set_boolean_constant(b)
 		if is_new then
-			myexpression := boolean_constant.deep_twin
+			master_expression.make (boolean_constant)
 			is_new := false
 		else
-			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-				comp_exp.add (boolean_constant)
-			end
-
+			master_expression.add (boolean_constant)
 		end
 
 		if is_new_set then
@@ -321,18 +334,16 @@ feature -- Enumeration operations
 	require
 		not expression_fully_specified
 	do
-		create set_enum.make
-		-- this will need to be updated
+		create set_enum.make_empty
 
-		set_enum.set_expression_state (expresssion_is_extended)
-		set_enum.add_operation (create {DUMMY})
+
+		--set_enum.set_expression_state (expresssion_is_extended)
+
 		if is_new then
-			myexpression := set_enum.deep_twin
+			master_expression.make (set_enum)
 			is_new := false
 		else
-			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-				comp_exp.add (set_enum)
-			end
+			master_expression.add (set_enum)
 		end
 
 		is_new_set := true
@@ -351,7 +362,7 @@ feature -- Enumeration operations
 		not expression_fully_specified and is_set_enum_being_specified and not is_set_enum_empty
 	do
 		if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-			comp_exp.end_set_enumeration
+			--comp_exp.end_set_enumeration
 			pop_set_enumeration
 			set_message (status_ok)
 			set_enum_count := set_enum_count - 1
@@ -362,20 +373,16 @@ feature -- Enumeration operations
 
 feature{NONE} -- Auxillary Commands
 	-- add binary operation
-	add_binary_operation (e : TERMINAL_SYMBOL)
+	add_binary_operation
 	require
 		not expression_fully_specified
 	do
 		-- create a new binary operation and add it to the list of operations.
-		create binary_op.make
-		binary_op.add_operation (e)
 		if is_new then
-			myexpression := binary_op.deep_twin
+			master_expression.make (binary_op.deep_twin)
 			is_new := false
 		else
-			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-				comp_exp.add (binary_op)
-			end
+			master_expression.add(binary_op.deep_twin)
 		end
 
 		if is_new_set then
@@ -391,19 +398,16 @@ feature{NONE} -- Auxillary Commands
 	end
 
 
-	add_unary_operation(e: TERMINAL_SYMBOL)
+	add_unary_operation
 	require
 		not expression_fully_specified
 	do
-		create unary_op.make
-		unary_op.add_operation(e)
+
 		if is_new then
-			myexpression := unary_op.deep_twin
+			master_expression.make (unary_op.deep_twin)
 			is_new := false
 		else
-			if attached {COMPOSITE_EXPRESSION}myexpression as comp_exp then
-				comp_exp.add (unary_op)
-			end
+			master_expression.add(unary_op.deep_twin)
 		end
 
 		if is_new_set then
